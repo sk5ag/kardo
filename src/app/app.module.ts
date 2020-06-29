@@ -6,18 +6,23 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatSliderModule } from '@angular/material/slider'
+import { MaterialModule } from './material/material.module';
+import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
+import { NewvisitComponent } from './visit/newvisit/newvisit.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    ToolbarComponent,
+    NewvisitComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatSliderModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

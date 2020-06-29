@@ -1,3 +1,6 @@
+body{
+    display: flex;
+}
 .login-div {
     width: 430px;
     height: 700px;
