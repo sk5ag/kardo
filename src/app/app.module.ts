@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material/material.module';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
-import { NewvisitComponent } from './visit/newvisit/newvisit.component';
+import { ListVisitsComponent } from './visit/newvisit/listvisits.component';
 
 
 @NgModule({
@@ -16,7 +16,7 @@ import { NewvisitComponent } from './visit/newvisit/newvisit.component';
     AppComponent,
     LoginComponent,
     ToolbarComponent,
-    NewvisitComponent
+    ListVisitsComponent
   ],
   imports: [
     BrowserModule,
