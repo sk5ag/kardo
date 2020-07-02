@@ -1,8 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
 * {
     box-sizing: border-box;
 }
-body{
+
+body {
     margin: 0;
     height: 100vh;
     width: 100vw;
@@ -13,9 +15,11 @@ body{
     align-items: center;
     justify-content: center;
     color: #555;
-    background: #ecf0f3;
+    background: #FFFFFF;
 }
 
-html, body {
+html,
+body {
     width: auto;
+    height: auto;
 }
