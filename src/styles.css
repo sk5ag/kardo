@@ -22,4 +22,5 @@ html,
 body {
     width: auto;
     height: auto;
+    overflow: auto;
 }

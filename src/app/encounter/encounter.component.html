@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/src/styles.css" />
+</head>
+
+<body>
+    <div>
+
+        <mat-card class="example-card">
+            <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+                {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+              </button>
+
+            <mat-vertical-stepper [linear]="isLinear" #stepper>
+                <mat-step [stepControl]="firstFormGroup">
+                    <form [formGroup]="firstFormGroup">
+                        <ng-template matStepLabel>Fill out patient's name and age</ng-template>
+                        <mat-form-field class="example-form">
+                            <mat-label>Name</mat-label>
+                            <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+                        </mat-form-field>
+                        <mat-form-field class="example-form">
+                            <mat-label>Age</mat-label>
+                            <input matInput placeholder="Age" formControlName="ageCtrl" required>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperNext>Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                    <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>Fill out your lab orders</ng-template>
+                        <mat-form-field class="example-form">
+                            <mat-label>Lab orders</mat-label>
+                            <input matInput formControlName="secondCtrl" placeholder="Ex. Complete Blood Count (CBC)" required>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+
+                <mat-step [stepControl]="thirdFormGroup">
+                    <form [formGroup]="thirdFormGroup">
+                        <ng-template matStepLabel>Fill out your radiology orders</ng-template>
+                        <mat-form-field class="example-form">
+                            <mat-label>Radiology orders</mat-label>
+                            <input matInput formControlName="thirdCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+
+                <mat-step [stepControl]="forthFormGroup">
+                    <form [formGroup]="forthFormGroup">
+                        <ng-template matStepLabel>Fill out your prescription</ng-template>
+                        <mat-form-field class="example-form">
+                            <mat-label>Prescription</mat-label>
+                            <input matInput formControlName="forthCtrl" placeholder="Ex. Carbon Dioxide/Oxygen Mix" required>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Done</ng-template>
+                    <p>You are now done.</p>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button (click)="stepper.reset()">Reset</button>
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+
+
+        </mat-card>
+    </div>
+</body>
+
+</html>

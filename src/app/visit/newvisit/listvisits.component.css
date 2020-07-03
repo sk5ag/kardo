@@ -1,19 +1,35 @@
 body {
     display: flexbox;
+    flex-direction: column;
+    flex-grow: 1;
     margin: auto;
     width: 98%;
+    height: auto;
+    background: #ffffff;
+    align-self: stretch;
 }
 
 .example-card {
     margin-top: 5px;
-    max-width: 100%;
-    background: #f5f5f5;
+    max-width: auto;
+    height: fit-content;
+    background: #ffffff;
+    background: #ffffff;
+    justify-content: space-between;
+    align-self: stretch;
 }
 
 .visitcard {
-    margin: 1px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: auto;
+    margin: 10px;
     max-width: 100%;
     background: #f4f5f7;
+    font-weight: normal;
+    justify-content: space-between;
+    align-self: stretch;
 }
 
 .example-header-image {
