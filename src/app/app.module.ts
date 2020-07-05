@@ -15,10 +15,10 @@ import { ModifyvisitComponent } from './visit/modifyvisit/modifyvisit.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { EncounterComponent } from './encounter/encounter.component';
-import { PrescriptionComponent } from './encounter/prescription/prescription.component';
-import { LabOrderComponent } from './encounter/lab-order/lab-order.component';
-import { RadOrderComponent } from './encounter/rad-order/rad-order.component';
-
+import { PrescriptionTableComponent } from './prescription-table/prescription-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -29,9 +29,7 @@ import { RadOrderComponent } from './encounter/rad-order/rad-order.component';
     CreatevisitComponent,
     ModifyvisitComponent,
     EncounterComponent,
-    PrescriptionComponent,
-    LabOrderComponent,
-    RadOrderComponent
+    PrescriptionTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +37,10 @@ import { RadOrderComponent } from './encounter/rad-order/rad-order.component';
     BrowserAnimationsModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

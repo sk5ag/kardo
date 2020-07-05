@@ -33,7 +33,7 @@ export class EncounterComponent implements OnInit {
       thirdCtrl: ['', Validators.required]
     });
     this.forthFormGroup = this._formBuilder.group({
-      thirdCtrl: ['', Validators.required]
+      forthCtrl: ['', Validators.required]
     });
   }
 

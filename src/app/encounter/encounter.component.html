@@ -38,9 +38,13 @@
                             <mat-label>Lab orders</mat-label>
                             <input matInput formControlName="secondCtrl" placeholder="Ex. Complete Blood Count (CBC)" required>
                         </mat-form-field>
+
                         <div>
                             <button mat-button matStepperPrevious>Back</button>
                             <button mat-button matStepperNext>Next</button>
+                        </div>
+                        <div>
+                            <app-prescription-table></app-prescription-table>
                         </div>
                     </form>
                 </mat-step>
@@ -52,6 +56,10 @@
                             <mat-label>Radiology orders</mat-label>
                             <input matInput formControlName="thirdCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
                         </mat-form-field>
+
+                        <div>
+                            <!-- <app-prescription></app-prescription> -->
+                        </div>
                         <div>
                             <button mat-button matStepperPrevious>Back</button>
                             <button mat-button matStepperNext>Next</button>
@@ -66,6 +74,9 @@
                             <mat-label>Prescription</mat-label>
                             <input matInput formControlName="forthCtrl" placeholder="Ex. Carbon Dioxide/Oxygen Mix" required>
                         </mat-form-field>
+                        <div>
+                            <!-- <app-prescription></app-prescription> -->
+                        </div>
                         <div>
                             <button mat-button matStepperPrevious>Back</button>
                             <button mat-button matStepperNext>Next</button>
