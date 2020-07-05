@@ -6,44 +6,47 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 
 // TODO: Replace this with your own data model type
 export interface PrescriptionTableItem {
-  name: string;
-  id: number;
-  amount:number;
+  generic_name: string;
+  strength: string;
+  dosage_form: string;
+  instruction_for_use: string;
+  supply: string;
 }
 
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: PrescriptionTableItem[] = [
-  {id: 1, name: 'Hydrogen', amount:10},
-  {id: 2, name: 'Helium', amount:10},
-  {id: 3, name: 'Lithium', amount:20},
-  {id: 4, name: 'Beryllium', amount:22},
-  {id: 5, name: 'Boron', amount:11},
-  {id: 6, name: 'Carbon', amount:11},
-  {id: 7, name: 'Nitrogen', amount:15},
-  {id: 8, name: 'Oxygen', amount:15},
-  {id: 9, name: 'Fluorine', amount:16},
-  {id: 10, name: 'Neon', amount:19},
-  {id: 11, name: 'Sodium', amount:30},
-  {id: 12, name: 'Magnesium', amount:29},
-  {id: 13, name: 'Aluminum', amount:10},
-  {id: 14, name: 'Silicon', amount:12},
-  {id: 15, name: 'Phosphorus', amount:80},
-  {id: 16, name: 'Sulfur', amount:43},
-  {id: 17, name: 'Chlorine', amount:50},
-  {id: 18, name: 'Argon', amount:81},
-  {id: 19, name: 'Potassium', amount:40},
-  {id: 20, name: 'Calcium', amount:62},
-  {id: 21, name: 'A', amount:19},
-  {id: 22, name: 'B', amount:30},
-  {id: 23, name: 'C', amount:29},
-  {id: 24, name: 'D', amount:10},
-  {id: 25, name: 'E', amount:12},
-  {id: 26, name: 'F', amount:80},
-  {id: 27, name: 'G', amount:43},
-  {id: 28, name: 'H', amount:50},
-  {id: 29, name: 'I', amount:81},
-  {id: 30, name: 'J', amount:40},
-  {id: 31, name: 'K', amount:62},
+  {generic_name: 'Pseudoephedrine Hydrochloride', strength: '120 mg/1', dosage_form:'TABLET, FILM COATED, EXTENDED RELEASE', instruction_for_use: 'ANY', supply: '1 or 2 3times/day'},
+  {generic_name: 'Loratadine and Pseudoephedrine Sulfate ', strength: '[LORATADINE - 10 mg/1][PSEUDOEPHEDRINE SULFATE - 240 mg/1]', dosage_form:'TABLET, FILM COATED, EXTENDED RELEASE', instruction_for_use: 'ANY', supply: '1 or 2 3 times/day'},
+ 
+  // {id: 3, name: 'Lithium', amount:20},
+  // {id: 4, name: 'Beryllium', amount:22},
+  // {id: 5, name: 'Boron', amount:11},
+  // {id: 6, name: 'Carbon', amount:11},
+  // {id: 7, name: 'Nitrogen', amount:15},
+  // {id: 8, name: 'Oxygen', amount:15},
+  // {id: 9, name: 'Fluorine', amount:16},
+  // {id: 10, name: 'Neon', amount:19},
+  // {id: 11, name: 'Sodium', amount:30},
+  // {id: 12, name: 'Magnesium', amount:29},
+  // {id: 13, name: 'Aluminum', amount:10},
+  // {id: 14, name: 'Silicon', amount:12},
+  // {id: 15, name: 'Phosphorus', amount:80},
+  // {id: 16, name: 'Sulfur', amount:43},
+  // {id: 17, name: 'Chlorine', amount:50},
+  // {id: 18, name: 'Argon', amount:81},
+  // {id: 19, name: 'Potassium', amount:40},
+  // {id: 20, name: 'Calcium', amount:62},
+  // {id: 21, name: 'A', amount:19},
+  // {id: 22, name: 'B', amount:30},
+  // {id: 23, name: 'C', amount:29},
+  // {id: 24, name: 'D', amount:10},
+  // {id: 25, name: 'E', amount:12},
+  // {id: 26, name: 'F', amount:80},
+  // {id: 27, name: 'G', amount:43},
+  // {id: 28, name: 'H', amount:50},
+  // {id: 29, name: 'I', amount:81},
+  // {id: 30, name: 'J', amount:40},
+  // {id: 31, name: 'K', amount:62},
 ];
 
 /**
@@ -106,9 +109,11 @@ export class PrescriptionTableDataSource extends DataSource<PrescriptionTableIte
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'amount': return compare(+a.amount, +b.amount, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'name': return compare(a.generic_name, b.generic_name, isAsc);
+        case 'name': return compare(a.strength, b.strength, isAsc);
+        case 'name': return compare(a.dosage_form, b.dosage_form, isAsc);
+        case 'name': return compare(a.instruction_for_use, b.instruction_for_use, isAsc);
+        case 'name': return compare(a.supply, b.supply, isAsc);
         default: return 0;
       }
     });

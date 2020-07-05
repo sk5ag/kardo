@@ -3,6 +3,14 @@
 }
 
 .data-table {
-    width: 80%;
-    margin: 20px auto;
+    width: 90%;
+    margin: 10px auto;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 9pt;
+}
+
+.example-form {
+    min-width: 50px;
+    margin: 10px;
 }

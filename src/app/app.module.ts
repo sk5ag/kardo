@@ -19,6 +19,10 @@ import { PrescriptionTableComponent } from './prescription-table/prescription-ta
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { TestformComponent } from './prescription-table/test-form/testform/testform.component';
+import { LabOrderTableComponent } from './lab-order-table/lab-order-table.component';
+import { DoctorNotesTableComponent } from './doctor-notes-table/doctor-notes-table.component';
+import { RadOrderTableComponent } from './rad-order-table/rad-order-table.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +34,10 @@ import { MatSortModule } from '@angular/material/sort';
     ModifyvisitComponent,
     EncounterComponent,
     PrescriptionTableComponent,
+    TestformComponent,
+    LabOrderTableComponent,
+    DoctorNotesTableComponent,
+    RadOrderTableComponent,
   ],
   imports: [
     BrowserModule,
