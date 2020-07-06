@@ -26,7 +26,8 @@
                             <mat-label>Age</mat-label>
                             <input matInput placeholder="Age" formControlName="ageCtrl" required>
                         </mat-form-field>
-                        <div>
+                        <app-doctor-notes-table></app-doctor-notes-table>
+                        <div><br>
                             <button mat-button matStepperNext>Next</button>
                         </div>
                     </form>
@@ -38,14 +39,16 @@
                             <mat-label>Lab orders</mat-label>
                             <input matInput formControlName="secondCtrl" placeholder="Ex. Complete Blood Count (CBC)" required>
                         </mat-form-field>
+                        <div>
+                            <br>
+                            <app-lab-order-table></app-lab-order-table><br>
+                        </div>
 
                         <div>
                             <button mat-button matStepperPrevious>Back</button>
                             <button mat-button matStepperNext>Next</button>
                         </div>
-                        <div>
-                            <app-prescription-table></app-prescription-table>
-                        </div>
+
                     </form>
                 </mat-step>
 
@@ -58,7 +61,7 @@
                         </mat-form-field>
 
                         <div>
-                            <!-- <app-prescription></app-prescription> -->
+                            <app-rad-order-table></app-rad-order-table>
                         </div>
                         <div>
                             <button mat-button matStepperPrevious>Back</button>
@@ -75,7 +78,7 @@
                             <input matInput formControlName="forthCtrl" placeholder="Ex. Carbon Dioxide/Oxygen Mix" required>
                         </mat-form-field>
                         <div>
-                            <!-- <app-prescription></app-prescription> -->
+                            <app-prescription-table></app-prescription-table>
                         </div>
                         <div>
                             <button mat-button matStepperPrevious>Back</button>

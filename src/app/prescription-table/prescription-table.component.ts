@@ -21,6 +21,7 @@ export class PrescriptionTableComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.dataSource = new PrescriptionTableDataSource();
+    console.log(this.dataSource.data);
   }
 
   ngAfterViewInit() {
@@ -34,5 +35,7 @@ export class PrescriptionTableComponent implements AfterViewInit, OnInit {
     console.log(frm.value);
     this.dataSource.data.push(frm.value);
     console.log(frm.valid);
+    console.log(this.dataSource.data);
+    
   }
 }

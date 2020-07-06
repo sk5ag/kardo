@@ -13,8 +13,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import {MatChipsModule} from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatTableModule} from '@angular/material/table';
-
-
+import {MatTabsModule} from '@angular/material/tabs';
+import{ MatSnackBarModule } from '@angular/material/snack-bar';
 
 const MaterialComponent = [
   MatIconModule,
@@ -30,7 +30,9 @@ const MaterialComponent = [
   MatStepperModule,
   MatChipsModule,
   MatAutocompleteModule,
-  MatTableModule
+  MatTableModule,
+  MatTabsModule,
+  MatSnackBarModule
 ];
 
 @NgModule({
