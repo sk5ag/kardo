@@ -2,15 +2,15 @@
     <form #frm="ngForm" (ngSubmit)="onSubmit(frm)" novalidate>
 
         <mat-form-field class="example-form">
-            <mat-label>Seq.</mat-label>
+            <mat-label>Seq. - زنجیرە</mat-label>
             <input matInput name="id" ngModel="{{note_id}}" #id="ngModel">
         </mat-form-field>
         <mat-form-field class="example-form">
-            <mat-label>Note</mat-label>
+            <mat-label>Note - تێبینی</mat-label>
             <input matInput name="note" ngModel placeholder="note:" #note>
         </mat-form-field>
         <div class="alignright">
-            <button mat-button type="submit" (click)="openSnackBar(id.value+' - '+note.value, 'Added')">ADD</button>
+            <button mat-stroked-button color="primary" type="submit" (click)="openSnackBar(id.value+' - '+note.value, 'Added')">ADD</button>
         </div>
     </form>
 </div>
@@ -29,10 +29,10 @@
         </ng-container>
 
         <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr> -->
-        <tr mat-row *matRowDef="let row; columns: displayedColumns; " class="tbl-data "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns; " class="tbl-data" (click)="openSnackBar(row.id+' - '+row.note, 'Close')"></tr>
 
     </table>
 
-    <mat-paginator #paginator [length]="dataSource?.data.length " [pageIndex]="0 " [pageSize]="50 " [pageSizeOptions]="[25, 50, 100, 250] ">
+    <mat-paginator #paginator [length]=" dataSource?.data.length " [pageIndex]="0 " [pageSize]="50 " [pageSizeOptions]="[25, 50, 100, 250] ">
     </mat-paginator>
 </div>

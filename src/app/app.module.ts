@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +26,10 @@ import { TestformComponent } from './prescription-table/test-form/testform/testf
 import { LabOrderTableComponent } from './lab-order-table/lab-order-table.component';
 import { DoctorNotesTableComponent } from './doctor-notes-table/doctor-notes-table.component';
 import { RadOrderTableComponent } from './rad-order-table/rad-order-table.component';
+import { TestsComponent } from './tests/tests.component';
+import { TestComponent } from './tests/test/test.component';
+import { TestService } from './shared/test.service';
+import { AlltestsComponent } from './tests/alltests/alltests.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +45,9 @@ import { RadOrderTableComponent } from './rad-order-table/rad-order-table.compon
     LabOrderTableComponent,
     DoctorNotesTableComponent,
     RadOrderTableComponent,
+    TestsComponent,
+    TestComponent,
+    AlltestsComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,9 +58,11 @@ import { RadOrderTableComponent } from './rad-order-table/rad-order-table.compon
     FormsModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
-  providers: [],
+  providers: [TestService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

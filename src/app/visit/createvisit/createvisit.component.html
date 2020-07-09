@@ -8,79 +8,80 @@
 
 <body>
     <div>
-        <mat-card class="example-card" color="warn">
-            <mat-card class="visitcard">
+
+        <mat-card class="visitcard">
 
 
-                <form class="example-form">
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Clinic Name (disabled)</mat-label>
-                        <input matInput disabled value="Sapient Technology">
-                    </mat-form-field>
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Clinic Name (disabled)</mat-label>
+                    <input matInput disabled value="Sapient Technology">
+                </mat-form-field>
+                <br>
+
+                <table class="example-full-width" cellspacing="0">
                     <br>
-
-                    <table class="example-full-width" cellspacing="0">
-                        <br>
-                        <tr>
-                            <td>
-                                <mat-form-field id="field1" class="example-full-width">
-                                    <mat-label>Full-name - ناوی سیانی</mat-label>
-                                    <input matInput id="1">
-                                </mat-form-field>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <mat-form-field id="field2" class="example-full-width">
-                                    <mat-label>Date of birth - ڕۆژی لە دایک بوون</mat-label>
-                                    <input id="2" matInput [matDatepicker]="picker">
-                                    <mat-datepicker-toggle matSuffix [for]="picker">
-                                        <mat-icon color="primary" matDatepickerToggleIcon>calendar_today</mat-icon>
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <mat-radio-group id="grp1" class="example-full-width" aria-label="Select an option">
-                                    <mat-label>Gender ڕەگەز <br></mat-label>
-                                    <mat-radio-button color="primary" value="1">Male - نێر</mat-radio-button>
-                                    <mat-radio-button color="primary" value="2">Female - مێ</mat-radio-button>
-                                </mat-radio-group>
-                            </td>
-                        </tr><br>
-                        <tr>
-                            <td>
-                                <mat-form-field class="example-full-width">
-                                    <mat-label>Telephone - ژمارەی تەلەفون</mat-label>
-                                    <span matPrefix>+964 &nbsp;</span>
-                                    <input type="tel" matInput placeholder="555-555-1234">
-                                    <mat-icon color="primary" matSuffix>phone_iphone</mat-icon>
-                                </mat-form-field>
-                            </td>
-                        </tr><br>
-                        <tr>
-                            <td>
-                                <mat-form-field class="example-full-width">
-                                    <mat-label>Email - ئیمەیل</mat-label>
-                                    <input matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
-                                    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                                        Please enter a valid email address
-                                    </mat-error>
-                                    <mat-error *ngIf="emailFormControl.hasError('required')">
-                                        Email is <strong>required</strong>
-                                    </mat-error>
-                                </mat-form-field>
-                            </td>
-                        </tr><br>
-                    </table>
-                </form>
-                <span class="example-spacer"></span>
+                    <tr>
+                        <td>
+                            <mat-form-field id="field1" class="example-full-width">
+                                <mat-label>Full-name - ناوی سیانی</mat-label>
+                                <input matInput id="1">
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field id="field2" class="example-full-width">
+                                <mat-label>Date of birth - ڕۆژی لە دایک بوون</mat-label>
+                                <input id="2" matInput [matDatepicker]="picker">
+                                <mat-datepicker-toggle matSuffix [for]="picker">
+                                    <mat-icon color="primary" matDatepickerToggleIcon>calendar_today</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-radio-group id="grp1" class="example-full-width" aria-label="Select an option">
+                                <mat-label>Gender ڕەگەز <br></mat-label>
+                                <mat-radio-button class="btn-right-align" color="primary" value="1">Male - نێر</mat-radio-button>
+                                <mat-radio-button class="btn-right-align" color="primary" value="2">Female - مێ</mat-radio-button>
+                            </mat-radio-group>
+                        </td>
+                    </tr><br>
+                    <tr>
+                        <td>
+                            <mat-form-field class="example-full-width">
+                                <mat-label>Telephone - ژمارەی تەلەفون</mat-label>
+                                <span matPrefix>+964 &nbsp;</span>
+                                <input type="tel" matInput placeholder="555-555-1234">
+                                <mat-icon color="primary" matSuffix>phone_iphone</mat-icon>
+                            </mat-form-field>
+                        </td>
+                    </tr><br>
+                    <tr>
+                        <td>
+                            <mat-form-field class="example-full-width">
+                                <mat-label>Email - ئیمەیل</mat-label>
+                                <input matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com">
+                                <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                                    Please enter a valid email address
+                                </mat-error>
+                                <mat-error *ngIf="emailFormControl.hasError('required')">
+                                    Email is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr><br>
+                </table>
+            </form>
+            <span class="example-spacer"></span>
+            <div class="alignright">
                 <button mat-stroked-button color="primary" class="btn-align" aria-label="Example icon-button with heart icon">
                     SAVE
                   </button>
-            </mat-card>
+            </div>
         </mat-card>
     </div>
 </body>

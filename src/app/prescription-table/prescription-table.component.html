@@ -7,7 +7,7 @@
         </mat-form-field>
         <mat-form-field class="example-form">
             <mat-label>Strength</mat-label>
-            <input matInput name="strength" ngModel>
+            <input matInput name="strength" ngModel #strength>
         </mat-form-field>
         <mat-form-field class="example-form ">
             <mat-label>Dosage Form</mat-label>
@@ -22,11 +22,10 @@
             <input matInput name="supply" ngModel>
         </mat-form-field>
         <div class="alignright">
-            <button mat-button type="submit">ADD</button>
+            <button mat-stroked-button color="primary" type="submit" (click)="openSnackBar(generic_name.value+'-'+strength.value, 'Added')">ADD</button>
         </div>
     </form>
 </div>
-
 
 <div class="mat-elevation-z8" *ngIf="dataSource.data.length > 0">
     <table mat-table class="full-width-table" matSort aria-label="Elements">
@@ -39,7 +38,6 @@
 
         <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tbl-data"></tr>
-
     </table>
 
     <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="50" [pageSizeOptions]="[25, 50, 100, 250]">

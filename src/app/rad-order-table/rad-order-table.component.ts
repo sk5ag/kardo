@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { RadOrderTableDataSource, RadOrderTableItem } from './rad-order-table-datasource';
 import { NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-rad-order-table',
@@ -19,6 +20,13 @@ export class RadOrderTableComponent implements AfterViewInit, OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['rad_id', 'rad_name'];
+
+  constructor(private _snackBar: MatSnackBar) {}
+
+  openSnackBar(rad_name: string, id: string) {
+    this._snackBar.open(rad_name, id, {
+      duration: 3000,
+    });  }
 
   ngOnInit() {
     this.dataSource = new RadOrderTableDataSource();

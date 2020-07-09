@@ -7,10 +7,10 @@
         </mat-form-field>
         <mat-form-field class="example-form">
             <mat-label>Radiology Examination</mat-label>
-            <input matInput name="rad_name" ngModel placeholder="Radiology Examination:">
-        </mat-form-field>`
+            <input matInput name="rad_name" ngModel placeholder="Radiology Examination:" #rad_name>
+        </mat-form-field>
         <div class="alignright">
-            <button mat-button type="submit">ADD</button>
+            <button mat-stroked-button color="primary" type="submit" (click)="openSnackBar(id.value+'-'+rad_name.value, 'Added')">ADD</button>
         </div>
     </form>
 </div>

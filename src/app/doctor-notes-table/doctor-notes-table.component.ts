@@ -21,19 +21,20 @@ export class DoctorNotesTableComponent implements AfterViewInit, OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['note'];
 
-  constructor(private _snackBar: MatSnackBar) {}
+  constructor(private _snackBar: MatSnackBar) { }
 
   openSnackBar(note: string, id: string) {
     this._snackBar.open(note, id, {
       duration: 3000,
-    });  }
+    });
+  }
 
 
   ngOnInit() {
     this.dataSource = new DoctorNotesTableDataSource();
-    this.note_id=this.dataSource?.data.length;
+    this.note_id = this.dataSource?.data.length;
     this.note_id++;
-    console.log('Doctor note length is: '+this.note_id);
+    console.log('Doctor note length is: ' + this.note_id);
   }
 
   ngAfterViewInit() {
@@ -48,9 +49,9 @@ export class DoctorNotesTableComponent implements AfterViewInit, OnInit {
     console.log(frm.valid);
     console.log(this.dataSource.data);
     frm.reset();
-    this.note_id=this.dataSource?.data.length;
+    this.note_id = this.dataSource?.data.length;
     this.note_id++;
-    console.log('Data after frm reset: '+this.note_id);
+    console.log('Data after frm reset: ' + this.note_id);
     this.table.dataSource = this.dataSource;
 
   }

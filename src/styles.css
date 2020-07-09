@@ -5,22 +5,75 @@
 }
 
 body {
-    margin: 0;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    font-family: 'Lato', 'sans-serif';
-    font-weight: 700;
-    /* display: flex; */
-    align-items: center;
-    justify-content: center;
-    color: #555;
-    background: #FFFFFF;
+    background: #ffffff;
+    margin: auto;
 }
 
-html,
-body {
-    width: auto;
+html {
+    background: #ffffff;
+}
+
+div.container {
+    margin: 0px, 40px;
+}
+
+form.normal-form {
+    margin: 10px;
+}
+
+.controls-container {
+    width: 100%;
+    padding: 5%;
+}
+
+.controls-container>* {
+    width: 100%;
+}
+
+.add-bottom-padding {
+    padding-bottom: 10px;
+}
+
+.button-row button {
+    margin: 5px;
+}
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+}
+
+.example-card {}
+
+.mat-tab-body-content {
     height: auto;
-    overflow: auto;
+}
+
+.visitcard {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: auto;
+    margin: 10px;
+    max-width: 100%;
+    background: #ffffff;
+    font-weight: normal;
+    justify-content: space-between;
+    align-self: stretch;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+.example-stretched-tabs {
+    max-width: 800px;
+    margin: auto;
+}
+
+.btn-align {
+    text-align: right;
+}
+
+.btn-right-align {
+    margin-right: 15px;
 }
