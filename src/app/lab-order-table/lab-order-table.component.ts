@@ -32,7 +32,6 @@ export class LabOrderTableComponent implements AfterViewInit, OnInit {
     this.dataSource = new LabOrderTableDataSource();
     this.test_id=this.dataSource?.data.length;
     this.test_id++;
-    console.log('Lab order length is: '+this.test_id);
   }
 
   ngAfterViewInit() {
@@ -42,9 +41,7 @@ export class LabOrderTableComponent implements AfterViewInit, OnInit {
   }
   
   onSubmit(frm: NgForm) {
-    console.log(frm.value);
-    this.dataSource.data.push(frm.value);
-    console.log(frm.valid);
-    console.log(this.dataSource.data);
+   this.dataSource.data.push(frm.value);
+
   }
 }

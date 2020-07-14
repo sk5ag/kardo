@@ -29,7 +29,10 @@ import { RadOrderTableComponent } from './rad-order-table/rad-order-table.compon
 import { TestsComponent } from './tests/tests.component';
 import { TestComponent } from './tests/test/test.component';
 import { TestService } from './shared/test.service';
+import { DepartmentService } from './shared/department.service';
+import { TesttypeService} from './shared/testtype.service';
 import { AlltestsComponent } from './tests/alltests/alltests.component';
+
 
 @NgModule({
   declarations: [
@@ -62,7 +65,7 @@ import { AlltestsComponent } from './tests/alltests/alltests.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
-  providers: [TestService],
+  providers: [TestService, DepartmentService, TesttypeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

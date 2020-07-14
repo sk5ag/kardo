@@ -38,10 +38,7 @@ export class RadOrderTableComponent implements AfterViewInit, OnInit {
     this.table.dataSource = this.dataSource;
   }
   onSubmit(frm: NgForm) {
-    console.log(frm.value);
     this.dataSource.data.push(frm.value);
-    console.log(frm.valid);
-    console.log(this.dataSource.data);
     
   }
 }

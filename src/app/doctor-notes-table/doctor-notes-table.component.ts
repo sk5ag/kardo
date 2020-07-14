@@ -34,7 +34,6 @@ export class DoctorNotesTableComponent implements AfterViewInit, OnInit {
     this.dataSource = new DoctorNotesTableDataSource();
     this.note_id = this.dataSource?.data.length;
     this.note_id++;
-    console.log('Doctor note length is: ' + this.note_id);
   }
 
   ngAfterViewInit() {
@@ -44,14 +43,10 @@ export class DoctorNotesTableComponent implements AfterViewInit, OnInit {
   }
 
   onSubmit(frm: NgForm) {
-    console.log(frm.value);
     this.dataSource.data.push(frm.value);
-    console.log(frm.valid);
-    console.log(this.dataSource.data);
     frm.reset();
     this.note_id = this.dataSource?.data.length;
     this.note_id++;
-    console.log('Data after frm reset: ' + this.note_id);
     this.table.dataSource = this.dataSource;
 
   }

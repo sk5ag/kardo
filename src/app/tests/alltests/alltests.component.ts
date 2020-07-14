@@ -22,7 +22,6 @@ export class AlltestsComponent implements OnInit {
             ...snap.payload.doc.data() as Test
           } 
         }) 
-        console.log(alltests);
 
       });
   }
