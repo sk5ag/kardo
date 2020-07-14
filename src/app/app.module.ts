@@ -16,11 +16,9 @@ import { ModifyvisitComponent } from './visit/modifyvisit/modifyvisit.component'
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { PrescriptionTableComponent } from './prescription-table/prescription-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { TestformComponent } from './prescription-table/test-form/testform/testform.component';
 import { TestsComponent } from './tests/tests.component';
 import { TestComponent } from './tests/test/test.component';
 import { TestService } from './shared/test.service';
@@ -36,8 +34,6 @@ import { AlltestsComponent } from './tests/alltests/alltests.component';
     ListVisitsComponent,
     CreatevisitComponent,
     ModifyvisitComponent,
-    PrescriptionTableComponent,
-    TestformComponent,
     TestsComponent,
     TestComponent,
     AlltestsComponent,
