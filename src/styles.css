@@ -19,6 +19,7 @@ div.container {
 
 form.normal-form {
     margin: 10px;
+    padding-bottom: 40px;
 }
 
 .controls-container {
@@ -42,6 +43,13 @@ form.normal-form {
     flex: 1 1 auto;
 }
 
+
+/* radio group*/
+
+mat-radio-group mat-radio-button {
+    margin-left: 10px;
+}
+
 .example-card {}
 
 .mat-tab-body-content {
@@ -52,7 +60,6 @@ form.normal-form {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    height: auto;
     margin: 10px;
     max-width: 100%;
     background: #ffffff;

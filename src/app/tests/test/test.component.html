@@ -7,21 +7,16 @@
                     <input formControlName="Name" matInput placeholder="Test name" required>
                     <mat-error>This field is required</mat-error>
                 </mat-form-field>
-
                 <mat-form-field>
-                    <mat-select formControlName="Type" placeholder="Test Type" required>
-                        <mat-option>Select</mat-option>
-                        <ng-container *ngFor="let test of testtypeService.array">
-                            <mat-option value="{{test.id}}">{{test.code}} - {{test.name}}</mat-option>
-                        </ng-container>
-                    </mat-select>
+                    <input formControlName="Type" matInput placeholder="Test type" required>
                     <mat-error>This field is required</mat-error>
+
                 </mat-form-field>
                 <mat-form-field>
                     <mat-select formControlName="Department" placeholder="Test department">
                         <mat-option>None</mat-option>
-                        <ng-container *ngFor="let department of departmentService.array">
-                            <mat-option value="{{department.id}}">{{department.code}} - {{department.name}}</mat-option>
+                        <ng-container *ngFor="let department of departments">
+                            <mat-option value="{{department.id}}">{{department.value}}</mat-option>
                         </ng-container>
                     </mat-select>
                 </mat-form-field>

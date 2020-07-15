@@ -25,11 +25,11 @@ export class TestComponent implements OnInit {
 
   }
 
-  // departments = [
-  //   { id: 1, value: 'Test 1' },
-  //   { id: 2, value: 'Test 2' },
-  //   { id: 3, value: 'Test 3' }
-  // ];
+  departments = [
+    { id: 1, value: 'Test 1' },
+    { id: 2, value: 'Test 2' },
+    { id: 3, value: 'Test 3' }
+  ];
 
 
   ngOnInit() {
@@ -54,10 +54,20 @@ export class TestComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('onSubmit button clicked ...')
     if (this.service.form.valid) {
       this.service.insertTest(this.service.form.value);
+      console.log('form has been submitted to insert function ...')
+
       this.service.form.reset();
+      console.log('form has been reset ...')
+
       this.service.initializeFormGroup();
+      console.log('form has been initialized with empty strings ...')
+    }
+    else{
+      console.log('form not validated ...')
+
     }
   }
 

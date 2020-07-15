@@ -41,22 +41,28 @@ export class TestService {
   }
 
   getTests(){
+    console.log('Getting all tests...')
     return this.db.collection('tests').stateChanges()
       .subscribe(snaps => {
-
-        const alltests: Test[] = snaps.map(snap =>{
+        snaps.map(snap =>{
           return{
             id: snap.payload.doc.id,
             ...snap.payload.doc.data() as Test
           } 
         }) 
+        console.log('Tests have been collected from the firestore')
       });
-
   }
 
   insertTest(test: Test){
 
+    console.log('insert function called...')
+
+
     this.testsCollection.add(test)
+
+    console.log('data has been submitted to database ...')
+
 
   }
 

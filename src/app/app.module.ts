@@ -10,9 +10,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material/material.module';
 import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
-import { ListVisitsComponent } from './visit/newvisit/listvisits.component';
-import { CreatevisitComponent } from './visit/createvisit/createvisit.component';
-import { ModifyvisitComponent } from './visit/modifyvisit/modifyvisit.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -24,19 +21,23 @@ import { TestComponent } from './tests/test/test.component';
 import { TestService } from './shared/test.service';
 import { DepartmentService } from './shared/department.service';
 import { TesttypeService} from './shared/testtype.service';
-import { AlltestsComponent } from './tests/alltests/alltests.component';
+import { AppointmentsComponent } from './appointments/appointments.component';
+import { AppointmentComponent } from './appointments/appointment/appointment.component';
+import { AppointmentService } from './shared/appointment.service';
+import { VisitsComponent } from './visits/visits.component';
+import { VisitComponent } from './visits/visit/visit.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    ListVisitsComponent,
-    CreatevisitComponent,
-    ModifyvisitComponent,
     TestsComponent,
     TestComponent,
-    AlltestsComponent,
+    AppointmentsComponent,
+    AppointmentComponent,
+    VisitsComponent,
+    VisitComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +52,7 @@ import { AlltestsComponent } from './tests/alltests/alltests.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
-  providers: [TestService, DepartmentService, TesttypeService],
+  providers: [TestService, DepartmentService, TesttypeService, AppointmentService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
