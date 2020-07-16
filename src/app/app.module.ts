@@ -26,6 +26,10 @@ import { AppointmentComponent } from './appointments/appointment/appointment.com
 import { AppointmentService } from './shared/appointment.service';
 import { VisitsComponent } from './visits/visits.component';
 import { VisitComponent } from './visits/visit/visit.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderComponent } from './orders/order/order.component';
+import { PrescriptionsComponent } from './prescriptions/prescriptions.component';
+import { PrescriptionComponent } from './prescriptions/prescription/prescription.component';
 
 
 @NgModule({
@@ -38,6 +42,10 @@ import { VisitComponent } from './visits/visit/visit.component';
     AppointmentComponent,
     VisitsComponent,
     VisitComponent,
+    OrdersComponent,
+    OrderComponent,
+    PrescriptionsComponent,
+    PrescriptionComponent,
   ],
   imports: [
     BrowserModule,

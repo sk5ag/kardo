@@ -1,0 +1,59 @@
+<form [formGroup]="orderService.form" class="normal-form">
+    <mat-grid-list cols="1" rowHeight="750px">
+        <mat-grid-tile>
+            <div class="controls-container">
+                <input type="hidden" formControlName="$key">
+                <input type="hidden" formControlName="currentDate">
+                <input type="hidden" formControlName="appointmentStatus">
+                <input type="hidden" formControlName="clinicName">
+                <input type="hidden" formControlName="userName">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Logged in from:</mat-label>
+                    <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Logged in as:</mat-label>
+                    <input matInput disabled value="Dr. Ibrahim Amin">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Order for patient:</mat-label>
+                    <input matInput disabled value="Patient Name">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Patient's Gender:</mat-label>
+                    <input matInput value="Male" disabled>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Patient's Age:</mat-label>
+                    <input matInput disabled value="Patient Age">
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select formControlName="orderTitle" placeholder="Order Title" required>
+                        <mat-option>None</mat-option>
+                        <ng-container *ngFor="let test of tests">
+                            <mat-option value="{{test.test_id}}">{{test.shortcode}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea formControlName="orderDescription" matInput placeholder="Order Description"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea formControlName="orderComment" matInput placeholder="Order Comment"></textarea>
+                </mat-form-field>
+                <div class="add-bottom-padding">
+                    <mat-checkbox formControlName="isCompleted">Complete order</mat-checkbox>
+                </div>
+                <div class="button-row">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="orderService.form.invalid">Submit</button>
+                    <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

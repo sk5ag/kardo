@@ -1,1 +1,71 @@
-<p>visit works!</p>
+<form [formGroup]="visitService.form" class="normal-form">
+    <mat-grid-list cols="1" rowHeight="900px">
+        <mat-grid-tile>
+            <div class="controls-container">
+                <input type="hidden" formControlName="$key">
+                <input type="hidden" formControlName="currentDate">
+                <input type="hidden" formControlName="appointmentStatus">
+                <input type="hidden" formControlName="clinicName">
+                <input type="hidden" formControlName="userName">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Logged in from:</mat-label>
+                    <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Logged in as:</mat-label>
+                    <input matInput disabled value="Dr. Ibrahim Amin">
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="patientName" matInput placeholder="Patient Name" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <div class="controls-container">
+                    <div class="add-bottom-padding">
+                        <mat-radio-group color="primary" formControlName="patientGender">
+                            <mat-radio-button value="1">Male</mat-radio-button>
+                            <mat-radio-button value="2">Female</mat-radio-button>
+                            <mat-radio-button value="3">Other</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+                <mat-form-field>
+                    <input formControlName="patientAge" matInput placeholder="Patient Age" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select formControlName="patientBloodGroup" placeholder="Blood Group" required>
+                        <mat-option>None</mat-option>
+                        <ng-container *ngFor="let bloodgroup of bloodgroups">
+                            <mat-option value="{{bloodgroup.bg_id}}">{{bloodgroup.value}}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea formControlName="patientLongtermIllness" matInput placeholder="Patient Longterm Illness"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea formControlName="patientLongtermMedicine" matInput placeholder="Patient Longterm Medicine"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea formControlName="visitShortDescription" matInput placeholder="Short Description"></textarea>
+                </mat-form-field>
+                <div class="add-bottom-padding">
+                    <mat-checkbox formControlName="isClosed">Close this visit after submit</mat-checkbox>
+                </div>
+                <mat-form-field>
+                    <input formControlName="patientMobile" matInput placeholder="Patient Mobile">
+                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
+                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
+                </mat-form-field>
+                <div class="button-row">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="visitService.form.invalid">Submit</button>
+                    <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

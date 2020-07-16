@@ -15,7 +15,7 @@ export class AppointmentComponent implements OnInit {
   doctors = [
     {id:1, name:'Dr. Ibrahim Amin'},
     {id:2, name:'Dr. Muhabad Saeed'},
-    {id:1, name:'Dr. Kozar Awat'},
+    {id:3, name:'Dr. Kozar Awat'},
   ];
 
   ngOnInit(): void {
@@ -23,5 +23,6 @@ export class AppointmentComponent implements OnInit {
   onClear(){
     this.appointmentService.form.reset();
     this.appointmentService.initializeFormGroup()
+
   }
 }
