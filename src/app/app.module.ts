@@ -30,6 +30,8 @@ import { OrdersComponent } from './orders/orders.component';
 import { OrderComponent } from './orders/order/order.component';
 import { PrescriptionsComponent } from './prescriptions/prescriptions.component';
 import { PrescriptionComponent } from './prescriptions/prescription/prescription.component';
+import { VisitListComponent } from './visits/visit-list/visit-list.component';
+import { AppointmentListComponent } from './appointments/appointment-list/appointment-list.component';
 
 
 @NgModule({
@@ -46,6 +48,8 @@ import { PrescriptionComponent } from './prescriptions/prescription/prescription
     OrderComponent,
     PrescriptionsComponent,
     PrescriptionComponent,
+    VisitListComponent,
+    AppointmentListComponent,
   ],
   imports: [
     BrowserModule,

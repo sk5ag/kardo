@@ -25,6 +25,9 @@ export class PrescriptionService {
     medicineRoute: new FormControl(''),
     medicineIngredient: new FormControl(''),
     medicineType: new FormControl(''),
+    medicineQuantity: new FormControl(''),
+    medicineDirectionforuse: new FormControl(''),
+    medicineRemarks: new FormControl(''),
     isDispensed: new FormControl(false)
   })
 
@@ -46,6 +49,9 @@ export class PrescriptionService {
       medicineRoute: '',
       medicineIngredient: '',
       medicineType: '',
+      medicineQuantity: '',
+      medicineDirectionforuse: '',
+      medicineRemarks: '',
       isDispensed: false
     });
 

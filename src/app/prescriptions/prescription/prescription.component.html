@@ -1,5 +1,5 @@
 <form [formGroup]="prescriptionService.form" class="normal-form">
-    <mat-grid-list cols="1" rowHeight="600px">
+    <mat-grid-list cols="1" rowHeight="750px">
         <mat-grid-tile>
             <div class="controls-container">
                 <input type="hidden" formControlName="$key">
@@ -35,16 +35,29 @@
                     <mat-select [(value)]="selectedMeds" formControlName="medicineGenericName" placeholder="Choose Medicine" required>
                         <mat-option>None</mat-option>
                         <ng-container *ngFor="let prescription of prescriptions">
-                            <mat-option value="{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}} | {{prescription.route}} | {{prescription.type}} ">{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}}</mat-option>
+                            <mat-option value="{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}} | {{prescription.route}} ">{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}}</mat-option>
                         </ng-container>
                     </mat-select>
                 </mat-form-field>
+
                 <div *ngIf="selectedMeds">
                     <p>{{selectedMeds}}</p>
                 </div>
                 <div *ngIf="!selectedMeds">
                     <p>No medicine selected.</p>
                 </div>
+
+                <mat-form-field>
+                    <input formControlName="medicineQuantity" matInput placeholder="Quantity to dispense" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="medicineDirectionforuse" matInput placeholder="Direction for Use" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea formControlName="medicineRemarks" matInput placeholder="Doctors Explanation" required></textarea>
+                </mat-form-field>
                 <div class="add-bottom-padding">
                     <mat-checkbox formControlName="isDispensed">Medicine dispensed</mat-checkbox>
                 </div>

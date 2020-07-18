@@ -1,4 +1,4 @@
-<form [formGroup]="appointmentService.form" class="normal-form">
+<form [formGroup]="appointmentService.form" class="normal-form" (ngSubmit)="onSubmit()">
     <mat-grid-list cols="1" rowHeight="650px">
         <mat-grid-tile>
             <div class="controls-container">
@@ -19,7 +19,7 @@
                     <mat-select formControlName="appointmentDoctor" placeholder="Appointment Doctor" required>
                         <mat-option>None</mat-option>
                         <ng-container *ngFor="let doctor of doctors">
-                            <mat-option value="{{doctor.id}}">{{doctor.name}}</mat-option>
+                            <mat-option value="{{doctor.name}}">{{doctor.name}}</mat-option>
                         </ng-container>
                     </mat-select>
                     <mat-error>This field is required</mat-error>
@@ -31,9 +31,9 @@
                 <div class="controls-container">
                     <div class="add-bottom-padding">
                         <mat-radio-group color="primary" formControlName="patientGender">
-                            <mat-radio-button value="1">Male</mat-radio-button>
-                            <mat-radio-button value="2">Female</mat-radio-button>
-                            <mat-radio-button value="3">Other</mat-radio-button>
+                            <mat-radio-button value="M">Male</mat-radio-button>
+                            <mat-radio-button value="F">Female</mat-radio-button>
+                            <mat-radio-button value="O">Other</mat-radio-button>
                         </mat-radio-group>
                     </div>
                 </div>

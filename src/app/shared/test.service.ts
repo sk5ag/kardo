@@ -57,13 +57,8 @@ export class TestService {
   insertTest(test: Test){
 
     console.log('insert function called...')
-
-
     this.testsCollection.add(test)
-
     console.log('data has been submitted to database ...')
-
-
   }
 
   updateTest(test){

@@ -25,4 +25,23 @@ export class AppointmentComponent implements OnInit {
     this.appointmentService.initializeFormGroup()
 
   }
+
+  
+  onSubmit() {
+    console.log('onSubmit button clicked ...')
+    if (this.appointmentService.form.valid) {
+      this.appointmentService.insertTest(this.appointmentService.form.value);
+      console.log('form has been submitted to insert function ...')
+
+      this.appointmentService.form.reset();
+      console.log('form has been reset ...')
+
+      this.appointmentService.initializeFormGroup();
+      console.log('form has been initialized with empty strings ...')
+    }
+    else{
+      console.log('form not validated ...')
+
+    }
+  }
 }
