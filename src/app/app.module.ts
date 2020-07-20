@@ -65,6 +65,7 @@ import { AppointmentListComponent } from './appointments/appointment-list/appoin
     AngularFirestoreModule
   ],
   providers: [TestService, DepartmentService, TesttypeService, AppointmentService ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AppointmentComponent],
 })
 export class AppModule { }

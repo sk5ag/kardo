@@ -4,6 +4,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { Appointment } from '../Modal/appointments';
 import { AngularFireList } from '@angular/fire/database';
+import * as _ from 'lodash';
+import { app } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,6 @@ export class AppointmentService {
 
 
   form: FormGroup = new FormGroup({
-    $key: new FormControl(null),
     currentDate: new FormControl(''),
     clinicName: new FormControl(''),
     userName: new FormControl(''),
@@ -38,7 +39,6 @@ export class AppointmentService {
 
   initializeFormGroup(){
     this.form.setValue({
-      $key: null,
       currentDate: '',
       clinicName: '',
       userName: '',
@@ -69,17 +69,53 @@ export class AppointmentService {
   }
 
 
-  insertTest(appointment: Appointment){
+  insertAppointment(appointment){
 
     console.log('insert function called...')
     this.appointmentsCollection.add(appointment)
     console.log('data has been submitted to database ...')
   }
 
-  updateTest(test){
+  // updateAppointment(appointment){
+  //   console.log('Document ID to be updated: ', appointment.id)
+  //   this.db.doc('appointments/${appointment.id}').update({
+  //     appointmentId: appointment.id,
+  //     appointmentDoctor: appointment.appointmentDoctor,
+  //     patientName: appointment.patientName,
+  //     patientAge: appointment.patientAge,
+  //     patientGender: appointment.patientGender,
+  //     patientMobile: appointment.patientMobile,
+  //     isWaiting: appointment.isWaiting
+  //   });
+  //   // this.getAppointments();
+  // }
 
+  deleteAppointment(appointment){
+    console.log('SERVICE - this key received for deleting the records', appointment.$key);
+    // this.db.collection('appointments').doc(appointment.id).delete();
+    // this.db.doc(appointment.id).delete().catch(error => console.log(error))
   }
 
-  deleteEmployee($key: string){
+
+  populateForm(row){
+    console.log('POPULATE - the id received was: ', row.id);
+    console.log('POPULATE - the row received was: ', row);
+    this.form.setValue(row
+    //   {
+    //   appointmentId: row.id,
+    //   currentDate: '',
+    //   clinicName: '',
+    //   userName: '',
+    //   appointmentStatus: '',
+    //   appointmentDate: '',
+    //   appointmentDoctor: row.appointmentDoctor,
+    //   patientName: row.patientName,
+    //   patientAge: row.patientAge,
+    //   patientGender: row.patientGender,
+    //   patientMobile: row.patientMobile,
+    //   isWaiting: row.isWaiting
+    // }
+    );
+    console.log('POPULATE - Form value after edit button click: ', this.form.value)
   }
 }

@@ -4,6 +4,8 @@ import { Appointment } from 'src/app/Modal/appointments';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AppointmentComponent } from '../appointment/appointment.component';
 
 @Component({
   selector: 'app-appointment-list',
@@ -12,7 +14,9 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class AppointmentListComponent implements OnInit {
 
-  constructor(private appointmentService: AppointmentService) { }
+  constructor(private appointmentService: AppointmentService,
+    private dialog: MatDialog
+    ) { }
 
   listData: MatTableDataSource<Appointment>;
   displayColumns: string[] = ['patientName', 'patientGender','patientAge', 'isWaiting', 'appointmentDoctor','actions'];
@@ -32,6 +36,7 @@ export class AppointmentListComponent implements OnInit {
             }
           }
         );
+        console.log('this is in the arrary now: ', array);
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
@@ -52,5 +57,42 @@ export class AppointmentListComponent implements OnInit {
   applyFilter(){
     this.listData.filter = this.searchKey.trim().toLowerCase();
   }
+
+  onCreate(){
+    this.appointmentService.initializeFormGroup();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "75%";
+    dialogConfig.height = "90%";
+    this.dialog.open(AppointmentComponent, dialogConfig)
+  }
+
+  onEdit(row){
+
+    console.log('OnEdit 1: this is the ID for the records you are editing: ', row.id);
+    this.appointmentService.populateForm(row);
+    console.log('OnEdit 2: this is the ID for the records you are editing: ', this.appointmentService.form.value);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "75%";
+    dialogConfig.height = "90%";
+    this.dialog.open(AppointmentComponent, dialogConfig)
+  }
+
+onDelete(row){
+  if(confirm('Are you sure to delete this record?')){
+    console.log('This appointment will be send to the service for deleting: ', row)
+    // this.appointmentService.deleteAppointment(appointment)  
+}
+
+}
+
+onClose(){
+  this.dialog.closeAll();
+}
+
 
 }

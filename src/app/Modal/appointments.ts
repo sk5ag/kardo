@@ -1,5 +1,4 @@
 export interface Appointment {
-    id: string,
     currentDate: 'timestamp',
     clinicName: string,
     userName: string,
