@@ -38,22 +38,23 @@ export class AppointmentComponent implements OnInit {
     console.log('On-Submit - just been triggered and set these value: ', this.appointmentService.form.value);
 
     if (this.appointmentService.form.valid) {
-      console.log('AHHH - this is a valid form, lets see.... the id value is: ');
-      this.appointmentService.insertAppointment(this.appointmentService.form.value);
+      // console.log('AHHH - this is a valid form, lets see.... the id value is: ');
+      // this.appointmentService.insertAppointment(this.appointmentService.form.value);
 
-      // if (!this.appointmentService.form.get('id').value) {
+      if (!this.appointmentService.form.get('id').value) {
 
-      //   console.log('ON- SUBMIT - Perform an INSERT operation ..')
-      //   this.appointmentService.insertAppointment(this.appointmentService.form.value);
-      // }
-      // else 
-      //   console.log('ON- SUBMIT - Perform an UPDATE operation...', this.appointmentService.form.value)
-      //   this.appointmentService.updateAppointment(this.appointmentService.form.value);
+        // console.log('ON- SUBMIT - Perform an INSERT operation ..')
+        this.appointmentService.insertAppointment(this.appointmentService.form.value);
+      }
+      else 
+        // console.log('ON- SUBMIT - Perform an UPDATE operation...', this.appointmentService.form.value)
+        this.appointmentService.updateAppointment(this.appointmentService.form.value);
 
 
         this.appointmentService.form.reset();
 
         this.appointmentService.initializeFormGroup();
+
         this.onClose()
   
     }

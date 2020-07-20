@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { Appointment } from '../Modal/appointments';
 import { AngularFireList } from '@angular/fire/database';
 import * as _ from 'lodash';
-import { app } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +23,7 @@ export class AppointmentService {
 
 
   form: FormGroup = new FormGroup({
+    id: new FormControl('null'),
     currentDate: new FormControl(''),
     clinicName: new FormControl(''),
     userName: new FormControl(''),
@@ -39,6 +39,7 @@ export class AppointmentService {
 
   initializeFormGroup(){
     this.form.setValue({
+      id: null,
       currentDate: '',
       clinicName: '',
       userName: '',
@@ -53,9 +54,8 @@ export class AppointmentService {
     });
   }
 
-
   getAppointments(){
-    console.log('Getting all appointments...')
+    // console.log('Getting all appointments...')
     return this.db.collection('appointments').snapshotChanges()
       // .subscribe(snaps => {
       //   const array = snaps.map(snap =>{
@@ -69,13 +69,23 @@ export class AppointmentService {
   }
 
 
-  insertAppointment(appointment){
+  async insertAppointment(appointment){
 
-    console.log('insert function called...')
-    this.appointmentsCollection.add(appointment)
-    console.log('data has been submitted to database ...')
+    // console.log('insert function called...', appointment);
+    var docRef = await this.db.collection('appointments').add(appointment)
+      .then(function (docRef){
+        // console.log('What to do with this docRef', docRef.id);
+        docRef.update({
+          id: docRef.id
+        })
+      });
+    // console.log('Document Reference is: ', docRef);
   }
 
+  updateAppointment(appointment){
+    // console.log('UPDATE METHOD CALLED - Recieved id for update', appointment.id);
+    this.db.collection('appointments').doc(appointment.id).update(appointment)
+  }
   // updateAppointment(appointment){
   //   console.log('Document ID to be updated: ', appointment.id)
   //   this.db.doc('appointments/${appointment.id}').update({
@@ -98,24 +108,26 @@ export class AppointmentService {
 
 
   populateForm(row){
-    console.log('POPULATE - the id received was: ', row.id);
-    console.log('POPULATE - the row received was: ', row);
-    this.form.setValue(row
-    //   {
-    //   appointmentId: row.id,
+    // console.log('POPULATE - the id received was: ', row.id);
+    // console.log('POPULATE - the row received was: ', row.patientName);
+    // console.log('POPULATE - the id received was: ', row.patientAge);
+    // console.log('POPULATE - the row received was: ', row.patientGender);
+    this.form.patchValue(
+       {
+       id: row.id,
     //   currentDate: '',
     //   clinicName: '',
     //   userName: '',
     //   appointmentStatus: '',
     //   appointmentDate: '',
-    //   appointmentDoctor: row.appointmentDoctor,
-    //   patientName: row.patientName,
-    //   patientAge: row.patientAge,
-    //   patientGender: row.patientGender,
-    //   patientMobile: row.patientMobile,
-    //   isWaiting: row.isWaiting
-    // }
+       appointmentDoctor: row.appointmentDoctor,
+       patientName: row.patientName,
+       patientAge: row.patientAge,
+       patientGender: row.patientGender,
+       patientMobile: row.patientMobile,
+       isWaiting: row.isWaiting
+     }
     );
-    console.log('POPULATE - Form value after edit button click: ', this.form.value)
+    // console.log('POPULATE - Form value after edit button click: ', this.form.value)
   }
 }

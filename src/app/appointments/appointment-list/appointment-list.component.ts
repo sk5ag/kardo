@@ -36,7 +36,7 @@ export class AppointmentListComponent implements OnInit {
             }
           }
         );
-        console.log('this is in the arrary now: ', array);
+        // console.log('this is in the arrary now: ', array);
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
@@ -70,9 +70,9 @@ export class AppointmentListComponent implements OnInit {
 
   onEdit(row){
 
-    console.log('OnEdit 1: this is the ID for the records you are editing: ', row.id);
+    // console.log('OnEdit 1: this is the ID for the records you are editing: ', row);
     this.appointmentService.populateForm(row);
-    console.log('OnEdit 2: this is the ID for the records you are editing: ', this.appointmentService.form.value);
+    // console.log('OnEdit 2: this is the ID for the records you are editing: ', this.appointmentService.form.value);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
