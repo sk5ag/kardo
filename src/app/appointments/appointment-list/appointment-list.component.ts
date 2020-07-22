@@ -14,7 +14,8 @@ import { AppointmentComponent } from '../appointment/appointment.component';
 })
 export class AppointmentListComponent implements OnInit {
 
-  constructor(private appointmentService: AppointmentService,
+  constructor(
+    private appointmentService: AppointmentService,
     private dialog: MatDialog
     ) { }
 
@@ -36,15 +37,10 @@ export class AppointmentListComponent implements OnInit {
             }
           }
         );
-        // console.log('this is in the arrary now: ', array);
         this.listData = new MatTableDataSource(array);
         this.listData.sort = this.sort;
         this.listData.paginator = this.paginator;
-        // this.listData.filterPredicate = (arrayData, filter) => {
-        //   return this.displayColumns.some(ele => {
-        //       return ele !='actions' && arrayData[ele].toLowerCase().indexOf(filter) != -1;
-        //     });
-        // };
+
       }
       
     );
@@ -70,9 +66,7 @@ export class AppointmentListComponent implements OnInit {
 
   onEdit(row){
 
-    // console.log('OnEdit 1: this is the ID for the records you are editing: ', row);
     this.appointmentService.populateForm(row);
-    // console.log('OnEdit 2: this is the ID for the records you are editing: ', this.appointmentService.form.value);
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -84,8 +78,7 @@ export class AppointmentListComponent implements OnInit {
 
 onDelete(row){
   if(confirm('Are you sure to delete this record?')){
-    console.log('This appointment will be send to the service for deleting: ', row)
-    // this.appointmentService.deleteAppointment(appointment)  
+    this.appointmentService.deleteAppointment(row.id)  
 }
 
 }

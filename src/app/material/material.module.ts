@@ -45,6 +45,7 @@ const MaterialComponent = [
   MatPaginatorModule,
   MatSortModule,
   MatDialogModule,
+  
 ];
 
 @NgModule({

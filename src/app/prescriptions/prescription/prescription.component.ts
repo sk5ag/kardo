@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrescriptionService } from '../../shared/prescription.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-prescription',
@@ -8,10 +9,13 @@ import { PrescriptionService } from '../../shared/prescription.service';
 })
 export class PrescriptionComponent implements OnInit {
 
+  visitId = Math.random().toString(20).substr(2, 6)
+
   selectedMeds = ""; 
 
   constructor(
     public prescriptionService: PrescriptionService,
+    public prescriptiondialogRef: MatDialogRef<PrescriptionComponent>,
   ) { }
 
   prescriptions = [
@@ -29,11 +33,42 @@ export class PrescriptionComponent implements OnInit {
     {pres_id: 12, medicineGenericName: 'metoprolol succinate and hydrochlorothiazide', dosage_form: 'TABLET', route:'ORAL', ingredient: '12.5 mg/1 - HYDROCHLOROTHIAZIDE', type: 'HUMAN PRESCRIPTION DRUG'}
   ];
 
-  ngOnInit(): void {
+  ngOnInit() {
+    
+    console.log('Visit ID: ', this.visitId)
+    this.prescriptionService.getPrescriptions()
   }
+
   onClear(){
     this.prescriptionService.form.reset();
     this.prescriptionService.initializeFormGroup()
     this.selectedMeds = ""; 
   }
+
+  onSubmit() {
+    if (this.prescriptionService.form.valid) {
+      if (!this.prescriptionService.form.get('id').value) {
+        this.prescriptionService.insertPrescription(this.prescriptionService.form.value);
+      }
+      else 
+        this.prescriptionService.updateOrder(this.prescriptionService.form.value);
+        this.prescriptionService.form.reset();
+        this.prescriptionService.initializeFormGroup();
+        this.onClose()  
+    }
+    else {
+      console.log('The form is not valid ...')
+    }
+  }
+
+  onClose() {
+    console.log('close function called');
+    this.prescriptionService.form.reset();
+    console.log('form reset called and run')
+    this.prescriptionService.initializeFormGroup();
+    console.log('the form reinitialized and will close dialog')
+    this.prescriptiondialogRef.close();
+    console.log('dialog closed')
+  }
+
 }

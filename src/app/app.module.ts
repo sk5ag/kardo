@@ -32,6 +32,11 @@ import { PrescriptionsComponent } from './prescriptions/prescriptions.component'
 import { PrescriptionComponent } from './prescriptions/prescription/prescription.component';
 import { VisitListComponent } from './visits/visit-list/visit-list.component';
 import { AppointmentListComponent } from './appointments/appointment-list/appointment-list.component';
+import { OrderListComponent } from './orders/order-list/order-list.component';
+import { OrderService } from './shared/order.service';
+import { PrescriptionListComponent } from './prescriptions/prescription-list/prescription-list.component';
+import { PrescriptionService } from './shared/prescription.service';
+import { VisitService } from './shared/visit.service';
 
 
 @NgModule({
@@ -50,6 +55,8 @@ import { AppointmentListComponent } from './appointments/appointment-list/appoin
     PrescriptionComponent,
     VisitListComponent,
     AppointmentListComponent,
+    OrderListComponent,
+    PrescriptionListComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,10 +69,16 @@ import { AppointmentListComponent } from './appointments/appointment-list/appoin
     MatPaginatorModule,
     MatSortModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    
   ],
-  providers: [TestService, DepartmentService, TesttypeService, AppointmentService ],
+  providers: [TestService, DepartmentService, TesttypeService, AppointmentService, OrderService, PrescriptionService, VisitService ],
   bootstrap: [AppComponent],
-  entryComponents: [AppointmentComponent],
+  entryComponents: [
+    AppointmentComponent, 
+    OrderComponent,
+    PrescriptionComponent,
+    VisitComponent,
+  ],
 })
 export class AppModule { }

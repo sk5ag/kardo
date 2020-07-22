@@ -21,11 +21,10 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.patientGender}}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="isClosed">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Closed?</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.isClosed}}</mat-cell>
+        <ng-container matColumnDef="isCompleted">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Waiting?</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.isCompleted}}</mat-cell>
         </ng-container>
-
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let row" class="action-icon">

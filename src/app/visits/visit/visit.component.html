@@ -1,12 +1,19 @@
-<form [formGroup]="visitService.form" class="normal-form">
-    <mat-grid-list cols="1" rowHeight="900px">
+<div class="container">
+    <mat-toolbar>
+        <span>{{visitService.form.controls['id'].value?"Update Visit":"New Visit"}}</span>
+        <span class="fill-remaining-space"></span>
+        <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+    </mat-toolbar>
+</div>
+<form [formGroup]="visitService.form" class="normal-form" (ngSubmit)="onSubmit()">
+    <mat-grid-list cols="1" rowHeight="1000px">
         <mat-grid-tile>
             <div class="controls-container">
-                <input type="hidden" formControlName="$key">
+                <input type="hidden" formControlName="id">
                 <input type="hidden" formControlName="currentDate">
-                <input type="hidden" formControlName="appointmentStatus">
+                <input type="hidden" formControlName="createdDate">
                 <input type="hidden" formControlName="clinicName">
-                <input type="hidden" formControlName="userName">
+                <input type="hidden" formControlName="visitDoctor">
                 <mat-form-field class="example-full-width">
                     <mat-label>Logged in from:</mat-label>
                     <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
@@ -15,10 +22,7 @@
                     <mat-label>Logged in as:</mat-label>
                     <input matInput disabled value="Dr. Ibrahim Amin">
                 </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
+
                 <mat-form-field>
                     <input formControlName="patientName" matInput placeholder="Patient Name" required>
                     <mat-error>This field is required</mat-error>
@@ -37,6 +41,19 @@
                     <mat-error>This field is required</mat-error>
                 </mat-form-field>
                 <mat-form-field>
+                    <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
+                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
+                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <textarea formControlName="visitStatus" matInput placeholder="Visit Status"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea formControlName="visitDate" matInput placeholder="Visit Date"></textarea>
+                </mat-form-field>
+
+                <mat-form-field>
                     <mat-select formControlName="patientBloodGroup" placeholder="Blood Group" required>
                         <mat-option>None</mat-option>
                         <ng-container *ngFor="let bloodgroup of bloodgroups">
@@ -53,14 +70,21 @@
                 <mat-form-field>
                     <textarea formControlName="visitShortDescription" matInput placeholder="Short Description"></textarea>
                 </mat-form-field>
+                <mat-form-field>
+                    <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+
+                <div class="add-bottom-padding">
+                    <mat-checkbox formControlName="hasOrders">There are orders linked with this visit</mat-checkbox>
+                </div>
+                <div class="add-bottom-padding">
+                    <mat-checkbox formControlName="hasPrescriptions">There are prescriptions linked with this visit</mat-checkbox>
+                </div>
                 <div class="add-bottom-padding">
                     <mat-checkbox formControlName="isClosed">Close this visit after submit</mat-checkbox>
                 </div>
-                <mat-form-field>
-                    <input formControlName="patientMobile" matInput placeholder="Patient Mobile">
-                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
-                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
-                </mat-form-field>
+
                 <div class="button-row">
                     <button mat-raised-button color="primary" type="submit" [disabled]="visitService.form.invalid">Submit</button>
                     <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>

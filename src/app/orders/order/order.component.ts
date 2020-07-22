@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit,  } from '@angular/core'; 
 import { OrderService } from '../../shared/order.service';
-
+import { MatDialogRef } from '@angular/material/dialog';
+ 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
@@ -8,8 +9,12 @@ import { OrderService } from '../../shared/order.service';
 })
 export class OrderComponent implements OnInit {
 
+  visitId = Math.random().toString(20).substr(2, 6)
+
+
   constructor(
     public orderService: OrderService,
+    public orderdialogRef: MatDialogRef<OrderComponent>,
   ) { }
 
   orders = [
@@ -33,10 +38,41 @@ export class OrderComponent implements OnInit {
   ];
 
 
-  ngOnInit(): void {
+  ngOnInit(){
+    console.log('Visit ID: ', this.visitId)
+    this.orderService.getOrders()
   }
+  
   onClear(){
     this.orderService.form.reset();
     this.orderService.initializeFormGroup()
   }
+
+  
+  onSubmit() {
+    if (this.orderService.form.valid) {
+      if (!this.orderService.form.get('id').value) {
+        this.orderService.insertOrder(this.orderService.form.value);
+      }
+      else 
+        this.orderService.updateOrder(this.orderService.form.value);
+        this.orderService.form.reset();
+        this.orderService.initializeFormGroup();
+        this.onClose()  
+    }
+    else {
+      console.log('The form is not valid ...')
+    }
+  }
+
+  onClose() {
+    console.log('close function called');
+    this.orderService.form.reset();
+    console.log('form reset called and run')
+    this.orderService.initializeFormGroup();
+    console.log('the form reinitialized and will close dialog')
+    this.orderdialogRef.close();
+    console.log('dialog closed')
+  }
+
 }

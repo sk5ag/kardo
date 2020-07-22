@@ -1,0 +1,22 @@
+export interface Prescriptions {
+    currentDate: 'timestamp',
+    createdDate: string,
+    clinicName: string,
+    visitId: string,
+    patientName: string,
+    patientAge: string,
+    patientGender: string,
+    patientMobile: string,
+    prescriptionStatus: string,
+    prescriptionDate: Date,
+    prescribingDoctor: string,
+    medicineGenericName: string,
+    medicineDosageForm: string,
+    medicineRoute: string,
+    medicineIngredient: string,
+    medicineType:string,
+    medicineQuantity: string,
+    medicineDirectionforuse: string,
+    medicineRemarks: string,
+    isDispensed: boolean
+}
