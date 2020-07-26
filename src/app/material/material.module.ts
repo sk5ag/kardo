@@ -21,6 +21,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 const MaterialComponent = [
   MatIconModule,
@@ -45,7 +47,7 @@ const MaterialComponent = [
   MatPaginatorModule,
   MatSortModule,
   MatDialogModule,
-  
+  MatExpansionModule
 ];
 
 @NgModule({

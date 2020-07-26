@@ -54,11 +54,15 @@ export class TestService {
       });
   }
 
-  insertTest(test: Test){
+  insertTest(test){
 
-    console.log('insert function called...')
-    this.testsCollection.add(test)
-    console.log('data has been submitted to database ...')
+    this.db.collection('visits').doc('3EgICvHaBVvKQctdfwts').update({
+      medTests: test
+    })
+
+    // console.log('insert function called...')
+    // this.testsCollection.add(test)
+    // console.log('data has been submitted to database ...')
   }
 
   updateTest(test){

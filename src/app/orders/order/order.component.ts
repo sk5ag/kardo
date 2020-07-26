@@ -1,6 +1,6 @@
 import { Component, OnInit,  } from '@angular/core'; 
 import { OrderService } from '../../shared/order.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog'; 
  
 @Component({
   selector: 'app-order',
@@ -39,8 +39,8 @@ export class OrderComponent implements OnInit {
 
 
   ngOnInit(){
-    console.log('Visit ID: ', this.visitId)
-    this.orderService.getOrders()
+    console.log('Visit ID: ', this.visitId);
+    this.orderService.getOrders();
   }
   
   onClear(){

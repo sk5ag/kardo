@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { VisitService } from '../../shared/visit.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
+
 @Component({
   selector: 'app-visit',
   templateUrl: './visit.component.html',
   styleUrls: ['./visit.component.css']
 })
 export class VisitComponent implements OnInit {
+
+
 
   visitId = Math.random().toString(20).substr(2, 6)
 
@@ -16,14 +19,17 @@ export class VisitComponent implements OnInit {
     public visitdialogRef: MatDialogRef<VisitComponent>,
   ) { }
 
-  visitors = [
-    {visit_id:1, patient_name:'Donald Duck', patient_age:'20', patient_gender:'Male', patient_mobile:'07701323367'},
-    {visit_id:2, patient_name:'Tom an Jerry', patient_age:'30', patient_gender:'Male', patient_mobile:'07701323367'},
-    {visit_id:3, patient_name:'John Smith', patient_age:'40', patient_gender:'Female', patient_mobile:'07701323367'},
-    {visit_id:4, patient_name:'Eddy Murphy', patient_age:'45', patient_gender:'Male', patient_mobile:'07701323367'},
-    {visit_id:5, patient_name:'Peppa Pig', patient_age:'50', patient_gender:'Other', patient_mobile:'07701323367'},
-    {visit_id:6, patient_name:'Laura Explorer', patient_age:'60', patient_gender:'Female', patient_mobile:'07701323367'},
+  notesArray = [];
+  testsArray = [];
+  prescriptionsArray = [];
+
+  myTests = [
+    {$key: null, testName: "Test -001", Type: "Blood Test", Department: "2", isActive: true},
+    // {$key: null, Name: "Test -002", Type: "Blood Test", Department: "2", isActive: true},
+    // {$key: null, Name: "Test -003", Type: "Blood Test", Department: "2", isActive: true},
+    // {$key: null, Name: "Test -004", Type: "Blood Test", Department: "2", isActive: true},
   ];
+
 
   bloodgroups = [
     {bg_id: 1, value: 'A+'},

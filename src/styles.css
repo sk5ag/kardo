@@ -19,16 +19,20 @@ div.container {
 
 form.normal-form {
     margin: 10px;
-    padding-bottom: 40px;
+    padding-bottom: 0px;
+    background: #ff55ff;
 }
 
 .controls-container {
     width: 100%;
     padding: 5%;
+    background: yellow;
+    overflow: auto;
 }
 
 .controls-container>* {
     width: 100%;
+    background: yellowgreen;
 }
 
 .add-bottom-padding {
@@ -56,6 +60,8 @@ mat-radio-group mat-radio-button {
     height: auto;
 }
 
+
+/* 
 .visitcard {
     display: flex;
     flex-direction: column;
@@ -66,7 +72,7 @@ mat-radio-group mat-radio-button {
     font-weight: normal;
     justify-content: space-between;
     align-self: stretch;
-}
+} */
 
 .example-full-width {
     width: 100%;
