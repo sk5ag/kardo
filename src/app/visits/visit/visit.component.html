@@ -4,92 +4,127 @@
         <span class="fill-remaining-space"></span>
         <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
     </mat-toolbar>
+
 </div>
 <form [formGroup]="visitService.form" class="normal-form" (ngSubmit)="onSubmit()">
-    <mat-grid-list cols="1" rowHeight="1000px">
-        <mat-grid-tile>
-            <div class="controls-container">
-                <input type="hidden" formControlName="id">
-                <input type="hidden" formControlName="currentDate">
-                <input type="hidden" formControlName="createdDate">
-                <input type="hidden" formControlName="clinicName">
-                <input type="hidden" formControlName="visitDoctor">
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in from:</mat-label>
-                    <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in as:</mat-label>
-                    <input matInput disabled value="Dr. Ibrahim Amin">
-                </mat-form-field>
 
-                <mat-form-field>
-                    <input formControlName="patientName" matInput placeholder="Patient Name" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <div class="controls-container">
-                    <div class="add-bottom-padding">
-                        <mat-radio-group color="primary" formControlName="patientGender">
-                            <mat-radio-button value="1">Male</mat-radio-button>
-                            <mat-radio-button value="2">Female</mat-radio-button>
-                            <mat-radio-button value="3">Other</mat-radio-button>
-                        </mat-radio-group>
+    <div class="example-full-width">
+
+        <!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+                {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+              </button> -->
+        <mat-vertical-stepper #stepper>
+            <mat-step [stepControl]="visitService.form">
+                <form [formGroup]="visitService.form">
+                    <ng-template matStepLabel>Fill out patient information</ng-template>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Last name, First name " formControlName="patientName" required>
+                    </mat-form-field>
+                    <div class="example-full-width">
+                        <div class="add-bottom-padding">
+                            <mat-radio-group color="primary" formControlName="patientGender">
+                                <mat-radio-button value="1">Male</mat-radio-button>
+                                <mat-radio-button value="2">Female</mat-radio-button>
+                                <mat-radio-button value="3">Other</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
                     </div>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Age</mat-label>
+                        <input matInput placeholder="Patient's Age " formControlName="patientAge" required>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Gender</mat-label>
+                        <input matInput placeholder="Patient's Gender " formControlName="patientGender" required>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Mobile</mat-label>
+                        <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
+                        <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
+                        <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-select formControlName="patientBloodGroup" placeholder="Blood Group" required>
+                            <mat-option>None</mat-option>
+                            <ng-container *ngFor="let bloodgroup of bloodgroups">
+                                <mat-option value="{{bloodgroup.bg_id}}">{{bloodgroup.value}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Patient Illness</mat-label>
+                        <textarea formControlName="patientLongtermIllness" matInput placeholder="Patient Longterm Illness"></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Medicines</mat-label>
+                        <textarea formControlName="patientLongtermMedicine" matInput placeholder="Patient Longterm Medicine"></textarea>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Description</mat-label>
+                        <textarea formControlName="visitDescription" matInput placeholder="Short Case Description"></textarea>
+                    </mat-form-field>
+                    <div class="add-bottom-padding">
+                        <mat-checkbox formControlName="isClosed">Close this visit after submit</mat-checkbox>
+                    </div>
+                    <div>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="visitService.visitForm">
+                <form [formGroup]="visitService.visitForm">
+                    <ng-template matStepLabel>Fill out visit information</ng-template>
+                    <div class="font-size-style">
+                        <p>
+                            <strong>Visit Date: </strong> Sunday, July 26, 2020
+                        </p>
+                        <p>
+                            <strong>Doctor: </strong> Dr. Ibrahim Amin
+                        </p>
+                        <p>
+                            <strong>Doctor and Clinic: </strong> Dr. Ibrahim Amin | THE CLINIC NAME
+                        </p>
+                    </div>
+                    <mat-form-field class="example-full-width">
+                        <mat-select formControlName="visitStatus" placeholder="Visit Status" required>
+                            <mat-option>None</mat-option>
+                            <ng-container *ngFor="let status of visitstatus">
+                                <mat-option value="{{status.vs_id}}">{{status.value}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="visitService.notesForm">
+                <form [formGroup]="visitService.notesForm">
+                    <ng-template matStepLabel>Add notes to this visit</ng-template>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Note</mat-label>
+                        <textarea matInput placeholder="Doctor's Note " formControlName="shortNote" required></textarea>
+                        <button mat-icon-button matSuffix mat-icon-button aria-label="Clear">
+                            <mat-icon>note_add</mat-icon>
+                          </button>
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+                <p>You are now done.</p>
+                <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button (click)="stepper.reset()">Reset</button>
                 </div>
-                <mat-form-field>
-                    <input formControlName="patientAge" matInput placeholder="Patient Age" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
-                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
-                    <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
-                </mat-form-field>
+            </mat-step>
+        </mat-vertical-stepper>
+    </div>
 
-                <mat-form-field>
-                    <textarea formControlName="visitStatus" matInput placeholder="Visit Status"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="visitDate" matInput placeholder="Visit Date"></textarea>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <mat-select formControlName="patientBloodGroup" placeholder="Blood Group" required>
-                        <mat-option>None</mat-option>
-                        <ng-container *ngFor="let bloodgroup of bloodgroups">
-                            <mat-option value="{{bloodgroup.bg_id}}">{{bloodgroup.value}}</mat-option>
-                        </ng-container>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="patientLongtermIllness" matInput placeholder="Patient Longterm Illness"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="patientLongtermMedicine" matInput placeholder="Patient Longterm Medicine"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="visitShortDescription" matInput placeholder="Short Description"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-
-                <div class="add-bottom-padding">
-                    <mat-checkbox formControlName="hasOrders">There are orders linked with this visit</mat-checkbox>
-                </div>
-                <div class="add-bottom-padding">
-                    <mat-checkbox formControlName="hasPrescriptions">There are prescriptions linked with this visit</mat-checkbox>
-                </div>
-                <div class="add-bottom-padding">
-                    <mat-checkbox formControlName="isClosed">Close this visit after submit</mat-checkbox>
-                </div>
-
-                <div class="button-row">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="visitService.form.invalid">Submit</button>
-                    <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
-                </div>
-            </div>
-        </mat-grid-tile>
-    </mat-grid-list>
 </form>

@@ -147,6 +147,16 @@ mat-footer-row mat-footer-cell {
 }
 
 
+/* add items to array*/
+
+.btn-dialog-add {
+    width: 25px;
+    min-width: 0px !important;
+    height: 20px;
+    padding: 0px !important;
+}
+
+
 /* Accordion sections*/
 
 .example-headers-align .mat-expansion-panel-header-title,
@@ -161,4 +171,9 @@ mat-footer-row mat-footer-cell {
 
 .example-headers-align .mat-form-field+.mat-form-field {
     /* margin-left: 8px; */
+}
+
+.font-size-style {
+    font-size: small;
+    font-style: italic;
 }
