@@ -106,6 +106,56 @@
                     <mat-form-field class="example-full-width">
                         <mat-label>Note</mat-label>
                         <textarea matInput placeholder="Doctor's Note " formControlName="shortNote" required></textarea>
+
+                    </mat-form-field>
+                    <div class="form-btn-align">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.notesForm.invalid">Add</button>
+
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="visitService.ordersForm">
+                <form [formGroup]="visitService.ordersForm">
+                    <ng-template matStepLabel>Add orders to this visit</ng-template>
+
+                    <mat-form-field class="example-full-width">
+                        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                {{option}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Order Title</mat-label>
+                        <input [matAutocomplete]="auto" formControlName="orderTitle" matInput placeholder="Lab Test Title" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let test of filteredOptions | async" [value]="test">
+                                <span>{{test}}</span>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <div class="form-btn-align">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.ordersForm.invalid">Add</button>
+
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="visitService.prescriptionsForm">
+                <form [formGroup]="visitService.prescriptionsForm">
+                    <ng-template matStepLabel>Add prescriptions to this visit</ng-template>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>genericName</mat-label>
+                        <textarea matInput placeholder="Doctor's Note " formControlName="genericName" required></textarea>
                         <button mat-icon-button matSuffix mat-icon-button aria-label="Clear">
                             <mat-icon>note_add</mat-icon>
                           </button>

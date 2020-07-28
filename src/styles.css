@@ -177,3 +177,10 @@ mat-footer-row mat-footer-cell {
     font-size: small;
     font-style: italic;
 }
+
+
+/* algning the form buttons */
+
+.form-btn-align {
+    text-align: right;
+}

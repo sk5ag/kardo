@@ -1,7 +1,7 @@
 export interface Test {
-    id:string;
+    test_id:string;
     name: string;
     type:string;
     department:string;
-    isActive:boolean;
+
 }

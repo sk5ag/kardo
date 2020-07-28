@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { VisitService } from '../../shared/visit.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import {map, startWith, concatAll} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { Test } from 'src/app/Modal/test';
 
 @Component({
   selector: 'app-visit',
@@ -10,25 +14,28 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class VisitComponent implements OnInit {
 
   today: number = Date.now();
-
   visitId = Math.random().toString(20).substr(2, 6)
-
-  constructor(
-    public visitService: VisitService,
-    public visitdialogRef: MatDialogRef<VisitComponent>,
-  ) { }
   mainArray = [];
   visitArray = [];
   notesArray = [];
   ordersArray = [];
   prescriptionsArray = [];
+  filteredOptions: Observable<string[]>;
+  myControl = new FormControl();
 
   myTests = [
-    { $key: null, testName: "Test -001", Type: "Blood Test", Department: "2", isActive: true },
-    // {$key: null, Name: "Test -002", Type: "Blood Test", Department: "2", isActive: true},
-    // {$key: null, Name: "Test -003", Type: "Blood Test", Department: "2", isActive: true},
-    // {$key: null, Name: "Test -004", Type: "Blood Test", Department: "2", isActive: true},
+    {name: 'kardo', secondName: 'sarbast', A: '1234567890', B: 'asdfghjklpo'},
+    {name: 'kurda', secondName: 'AWAT', A: '1234567890', B: 'asdfghjklpo'},
+    {name: 'chenar', secondName: 'Sarbast', A: '1234567890', B: 'asdfghjklpo'}
   ];
+  
+  options: any=[];
+
+  constructor(
+    public visitService: VisitService,
+    public visitdialogRef: MatDialogRef<VisitComponent>,
+  ) { }
+
 
   bloodgroups = [
     { bg_id: 1, value: 'A+' },
@@ -50,8 +57,25 @@ export class VisitComponent implements OnInit {
   ];
   ngOnInit() {
     console.log('Visit ID: ', this.visitId)
-    this.visitService.getVisits()
+    this.visitService.getVisits();
+
+    this.myTests.forEach(element => {
+      this.options.push(element.name+' | '+element.secondName+' | '+element.A+' | '+element.B)
+    });
+
+    console.log('Values inside OPTIONS: ', this.options);
+     this.filteredOptions = this.myControl.valueChanges
+     .pipe(
+       startWith(''),
+       map(value => this._filter(value))
+     );
   }
+
+   private _filter(value: string): string[] {
+     const filterValue = value.toLowerCase();
+     return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
   onClear() {
     this.visitService.form.reset();
     this.visitService.initializeFormGroup()
