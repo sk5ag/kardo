@@ -43,7 +43,6 @@ export class TestComponent implements OnInit {
   displayColumns: string[] = ['Name', 'Type', 'Department', 'isActive', 'actions'];
 
 
-
   ngOnInit() {
     this.initForm();
     this.service.getTests();
@@ -97,7 +96,5 @@ export class TestComponent implements OnInit {
     console.log('remove test button clicked', this.myTests);
     this.myTests = this.myTests.filter(item => item !== row);
     console.log('after remove test button clicked', this.myTests);
-
-    
   }
 }

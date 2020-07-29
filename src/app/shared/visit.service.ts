@@ -10,6 +10,7 @@ import { Visit } from '../Modal/visit';
   providedIn: 'root'
 })
 export class VisitService {
+ 
   visitsCollection: AngularFirestoreCollection<Visit>;
   visits: Observable<Visit>;
   collectionPath: string = "/visits";
@@ -52,10 +53,9 @@ export class VisitService {
     shortNote: new FormControl('', Validators.required),
   })  
   ordersForm: FormGroup = new FormGroup({
-    orderId: new FormControl(''),
-    orderTitle: new FormControl('', Validators.required),
-    orderType: new FormControl(''),
-    orderCategory: new FormControl(''),
+    order_title: new FormControl('', Validators.required),
+    order_type: new FormControl(''),
+    order_category: new FormControl(''),
   });
   prescriptionsForm: FormGroup = new FormGroup({
     prescritionId: new FormControl(''),
@@ -80,7 +80,9 @@ export class VisitService {
       visitDescription: '',
       isClosed: false
     });
+  }
 
+  initializevisitFormGroup(){
     this.visitForm.setValue({
       visitId: null,
       currentDate: '',
@@ -92,19 +94,24 @@ export class VisitService {
       visitDate: '',
       visitDoctor: '',
     });
+  }
 
+  initializenotesFormGroup(){
     this.notesForm.setValue({
       noteId: null,
       shortNote: '',
     });
+  }
 
+  initializeordersFormGroup(){
     this.ordersForm.setValue({
-      orderId: null,
-      orderTitle: '',
-      orderType: '',
-      orderCategory: '',
+      order_title: '',
+      order_type: '',
+      order_category: '',
     });
+  }
 
+  initializeprescriptionsFormGroup(){
     this.prescriptionsForm.setValue({
       prescritionId: '',
       genericName: '',
@@ -172,5 +179,14 @@ export class VisitService {
     );
   }
 
-
+  populateSelectedorder(item: any) {
+    this.ordersForm.patchValue(
+      {
+        order_title: item.order_title,
+        order_type: item.order_type,
+        order_category: item.order_category,
+      }
+      
+    )
+  }
 }

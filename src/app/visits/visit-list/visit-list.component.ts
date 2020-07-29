@@ -43,6 +43,7 @@ export class VisitListComponent implements OnInit {
       }
     );
   }
+  
 
   onSearchClear() {
     this.searchKey = "";

@@ -110,7 +110,6 @@
                     </mat-form-field>
                     <div class="form-btn-align">
                         <button mat-raised-button color="primary" type="submit" [disabled]="visitService.notesForm.invalid">Add</button>
-
                     </div>
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
@@ -119,30 +118,61 @@
                 </form>
             </mat-step>
             <mat-step [stepControl]="visitService.ordersForm">
-                <form [formGroup]="visitService.ordersForm">
+                <form [formGroup]="visitService.ordersForm" (ngSubmit)="addOrder()">
                     <ng-template matStepLabel>Add orders to this visit</ng-template>
-
                     <mat-form-field class="example-full-width">
-                        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                        <input type="text" placeholder="Pick a test or procedure" aria-label="Number" matInput [formControl]="orderControl" [matAutocomplete]="auto">
                         <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                {{option}}
+                            <mat-option *ngFor="let option of filteredOrders | async" [value]="option.order_title" (onSelectionChange)="populateOrder(option)" required>
+                                <span>{{option.order_title}}</span> |
+                                <small>Order type: {{option.order_type}}</small> |
+                                <small>Order category: {{option.order_category}}</small>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-
                     <mat-form-field class="example-full-width">
-                        <mat-label>Order Title</mat-label>
-                        <input [matAutocomplete]="auto" formControlName="orderTitle" matInput placeholder="Lab Test Title" [matAutocomplete]="auto">
-                        <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngFor="let test of filteredOptions | async" [value]="test">
-                                <span>{{test}}</span>
-                            </mat-option>
-                        </mat-autocomplete>
+                        <mat-label>Order title</mat-label>
+                        <input matInput placeholder="Order title" formControlName="order_title" required>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Order type</mat-label>
+                        <input matInput placeholder="Order type" formControlName="order_type">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Order category</mat-label>
+                        <input matInput placeholder="Order category" formControlName="order_category">
                     </mat-form-field>
                     <div class="form-btn-align">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.ordersForm.invalid">Add</button>
+                        <button mat-raised-button color="primary" type="submit">Add</button>
+                    </div>
 
+                    <div class="mat-elevation-z8">
+                        <mat-table [dataSource]="orders" matSort>
+                            <ng-container matColumnDef="order_title">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+                                <mat-cell *matCellDef="let element ">{{element.order_title}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="order_type">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                                <mat-cell *matCellDef="let element ">{{element.order_type}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="order_category">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.order_category}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                <mat-cell *matCellDef="let row" class="action-icon">
+                                    <button mat-icon-button color="warn" (click)="removeTest(row)"><mat-icon>delete_outline</mat-icon></button>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayorderColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayorderColumns;"></mat-row>
+                            <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
+                            <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(orders!=null && orders.data.length==0)} "></mat-footer-row> -->
+                        </mat-table>
+                        <!-- <mat-paginator [pageSizeOptions]="[5,10,25,50,100] " [pageSize]="5 " showFirstLastButtons></mat-paginator> -->
                     </div>
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
@@ -150,12 +180,12 @@
                     </div>
                 </form>
             </mat-step>
-            <mat-step [stepControl]="visitService.prescriptionsForm">
-                <form [formGroup]="visitService.prescriptionsForm">
+            <mat-step [stepControl]="visitService.prescriptionsForm ">
+                <form [formGroup]="visitService.prescriptionsForm ">
                     <ng-template matStepLabel>Add prescriptions to this visit</ng-template>
-                    <mat-form-field class="example-full-width">
+                    <mat-form-field class="example-full-width ">
                         <mat-label>genericName</mat-label>
-                        <textarea matInput placeholder="Doctor's Note " formControlName="genericName" required></textarea>
+                        <textarea matInput placeholder="Doctor 's Note " formControlName="genericName" required></textarea>
                         <button mat-icon-button matSuffix mat-icon-button aria-label="Clear">
                             <mat-icon>note_add</mat-icon>
                           </button>
