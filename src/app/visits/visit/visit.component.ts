@@ -13,34 +13,17 @@ import { FormControl } from '@angular/forms';
 export class VisitComponent implements OnInit {
 
   today: number = Date.now();
-  visitId = Math.random().toString(20).substr(2, 6)
-  mainArray = [];
-  visitArray = [];
-  notesArray = [];
-  ordersArray = [];
-  prescriptionsArray = [];
-  filteredOptions: Observable<any[]>;
+  visitId = Math.random().toString(20).substr(2, 6);
   filteredOrders: Observable<any[]>;
-  myControl = new FormControl();
+  filteredNotes: Observable<any[]>;
+  filteredPrescription: Observable<any[]>;
+
   orderControl = new FormControl();
+  noteControl = new FormControl();
+  prescriptionControl = new FormControl();
 
-
-  myOrders: any[] = [
-    {
-      "order_title": "Test 01", 
-      "order_type": "This is a generic order",
-      "order_category": "Category of the order",
-    },
-    {
-      "order_title": "Test 02", 
-      "order_type": "This is a generic order 2",
-      "order_category": "Category of the order 2",
-    },
-  ];
-
-  displayorderColumns: string[] = ['order_title', 'order_type', 'order_category', 'actions'];
-
-  myTests: any[] = [
+  
+  myPrescriptions: any[] = [
     {
       "generic_name": "Levothyroxine Sodium", 
       "active_ingredients": [{ "strength": ".075 mg/1", "name": "LEVOTHYROXINE SODIUM" }],
@@ -83,6 +66,38 @@ export class VisitComponent implements OnInit {
       "product_type": "HUMAN PRESCRIPTION DRUG"
     },
   ];
+  displayprescriptionColumns: string[] = ['generic_name', 'dosage_form', 'route', 'active_ingredients', 'actions'];
+
+
+  myOrders: any[] = [
+    {
+      "order_title": "Test 01", 
+      "order_type": "This is a generic order",
+      "order_category": "Category of the order",
+    },
+    {
+      "order_title": "Test 02", 
+      "order_type": "This is a generic order 2",
+      "order_category": "Category of the order 2",
+    },
+  ];
+
+  displayorderColumns: string[] = ['order_title', 'order_type', 'order_category', 'actions'];
+
+  myNotes: any[] = [
+    {
+      "note_title": "Note 01", 
+      "note_description": "This is a generic note",
+    },
+    {
+      "note_title": "Note 02", 
+      "note_description": "This is a generic note",
+    },
+  ];
+  
+  displaynoteColumns: string[] = ['note_title', 'note_description', 'actions'];
+
+
 
   bloodgroups = [
     { bg_id: 1, value: 'A+' },
@@ -104,40 +119,54 @@ export class VisitComponent implements OnInit {
   ];
 
   orders: any = [];
-  // options: any=[];
+  notes: any = [];
+  prescriptions: any=[];
 
   constructor(
     public visitService: VisitService,
     public visitdialogRef: MatDialogRef<VisitComponent>,
   ) {
+
+    this.filteredNotes = this.noteControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(notevalue => notevalue ? this._filterNote(notevalue) : this.myNotes.slice())
+    );
+
     this.filteredOrders = this.orderControl.valueChanges
     .pipe(
       startWith(''),
-      map(value => value ? this._filterOrder(value) : this.myOrders.slice())
+      map(ordervalue => ordervalue ? this._filterOrder(ordervalue) : this.myOrders.slice())
     );
 
-    this.filteredOptions = this.myControl.valueChanges
+    this.filteredPrescription = this.prescriptionControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => value ? this._filter(value) : this.myTests.slice())
+        map(prescriptionvalue => prescriptionvalue ? this._filterPrescription(prescriptionvalue) : this.myPrescriptions.slice())
       );
+
   }
 
-  private _filterOrder(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.myOrders.filter(option => option.order_title.toLowerCase().indexOf(filterValue) === 0);
+
+  private _filterNote(value_note: string): string[] {
+    const notefilterValue = value_note.toLowerCase();
+    return this.myNotes.filter(noteOption => noteOption.note_title.toLowerCase().indexOf(notefilterValue) === 0);
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.myTests.filter(option => option.generic_name.toLowerCase().indexOf(filterValue) === 0);
+  private _filterOrder(value_order: string): string[] {
+    const orderfilterValue = value_order.toLowerCase();
+    return this.myOrders.filter(orderOption => orderOption.order_title.toLowerCase().indexOf(orderfilterValue) === 0);
   }
 
+  private _filterPrescription(value_prescription: string): string []{    
+    const prescriptionfilterValue = value_prescription.toLowerCase();
+    return this.myPrescriptions.filter(prescriptionOption => prescriptionOption.generic_name.toLowerCase().indexOf(prescriptionfilterValue) === 0);
+  }
+  
   ngOnInit() {
     console.log('Visit ID: ', this.visitId)
     this.visitService.getVisits();
   }
-
 
   onClear() {
     this.visitService.form.reset();
@@ -182,21 +211,65 @@ export class VisitComponent implements OnInit {
     console.log('dialog closed')
   }
 
+  addNote()
+  {
+    console.log('addNote PRESSED - the values now: ', this.notes);
+  
+    if (this.visitService.notesForm.invalid || !this.visitService.notesForm.get('note_title').value)
+    {
+      console.log('THIS FORM IS EMPTY...', this.visitService.notesForm.get('note_title').value)
+    }
+    else{
+      console.log('THIS FORM IS NOT EMPTY...',this.visitService.notesForm.get('note_title').value)
+      this.notes = this.notes.concat(this.visitService.notesForm.value);
+      console.log('addNote PRESSED - the values after update: ', this.notes);
+      this.visitService.notesForm.reset();
+      this.visitService.initializenotesFormGroup()
+    }
+    this.noteControl.setValue('');
+  }
+
   addOrder()
   {
     console.log('addOrder PRESSED - the values now: ', this.orders);
   
-    if (this.visitService.ordersForm.untouched && this.visitService.ordersForm.invalid)
+    if (this.visitService.ordersForm.invalid || !this.visitService.ordersForm.get('order_title').value)
     {
-      console.log('THIS FORM IS EMPTY...')
+      console.log('THIS FORM IS EMPTY...', this.visitService.ordersForm.get('order_title').value)
     }
     else{
-      console.log('THIS FORM IS NOT EMPTY...')
+      console.log('THIS FORM IS NOT EMPTY...',this.visitService.ordersForm.get('order_title').value)
       this.orders = this.orders.concat(this.visitService.ordersForm.value);
       console.log('addOrder PRESSED - the values after update: ', this.orders);
+      this.visitService.ordersForm.reset();
       this.visitService.initializeordersFormGroup()
     }
-     
+    this.orderControl.setValue('');
+  }
+
+  addPrescription()
+  {
+    console.log('addPrescription PRESSED - the values now: ', this.prescriptions);
+  
+    if (this.visitService.prescriptionsForm.invalid || !this.visitService.prescriptionsForm.get('generic_name').value)
+    {
+      console.log('THIS FORM IS EMPTY...', this.visitService.prescriptionsForm.get('generic_name').value)
+    }
+    else{
+      console.log('THIS FORM IS NOT EMPTY...',this.visitService.prescriptionsForm.get('generic_name').value)
+      this.prescriptions = this.prescriptions.concat(this.visitService.prescriptionsForm.value);
+      console.log('addPrescription PRESSED - the values after update: ', this.prescriptions);
+      this.visitService.prescriptionsForm.reset();
+      this.visitService.initializeprescriptionsFormGroup();
+    }
+    this.prescriptionControl.setValue('');
+    
+  }
+
+  populateNote(item)
+  {
+    console.log('POPULATE NOTE - function called', item);
+    this.visitService.populateSelectednote(item);
   }
 
   populateOrder(item)
@@ -205,16 +278,41 @@ export class VisitComponent implements OnInit {
     this.visitService.populateSelectedorder(item)
   }
 
-  // saveTests(){
-  //   console.log('save test button clicked', this.myTests);
-  //   this.service.insertTest(this.myTests)
-    
-  // }
+  populatePrescription(item)
+  {
+    console.log('');
+    console.log('1 - POPULATE PRESCRIPTION', item);
+    this.visitService.populateSelectedprescription(item);
+
+    console.log('');
+    console.log('5 - back to component, check if item array is empty: ', item);
+    console.log('------------------------------------');
+
+    item=[];
+    console.log('6 - LOCALLY EMPTIED THE item ARRAY - whats in it for now?', item);
+
+    this.prescriptionControl.setValue('');
+    console.log('7 - prescription control has been reset');
+
+    console.log('=======================================');
+  
+  }
+
+  removeNote(row){
+    console.log('remove test button clicked', this.notes);
+    this.notes = this.notes.filter(item => item !== row);
+    console.log('after remove test button clicked', this.notes);
+  }
 
   removeTest(row){
     console.log('remove test button clicked', this.orders);
     this.orders = this.orders.filter(item => item !== row);
     console.log('after remove test button clicked', this.orders);
+  }
+  removePrescription(row){
+    console.log('remove prescription button clicked', this.prescriptions);
+    this.prescriptions = this.prescriptions.filter(item => item !== row);
+    console.log('after remove prescription button clicked', this.prescriptions);
   }
 
 }

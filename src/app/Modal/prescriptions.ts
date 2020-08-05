@@ -18,5 +18,5 @@ export interface Prescriptions {
     medicineQuantity: string,
     medicineDirectionforuse: string,
     medicineRemarks: string,
-    isDispensed: boolean
+    isDispensed: boolean,
 }

@@ -1,0 +1,7 @@
+/* align the div contents inside the grid list */
+
+.gd-tile> ::ng-deep figure {
+    justify-content: flex-start !important;
+    justify-items: flex-start !important;
+    border: solid 0.8px lightgray;
+}

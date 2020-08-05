@@ -1,6 +1,6 @@
 <div class="container">
     <mat-toolbar>
-        <span>{{visitService.form.controls['id'].value?"Update Visit":"New Visit"}}</span>
+        <span>{{visitService.form.controls['id'].value?"Update Visit":"New Visit"}} - {{visitId}}</span>
         <span class="fill-remaining-space"></span>
         <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
     </mat-toolbar>
@@ -9,8 +9,8 @@
 <form [formGroup]="visitService.form" class="normal-form" (ngSubmit)="onSubmit()">
 
     <div class="example-full-width">
-
-        <!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+        <!-- 
+        <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
                 {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
               </button> -->
         <mat-vertical-stepper #stepper>
@@ -33,10 +33,6 @@
                     <mat-form-field class="example-full-width">
                         <mat-label>Age</mat-label>
                         <input matInput placeholder="Patient's Age " formControlName="patientAge" required>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Gender</mat-label>
-                        <input matInput placeholder="Patient's Gender " formControlName="patientGender" required>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <mat-label>Mobile</mat-label>
@@ -101,38 +97,68 @@
                 </form>
             </mat-step>
             <mat-step [stepControl]="visitService.notesForm">
-                <form [formGroup]="visitService.notesForm">
+                <form [formGroup]="visitService.notesForm" (ngSubmit)="addNote()">
                     <ng-template matStepLabel>Add notes to this visit</ng-template>
                     <mat-form-field class="example-full-width">
-                        <mat-label>Note</mat-label>
-                        <textarea matInput placeholder="Doctor's Note " formControlName="shortNote" required></textarea>
-
+                        <mat-label>Note title</mat-label>
+                        <input matInput ref-newnoteFilter placeholder="Note title" formControlName="note_title" required>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Note Description</mat-label>
+                        <textarea matInput placeholder="Doctor's Note " formControlName="note_description" required></textarea>
                     </mat-form-field>
                     <div class="form-btn-align">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.notesForm.invalid">Add</button>
+                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.notesForm.invalid || !newnoteFilter.value">Add</button>
                     </div>
+
+                    <div class="mat-elevation-z2">
+                        <mat-table [dataSource]="notes" matSort>
+                            <ng-container matColumnDef="note_title" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+                                <mat-cell *matCellDef="let element ">{{element.note_title}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="note_description">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+                                <mat-cell *matCellDef="let element ">{{element.note_description}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="actions" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                                <mat-cell *matCellDef="let row" class="action-icon">
+                                    <button mat-icon-button color="warn" (click)="removeNote(row)"><mat-icon>delete_outline</mat-icon></button>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displaynoteColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displaynoteColumns;"></mat-row>
+                            <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
+                            <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(orders!=null && orders.data.length==0)} "></mat-footer-row> -->
+                        </mat-table>
+                        <!-- <mat-paginator [pageSizeOptions]="[5,10,25,50,100] " [pageSize]="5 " showFirstLastButtons></mat-paginator> -->
+                    </div>
+
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
                         <button mat-button matStepperNext>Next</button>
                     </div>
                 </form>
             </mat-step>
+
+
             <mat-step [stepControl]="visitService.ordersForm">
                 <form [formGroup]="visitService.ordersForm" (ngSubmit)="addOrder()">
                     <ng-template matStepLabel>Add orders to this visit</ng-template>
                     <mat-form-field class="example-full-width">
-                        <input type="text" placeholder="Pick a test or procedure" aria-label="Number" matInput [formControl]="orderControl" [matAutocomplete]="auto">
-                        <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngFor="let option of filteredOrders | async" [value]="option.order_title" (onSelectionChange)="populateOrder(option)" required>
-                                <span>{{option.order_title}}</span> |
-                                <small>Order type: {{option.order_type}}</small> |
-                                <small>Order category: {{option.order_category}}</small>
+                        <input type="text" placeholder="Pick a test or procedure" matInput [formControl]="orderControl" [matAutocomplete]="autoOrder">
+                        <mat-autocomplete #autoOrder="matAutocomplete">
+                            <mat-option *ngFor="let order of filteredOrders | async" [value]="order.order_title" (onSelectionChange)="populateOrder(order)" required>
+                                <span>{{order.order_title}}</span> |
+                                <small>Order type: {{order.order_type}}</small> |
+                                <small>Order category: {{order.order_category}}</small>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <mat-label>Order title</mat-label>
-                        <input matInput placeholder="Order title" formControlName="order_title" required>
+                        <input matInput ref-neworderFilter placeholder="Order title" formControlName="order_title" required>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <mat-label>Order type</mat-label>
@@ -143,12 +169,11 @@
                         <input matInput placeholder="Order category" formControlName="order_category">
                     </mat-form-field>
                     <div class="form-btn-align">
-                        <button mat-raised-button color="primary" type="submit">Add</button>
+                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.ordersForm.invalid || !neworderFilter.value">Add</button>
                     </div>
-
-                    <div class="mat-elevation-z8">
+                    <div class="mat-elevation-z2">
                         <mat-table [dataSource]="orders" matSort>
-                            <ng-container matColumnDef="order_title">
+                            <ng-container matColumnDef="order_title" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
                                 <mat-cell *matCellDef="let element ">{{element.order_title}}</mat-cell>
                             </ng-container>
@@ -160,8 +185,8 @@
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
                                 <mat-cell *matCellDef="let element">{{element.order_category}}</mat-cell>
                             </ng-container>
-                            <ng-container matColumnDef="actions">
-                                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                            <ng-container matColumnDef="actions" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                 <mat-cell *matCellDef="let row" class="action-icon">
                                     <button mat-icon-button color="warn" (click)="removeTest(row)"><mat-icon>delete_outline</mat-icon></button>
                                 </mat-cell>
@@ -179,29 +204,118 @@
                         <button mat-button matStepperNext>Next</button>
                     </div>
                 </form>
+
+
             </mat-step>
-            <mat-step [stepControl]="visitService.prescriptionsForm ">
-                <form [formGroup]="visitService.prescriptionsForm ">
+
+
+            <mat-step [stepControl]="visitService.prescriptionsForm">
+                <form [formGroup]="visitService.prescriptionsForm" (ngSubmit)="addPrescription()">
                     <ng-template matStepLabel>Add prescriptions to this visit</ng-template>
-                    <mat-form-field class="example-full-width ">
-                        <mat-label>genericName</mat-label>
-                        <textarea matInput placeholder="Doctor 's Note " formControlName="genericName" required></textarea>
-                        <button mat-icon-button matSuffix mat-icon-button aria-label="Clear">
-                            <mat-icon>note_add</mat-icon>
-                          </button>
+                    <mat-form-field class="example-full-width">
+                        <input type="text" placeholder="Pick a medicine" matInput [formControl]="prescriptionControl" [matAutocomplete]="autoPrescription">
+                        <mat-autocomplete #autoPrescription="matAutocomplete">
+                            <mat-option *ngFor="let prescription of filteredPrescription | async" [value]="prescription.generic_name" (onSelectionChange)="populatePrescription(prescription)" required>
+                                <span>{{prescription.generic_name}}</span> |
+                                <small>{{prescription.route}}</small> |
+                                <small>{{prescription.dosage_form}}</small> |
+                                <span *ngFor="let item of prescription.active_ingredients | keyvalue">
+                                    <span>{{ item.value["strength"]}}</span>
+                                </span>
+                            </mat-option>
+                        </mat-autocomplete>
                     </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Generic Name</mat-label>
+                        <input matInput ref-newprescriptionFilter placeholder="Generic Name" formControlName="generic_name">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Dosage Form</mat-label>
+                        <input matInput placeholder="Dosage Form" formControlName="dosage_form">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Strength</mat-label>
+                        <input matInput placeholder="Strength" formControlName="active_ingredients">
+                    </mat-form-field>
+                    <div class="form-btn-align">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.prescriptionsForm.invalid || !newprescriptionFilter.value">Add</button>
+                    </div>
+                    <div class="mat-elevation-z2">
+                        <mat-table [dataSource]="prescriptions" matSort>
+                            <ng-container matColumnDef="generic_name" sticky>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Generic Name</mat-header-cell>
+                                <mat-cell *matCellDef="let element ">{{element.generic_name}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="dosage_form">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Dosage Form</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.dosage_form}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="route">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Route</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.route}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="active_ingredients">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Active Ingredients</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{ element.active_ingredients }}
+                                    <!-- <span *ngFor="let item of element.active_ingredients">
+                                        <span>{{ item.strength }}</span>
+                                    </span> -->
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="actions" stickyEnd>
+                                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                                <mat-cell *matCellDef="let row" class="action-icon">
+                                    <button mat-icon-button color="primary" class="btn-size"><mat-icon>favorite_border</mat-icon></button>
+                                    <button mat-icon-button color="warn" (click)="removePrescription(row)" class="btn-size"><mat-icon>delete_outline</mat-icon></button>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayprescriptionColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayprescriptionColumns;"></mat-row>
+                            <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
+                            <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(orders!=null && orders.data.length==0)} "></mat-footer-row> -->
+                        </mat-table>
+                        <!-- <mat-paginator [pageSizeOptions]="[5,10,25,50,100] " [pageSize]="5 " showFirstLastButtons></mat-paginator> -->
+                    </div>
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
                         <button mat-button matStepperNext>Next</button>
                     </div>
                 </form>
             </mat-step>
+
             <mat-step>
-                <ng-template matStepLabel>Done</ng-template>
-                <p>You are now done.</p>
+                <ng-template matStepLabel>Review</ng-template>
+
+                <mat-grid-list cols="1 " rowHeight="100px" style="margin-top: 5px; ">
+                    <mat-grid-tile colspan="1 " class="gd-tile ">
+                        <h2>Date: {{ today | date}} - Visit ID: {{visitId}}</h2>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <mat-grid-list cols="2 " rowHeight="100px" style="margin-top: 5px; ">
+                    <mat-grid-tile colspan="1 " class="gd-tile ">
+                        <p>Doctor's Information</p>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1 " class="gd-tile ">
+                        <p>Patient Information</p>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <mat-grid-list cols="1 " rowHeight="190px" style="margin-top: 5px; ">
+                    <mat-grid-tile colspan="1 " class="gd-tile ">
+                        <p>Laboratory Orders</p>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <mat-grid-list cols="1 " rowHeight="350px" style="margin-top: 5px; ">
+                    <mat-grid-tile colspan="1 " class="gd-tile ">
+                        <p>Prescriptions</p>
+                    </mat-grid-tile>
+                </mat-grid-list>
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="stepper.reset()">Reset</button>
+                    <button mat-button (click)="stepper.reset() ">Reset</button>
                 </div>
             </mat-step>
         </mat-vertical-stepper>

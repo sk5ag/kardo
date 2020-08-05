@@ -183,4 +183,20 @@ mat-footer-row mat-footer-cell {
 
 .form-btn-align {
     text-align: right;
+    margin-bottom: 10px;
+}
+
+
+/* align the div contents inside the grid list */
+
+.gd-tile> ::ng-deep figure {
+    justify-content: flex-start !important;
+    justify-items: flex-start !important;
+}
+
+
+/* fixing the column width of the actions field*/
+
+.mat-column-actions {
+    flex: 0 0 10%;
 }

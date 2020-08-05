@@ -10,7 +10,7 @@ import { Visit } from '../Modal/visit';
   providedIn: 'root'
 })
 export class VisitService {
- 
+  
   visitsCollection: AngularFirestoreCollection<Visit>;
   visits: Observable<Visit>;
   collectionPath: string = "/visits";
@@ -49,8 +49,8 @@ export class VisitService {
     visitDoctor: new FormControl(''),
   });  
   notesForm: FormGroup = new FormGroup({
-    noteId: new FormControl(''),
-    shortNote: new FormControl('', Validators.required),
+    note_title: new FormControl('', Validators.required),
+    note_description: new FormControl('', Validators.required),
   })  
   ordersForm: FormGroup = new FormGroup({
     order_title: new FormControl('', Validators.required),
@@ -58,13 +58,12 @@ export class VisitService {
     order_category: new FormControl(''),
   });
   prescriptionsForm: FormGroup = new FormGroup({
-    prescritionId: new FormControl(''),
-    genericName: new FormControl('', Validators.required),
-    medAIstrength: new FormControl(''),
-    medAIname: new FormControl(''),
-    medRoute: new FormControl(''),
-    medForm: new FormControl(''),
-    medInstruction: new FormControl(''),
+    generic_name: new FormControl('', Validators.required),
+    // active_ingredients_name: new FormControl(''),
+    active_ingredients: new FormControl(''),
+    route: new FormControl(''),
+    dosage_form: new FormControl(''),
+    // medInstruction: new FormControl(''),
   });
 
   initializeFormGroup(){
@@ -98,8 +97,9 @@ export class VisitService {
 
   initializenotesFormGroup(){
     this.notesForm.setValue({
-      noteId: null,
-      shortNote: '',
+      note_title: '',
+      note_description: '',
+
     });
   }
 
@@ -113,13 +113,12 @@ export class VisitService {
 
   initializeprescriptionsFormGroup(){
     this.prescriptionsForm.setValue({
-      prescritionId: '',
-      genericName: '',
-      medAIstrength: '',
-      medAIname: '',
-      medRoute: '',
-      medForm: '',
-      medInstruction: '',
+      generic_name: '',
+      // active_ingredients_name: '',
+      active_ingredients: '',
+      route: '',
+      dosage_form: '',
+      // medInstruction: '',
     });
   }
   
@@ -189,4 +188,42 @@ export class VisitService {
       
     )
   }
+
+  populateSelectednote(item: any) {
+
+    this.notesForm.patchValue(
+      {
+        note_title: item.note_title,
+        note_description: item.note_description,
+      }
+    )
+    }   
+
+
+    populateSelectedprescription(item: any) {
+      console.log('');
+      console.log('2 - POPULATE SELECTED PRESCRIPTION');
+      console.log('    GENERIC: ', item.generic_name);
+      console.log('    INGREDIENTS: ', item.active_ingredients);
+      console.log('    ROUTE: ', item.route);
+      console.log('    STRENGTH: ', item.active_ingredients[0]);
+
+      this.prescriptionsForm.patchValue(
+        {
+          generic_name: item.generic_name,
+          active_ingredients: item.active_ingredients[0]['strength'],
+          route: item.route,
+          dosage_form: item.dosage_form,
+         }
+      );  
+      console.log('');
+      console.log('3 - you are about to clear the item array', item);
+      console.log('------------------------------------');
+      item = [];  
+      console.log('');
+      console.log('4 - the item array is now empty', item);
+      console.log('------------------------------------');
+
+    }
+
 }
