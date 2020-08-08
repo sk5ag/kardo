@@ -20,7 +20,6 @@ div.container {
 form.normal-form {
     margin: 10px;
     padding-bottom: 0px;
-    background: #ff55ff;
 }
 
 .controls-container {
@@ -195,8 +194,30 @@ mat-footer-row mat-footer-cell {
 }
 
 
+/* add styles for the div inside the grid tiles */
+
+.gd-tile-div {
+    padding-left: 15px;
+}
+
+
 /* fixing the column width of the actions field*/
 
 .mat-column-actions {
-    flex: 0 0 10%;
+    flex: 0 0 20%;
+}
+
+
+/* formatting the review table*/
+
+.review-table {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.review-table tr td {
+    vertical-align: text-top;
+    border: 1px solid lightgray;
+    padding: 10px 0 10px 15px;
 }

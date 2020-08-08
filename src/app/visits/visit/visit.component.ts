@@ -97,8 +97,6 @@ export class VisitComponent implements OnInit {
   
   displaynoteColumns: string[] = ['note_title', 'note_description', 'actions'];
 
-
-
   bloodgroups = [
     { bg_id: 1, value: 'A+' },
     { bg_id: 2, value: 'A-' },
@@ -118,9 +116,11 @@ export class VisitComponent implements OnInit {
 
   ];
 
+  visits: any = [];
   orders: any = [];
   notes: any = [];
   prescriptions: any=[];
+  heartPrescription: any = [];
 
   constructor(
     public visitService: VisitService,
@@ -209,6 +209,24 @@ export class VisitComponent implements OnInit {
     console.log('the form reinitialized and will close dialog')
     this.visitdialogRef.close();
     console.log('dialog closed')
+  }
+
+  addVisit()
+  {
+    console.log('addVisit PRESSED - the values now: ', this.visits);
+  
+    if (this.visitService.form.invalid || !this.visitService.form.get('patientName').value)
+    {
+      console.log('THIS FORM IS EMPTY...', this.visitService.form.get('patientName').value)
+    }
+    else{
+      console.log('THIS FORM IS NOT EMPTY...',this.visitService.form.get('patientName').value)
+      this.visits = this.visits.concat(this.visitService.form.value);
+      this.visits[0].id = this.visitId;
+      console.log('addVisit PRESSED - the values after update: ', this.visits);
+      this.visitService.form.reset();
+      this.visitService.initializeFormGroup()
+    }
   }
 
   addNote()
@@ -314,5 +332,6 @@ export class VisitComponent implements OnInit {
     this.prescriptions = this.prescriptions.filter(item => item !== row);
     console.log('after remove prescription button clicked', this.prescriptions);
   }
+
 
 }

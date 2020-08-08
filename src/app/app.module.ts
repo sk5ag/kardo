@@ -37,6 +37,10 @@ import { OrderService } from './shared/order.service';
 import { PrescriptionListComponent } from './prescriptions/prescription-list/prescription-list.component';
 import { PrescriptionService } from './shared/prescription.service';
 import { VisitService } from './shared/visit.service';
+import { DrugsComponent } from './drugs/drugs.component';
+import { DrugComponent } from './drugs/drug/drug.component';
+import { DrugListComponent } from './drugs/drug-list/drug-list.component';
+import { DrugService } from './shared/drug.service';
 
 
 @NgModule({
@@ -57,6 +61,9 @@ import { VisitService } from './shared/visit.service';
     AppointmentListComponent,
     OrderListComponent,
     PrescriptionListComponent,
+    DrugsComponent,
+    DrugComponent,
+    DrugListComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,13 +79,14 @@ import { VisitService } from './shared/visit.service';
     AngularFirestoreModule,
     
   ],
-  providers: [TestService, DepartmentService, TesttypeService, AppointmentService, OrderService, PrescriptionService, VisitService ],
+  providers: [TestService, DepartmentService, TesttypeService, AppointmentService, OrderService, PrescriptionService, VisitService, DrugService ],
   bootstrap: [AppComponent],
   entryComponents: [
     AppointmentComponent, 
     OrderComponent,
     PrescriptionComponent,
     VisitComponent,
+    DrugsComponent
   ],
 })
 export class AppModule { }

@@ -15,7 +15,7 @@
               </button> -->
         <mat-vertical-stepper #stepper>
             <mat-step [stepControl]="visitService.form">
-                <form [formGroup]="visitService.form">
+                <form [formGroup]="visitService.form" (ngSubmit)="addVisit()">
                     <ng-template matStepLabel>Fill out patient information</ng-template>
                     <mat-form-field class="example-full-width">
                         <mat-label>Name</mat-label>
@@ -23,10 +23,13 @@
                     </mat-form-field>
                     <div class="example-full-width">
                         <div class="add-bottom-padding">
+                            <div class="add-bottom-padding">
+                                <mat-label>Gender</mat-label>
+                            </div>
                             <mat-radio-group color="primary" formControlName="patientGender">
-                                <mat-radio-button value="1">Male</mat-radio-button>
-                                <mat-radio-button value="2">Female</mat-radio-button>
-                                <mat-radio-button value="3">Other</mat-radio-button>
+                                <mat-radio-button value="M">Male</mat-radio-button>
+                                <mat-radio-button value="F">Female</mat-radio-button>
+                                <mat-radio-button value="O">Other</mat-radio-button>
                             </mat-radio-group>
                         </div>
                     </div>
@@ -287,32 +290,58 @@
             <mat-step>
                 <ng-template matStepLabel>Review</ng-template>
 
-                <mat-grid-list cols="1 " rowHeight="100px" style="margin-top: 5px; ">
-                    <mat-grid-tile colspan="1 " class="gd-tile ">
-                        <h2>Date: {{ today | date}} - Visit ID: {{visitId}}</h2>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                <table class="review-table">
+                    <tr>
+                        <td colspan="2">1</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%;">
 
-                <mat-grid-list cols="2 " rowHeight="100px" style="margin-top: 5px; ">
-                    <mat-grid-tile colspan="1 " class="gd-tile ">
-                        <p>Doctor's Information</p>
-                    </mat-grid-tile>
-                    <mat-grid-tile colspan="1 " class="gd-tile ">
-                        <p>Patient Information</p>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                            <small>
+                                <tr><strong>Doctor:</strong></tr>
+                                <tr>Ibrahim Amin | MD</tr>
+                                <tr><strong>Clinic:</strong></tr>
+                                <tr>Ibrahim Amin Clinic</tr>
+                                <tr>125 Salim Street, Sulaimani, Kurdistan Region</tr>
+                                <tr><strong>Contact:</strong></tr>
+                                <tr>Reception: +964 770 123 1234 | Work: +964 750 321 4321</tr></small>
 
-                <mat-grid-list cols="1 " rowHeight="190px" style="margin-top: 5px; ">
-                    <mat-grid-tile colspan="1 " class="gd-tile ">
-                        <p>Laboratory Orders</p>
-                    </mat-grid-tile>
-                </mat-grid-list>
+                        </td>
+                        <td style="width: 50%;">
+                            <div *ngFor="let patient of visits">
+                                <small>
+                                    <tr><strong>Visit ID:</strong></tr>
+                                    <tr>{{patient.id}}</tr>
+                                    <tr><strong>Name:</strong></tr>
+                                    <tr>{{patient.patientName}} ({{patient.patientAge}} | {{patient.patientGender}})</tr>
+                                    <tr><strong>Address:</strong></tr>
+                                    <tr>Malkany, Slemani</tr>
+                                    <tr><strong>Contact:</strong></tr>
+                                    <tr>{{patient.patientMobile}}</tr>
+                                </small>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <strong>Medical Tests & Procedures</strong>
+                            <p></p>
+                            <div *ngFor="let line of orders">
+                                <li> {{line.order_title}} - {{line.order_type}}</li>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <strong>Prescriptions</strong>
+                            <p></p>
+                            <div *ngFor="let line of prescriptions">
+                                <li> {{line.generic_name}} - {{line.dosage_form}} | {{line.active_ingredients}}</li>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
 
-                <mat-grid-list cols="1 " rowHeight="350px" style="margin-top: 5px; ">
-                    <mat-grid-tile colspan="1 " class="gd-tile ">
-                        <p>Prescriptions</p>
-                    </mat-grid-tile>
-                </mat-grid-list>
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="stepper.reset() ">Reset</button>
