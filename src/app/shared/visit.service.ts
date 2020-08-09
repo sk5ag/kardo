@@ -21,7 +21,7 @@ export class VisitService {
     this.visitsCollection = this.db.collection(this.collectionPath)
    } 
 
-   visitList: AngularFireList<any>;
+  visitList: AngularFireList<any>;
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -59,11 +59,9 @@ export class VisitService {
   });
   prescriptionsForm: FormGroup = new FormGroup({
     generic_name: new FormControl('', Validators.required),
-    // active_ingredients_name: new FormControl(''),
     active_ingredients: new FormControl(''),
     route: new FormControl(''),
     dosage_form: new FormControl(''),
-    // medInstruction: new FormControl(''),
   });
 
   initializeFormGroup(){
@@ -99,7 +97,6 @@ export class VisitService {
     this.notesForm.setValue({
       note_title: '',
       note_description: '',
-
     });
   }
 
@@ -114,11 +111,9 @@ export class VisitService {
   initializeprescriptionsFormGroup(){
     this.prescriptionsForm.setValue({
       generic_name: '',
-      // active_ingredients_name: '',
       active_ingredients: '',
       route: '',
       dosage_form: '',
-      // medInstruction: '',
     });
   }
   
@@ -127,7 +122,7 @@ export class VisitService {
   }
 
   async insertVisit(visit) {
-    console.log('Inserting the new visit')
+    // console.log('Inserting the new visit')
 
     await this.db.collection('visits').add(visit)
       .then(function (docRef) {
@@ -140,7 +135,7 @@ export class VisitService {
 
   updateVisit(visit) {
     this.db.collection('visits').doc(visit.id).update(visit).then(function () {
-      console.log("Document successfully updated!");
+      // console.log("Document successfully updated!");
     }).catch(function (error) {
       console.error("Error removing document: ", error);
     });
@@ -148,14 +143,13 @@ export class VisitService {
 
   deletevisit(docId) {
     this.db.collection('visits').doc(docId).delete().then(function () {
-      console.log("Document successfully deleted!");
+      // console.log("Document successfully deleted!");
     }).catch(function (error) {
       console.error("Error removing document: ", error);
     });
   }
 
   populateForm(row) {
-
     this.form.patchValue(
       {
         id: row.id,        
@@ -185,12 +179,10 @@ export class VisitService {
         order_type: item.order_type,
         order_category: item.order_category,
       }
-      
     )
   }
 
   populateSelectednote(item: any) {
-
     this.notesForm.patchValue(
       {
         note_title: item.note_title,
@@ -199,30 +191,28 @@ export class VisitService {
     )
     }   
 
-
     populateSelectedprescription(item: any) {
-      console.log('');
-      console.log('2 - POPULATE SELECTED PRESCRIPTION');
-      console.log('    GENERIC: ', item.generic_name);
-      console.log('    INGREDIENTS: ', item.active_ingredients);
-      console.log('    ROUTE: ', item.route);
-      console.log('    STRENGTH: ', item.active_ingredients[0]);
-
+      // console.log('');
+      // console.log('2 - POPULATE SELECTED PRESCRIPTION');
+      // console.log('    GENERIC: ', item.generic_name);
+      // console.log('    INGREDIENTS: ', item.ingredient);
+      // console.log('    ROUTE: ', item.route);
+      // console.log('    STRENGTH: ', item.strength);
       this.prescriptionsForm.patchValue(
         {
           generic_name: item.generic_name,
-          active_ingredients: item.active_ingredients[0]['strength'],
+          active_ingredients: item.ingredient,
           route: item.route,
           dosage_form: item.dosage_form,
          }
       );  
-      console.log('');
-      console.log('3 - you are about to clear the item array', item);
-      console.log('------------------------------------');
+      // console.log('');
+      // console.log('3 - you are about to clear the item array', item);
+      // console.log('------------------------------------');
       item = [];  
-      console.log('');
-      console.log('4 - the item array is now empty', item);
-      console.log('------------------------------------');
+      // console.log('');
+      // console.log('4 - the item array is now empty', item);
+      // console.log('------------------------------------');
 
     }
 

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { VisitService } from '../../shared/visit.service';
+import { DrugService } from '../../shared/drug.service';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { Drug } from 'src/app/Modal/drug';
 
 @Component({
   selector: 'app-visit',
@@ -24,48 +26,17 @@ export class VisitComponent implements OnInit {
 
   
   myPrescriptions: any[] = [
-    {
-      "generic_name": "Levothyroxine Sodium", 
-      "active_ingredients": [{ "strength": ".075 mg/1", "name": "LEVOTHYROXINE SODIUM" }],
-      "marketing_category": "NDA",
-      "dosage_form": "TABLET",
-      "route": ["ORAL"],
-      "product_type": "HUMAN PRESCRIPTION DRUG"
-    },
-    {
-      "generic_name": "acetylcysteine",
-      "brand_name": "Levothyroxine Sodium",
-      "active_ingredients": [{ "strength": "200 mg/mL", "name": "ACETYLCYSTEINE" }],
-      "marketing_category": "NDA",
-      "dosage_form": "INJECTION, SOLUTION",
-      "route": ["INTRAVENOUS"],
-      "product_type": "HUMAN PRESCRIPTION DRUG"
-    },
-    {
-      "generic_name": "metoclopramide",
-      "active_ingredients": [{ "strength": "5 mg/1", "name": "METOCLOPRAMIDE HYDROCHLORIDE" }],
-      "marketing_category": "NDA",
-      "dosage_form": "TABLET",
-      "route": ["ORAL"],
-      "product_type": "HUMAN PRESCRIPTION DRUG"
-    },
-    {
-      "generic_name": "metoclopramide",
-      "active_ingredients": [{ "strength": "10 mg/1", "name": "METOCLOPRAMIDE HYDROCHLORIDE" }],
-      "marketing_category": "NDA",
-      "dosage_form": "TABLET",
-      "route": ["ORAL"],
-      "product_type": "HUMAN PRESCRIPTION DRUG"
-    },
-    {
-      "generic_name": "metoclopramide",
-      "active_ingredients": [{ "strength": "5 mg/mL", "name": "METOCLOPRAMIDE HYDROCHLORIDE" }],
-      "marketing_category": "NDA",
-      "dosage_form": "INJECTION, SOLUTION",
-      "route": ["INTRAVENOUS"],
-      "product_type": "HUMAN PRESCRIPTION DRUG"
-    },
+    // {
+    //   "generic_name": "Levothyroxine Sodium", 
+    //   "active_ingredients": [{ "strength": ".075 mg/1", "name": "LEVOTHYROXINE SODIUM" }],
+    //   "marketing_category": "NDA",
+    //   "dosage_form": "TABLET",
+    //   "route": ["ORAL"],
+    //   "product_type": "HUMAN PRESCRIPTION DRUG"
+    // }
   ];
+
+
   displayprescriptionColumns: string[] = ['generic_name', 'dosage_form', 'route', 'active_ingredients', 'actions'];
 
 
@@ -124,8 +95,36 @@ export class VisitComponent implements OnInit {
 
   constructor(
     public visitService: VisitService,
+    public drugService: DrugService,
     public visitdialogRef: MatDialogRef<VisitComponent>,
   ) {
+
+    console.log('Constructor #1');
+    this.drugService.getDrugs()
+    .subscribe(
+      list => {
+        let medArray = list.map(
+          item => {
+            return{
+              id: item.payload.doc.id,
+              ...item.payload.doc.data() as Drug
+            }
+          }
+        )
+        this.myPrescriptions = this.myPrescriptions.concat(medArray);
+        // console.log('VALUE IN myPrescription', this.myPrescriptions);
+
+        this.filteredPrescription = this.prescriptionControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(prescriptionvalue => prescriptionvalue ? this._filterPrescription(prescriptionvalue) : this.myPrescriptions.slice())
+        );
+        // console.log('Constructor #5 - Filtered Prescriptions', this.filteredPrescription); 
+
+      }
+    )
+
+    // console.log('Constructor #2', this.myPrescriptions);
 
     this.filteredNotes = this.noteControl.valueChanges
     .pipe(
@@ -133,18 +132,22 @@ export class VisitComponent implements OnInit {
       map(notevalue => notevalue ? this._filterNote(notevalue) : this.myNotes.slice())
     );
 
+    // console.log('Constructor #3');
+
     this.filteredOrders = this.orderControl.valueChanges
     .pipe(
       startWith(''),
       map(ordervalue => ordervalue ? this._filterOrder(ordervalue) : this.myOrders.slice())
     );
 
-    this.filteredPrescription = this.prescriptionControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(prescriptionvalue => prescriptionvalue ? this._filterPrescription(prescriptionvalue) : this.myPrescriptions.slice())
-      );
+    // console.log('Constructor #4');
 
+    this.filteredPrescription = this.prescriptionControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(prescriptionvalue => prescriptionvalue ? this._filterPrescription(prescriptionvalue) : this.myPrescriptions.slice())
+    );
+    // console.log('Constructor #5 - Filtered Prescriptions', this.filteredPrescription); 
   }
 
 
@@ -166,6 +169,8 @@ export class VisitComponent implements OnInit {
   ngOnInit() {
     console.log('Visit ID: ', this.visitId)
     this.visitService.getVisits();
+    
+    // console.log('Constructor #6');
   }
 
   onClear() {
@@ -198,32 +203,32 @@ export class VisitComponent implements OnInit {
   }
 
   onClose() {
-    console.log('close function called');
+    // console.log('close function called');
     this.visitService.form.reset();
-    console.log('form reset called and run')
+    // console.log('form reset called and run')
     this.visitService.initializeFormGroup();
     this.visitService.initializevisitFormGroup();
     this.visitService.initializenotesFormGroup();
     this.visitService.initializeordersFormGroup();
     this.visitService.initializeprescriptionsFormGroup();
-    console.log('the form reinitialized and will close dialog')
+    // console.log('the form reinitialized and will close dialog')
     this.visitdialogRef.close();
-    console.log('dialog closed')
+    // console.log('dialog closed')
   }
 
   addVisit()
   {
-    console.log('addVisit PRESSED - the values now: ', this.visits);
+    // console.log('addVisit PRESSED - the values now: ', this.visits);
   
     if (this.visitService.form.invalid || !this.visitService.form.get('patientName').value)
     {
       console.log('THIS FORM IS EMPTY...', this.visitService.form.get('patientName').value)
     }
     else{
-      console.log('THIS FORM IS NOT EMPTY...',this.visitService.form.get('patientName').value)
+      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.form.get('patientName').value)
       this.visits = this.visits.concat(this.visitService.form.value);
       this.visits[0].id = this.visitId;
-      console.log('addVisit PRESSED - the values after update: ', this.visits);
+      // console.log('addVisit PRESSED - the values after update: ', this.visits);
       this.visitService.form.reset();
       this.visitService.initializeFormGroup()
     }
@@ -231,16 +236,16 @@ export class VisitComponent implements OnInit {
 
   addNote()
   {
-    console.log('addNote PRESSED - the values now: ', this.notes);
+    // console.log('addNote PRESSED - the values now: ', this.notes);
   
     if (this.visitService.notesForm.invalid || !this.visitService.notesForm.get('note_title').value)
     {
-      console.log('THIS FORM IS EMPTY...', this.visitService.notesForm.get('note_title').value)
+      // console.log('THIS FORM IS EMPTY...', this.visitService.notesForm.get('note_title').value)
     }
     else{
-      console.log('THIS FORM IS NOT EMPTY...',this.visitService.notesForm.get('note_title').value)
+      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.notesForm.get('note_title').value)
       this.notes = this.notes.concat(this.visitService.notesForm.value);
-      console.log('addNote PRESSED - the values after update: ', this.notes);
+      // console.log('addNote PRESSED - the values after update: ', this.notes);
       this.visitService.notesForm.reset();
       this.visitService.initializenotesFormGroup()
     }
@@ -249,16 +254,16 @@ export class VisitComponent implements OnInit {
 
   addOrder()
   {
-    console.log('addOrder PRESSED - the values now: ', this.orders);
+    // console.log('addOrder PRESSED - the values now: ', this.orders);
   
     if (this.visitService.ordersForm.invalid || !this.visitService.ordersForm.get('order_title').value)
     {
-      console.log('THIS FORM IS EMPTY...', this.visitService.ordersForm.get('order_title').value)
+      // console.log('THIS FORM IS EMPTY...', this.visitService.ordersForm.get('order_title').value)
     }
     else{
-      console.log('THIS FORM IS NOT EMPTY...',this.visitService.ordersForm.get('order_title').value)
+      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.ordersForm.get('order_title').value)
       this.orders = this.orders.concat(this.visitService.ordersForm.value);
-      console.log('addOrder PRESSED - the values after update: ', this.orders);
+      // console.log('addOrder PRESSED - the values after update: ', this.orders);
       this.visitService.ordersForm.reset();
       this.visitService.initializeordersFormGroup()
     }
@@ -267,71 +272,66 @@ export class VisitComponent implements OnInit {
 
   addPrescription()
   {
-    console.log('addPrescription PRESSED - the values now: ', this.prescriptions);
+    // console.log('addPrescription PRESSED - the values now: ', this.prescriptions);
   
     if (this.visitService.prescriptionsForm.invalid || !this.visitService.prescriptionsForm.get('generic_name').value)
     {
       console.log('THIS FORM IS EMPTY...', this.visitService.prescriptionsForm.get('generic_name').value)
     }
     else{
-      console.log('THIS FORM IS NOT EMPTY...',this.visitService.prescriptionsForm.get('generic_name').value)
+      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.prescriptionsForm.get('generic_name').value)
       this.prescriptions = this.prescriptions.concat(this.visitService.prescriptionsForm.value);
-      console.log('addPrescription PRESSED - the values after update: ', this.prescriptions);
+      // console.log('addPrescription PRESSED - the values after update: ', this.prescriptions);
       this.visitService.prescriptionsForm.reset();
       this.visitService.initializeprescriptionsFormGroup();
     }
     this.prescriptionControl.setValue('');
-    
   }
 
   populateNote(item)
   {
-    console.log('POPULATE NOTE - function called', item);
+    // console.log('POPULATE NOTE - function called', item);
     this.visitService.populateSelectednote(item);
   }
 
   populateOrder(item)
   {
-    console.log('POPULATE ORDER - function called', item);
+    // console.log('POPULATE ORDER - function called', item);
     this.visitService.populateSelectedorder(item)
   }
 
   populatePrescription(item)
   {
-    console.log('');
-    console.log('1 - POPULATE PRESCRIPTION', item);
+    // console.log('');
+    // console.log('1 - POPULATE PRESCRIPTION', item);
     this.visitService.populateSelectedprescription(item);
 
-    console.log('');
-    console.log('5 - back to component, check if item array is empty: ', item);
-    console.log('------------------------------------');
+    // console.log('');
+    // console.log('5 - back to component, check if item array is empty: ', item);
+    // console.log('------------------------------------');
 
     item=[];
-    console.log('6 - LOCALLY EMPTIED THE item ARRAY - whats in it for now?', item);
+    // console.log('6 - LOCALLY EMPTIED THE item ARRAY - whats in it for now?', item);
 
     this.prescriptionControl.setValue('');
-    console.log('7 - prescription control has been reset');
-
-    console.log('=======================================');
-  
+    // console.log('7 - prescription control has been reset');
+    // console.log('=======================================');
   }
 
   removeNote(row){
-    console.log('remove test button clicked', this.notes);
+    // console.log('remove test button clicked', this.notes);
     this.notes = this.notes.filter(item => item !== row);
-    console.log('after remove test button clicked', this.notes);
+    // console.log('after remove test button clicked', this.notes);
   }
 
   removeTest(row){
-    console.log('remove test button clicked', this.orders);
+    // console.log('remove test button clicked', this.orders);
     this.orders = this.orders.filter(item => item !== row);
-    console.log('after remove test button clicked', this.orders);
+    // console.log('after remove test button clicked', this.orders);
   }
   removePrescription(row){
-    console.log('remove prescription button clicked', this.prescriptions);
+    // console.log('remove prescription button clicked', this.prescriptions);
     this.prescriptions = this.prescriptions.filter(item => item !== row);
-    console.log('after remove prescription button clicked', this.prescriptions);
+    // console.log('after remove prescription button clicked', this.prescriptions);
   }
-
-
 }

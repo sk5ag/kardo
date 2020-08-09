@@ -222,9 +222,7 @@
                                 <span>{{prescription.generic_name}}</span> |
                                 <small>{{prescription.route}}</small> |
                                 <small>{{prescription.dosage_form}}</small> |
-                                <span *ngFor="let item of prescription.active_ingredients | keyvalue">
-                                    <span>{{ item.value["strength"]}}</span>
-                                </span>
+                                <small>{{prescription.strength}}</small>
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
