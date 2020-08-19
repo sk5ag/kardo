@@ -16,8 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { TestsComponent } from './tests/tests.component';
-import { TestComponent } from './tests/test/test.component';
+
 import { TestService } from './shared/test.service';
 import { DepartmentService } from './shared/department.service';
 import { TesttypeService} from './shared/testtype.service';
@@ -47,8 +46,6 @@ import { DrugService } from './shared/drug.service';
   declarations: [
     AppComponent,
     ToolbarComponent,
-    TestsComponent,
-    TestComponent,
     AppointmentsComponent,
     AppointmentComponent,
     VisitsComponent,
@@ -76,7 +73,7 @@ import { DrugService } from './shared/drug.service';
     MatPaginatorModule,
     MatSortModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     
   ],
   providers: [TestService, DepartmentService, TesttypeService, AppointmentService, OrderService, PrescriptionService, VisitService, DrugService ],

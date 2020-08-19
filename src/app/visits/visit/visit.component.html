@@ -4,7 +4,6 @@
         <span class="fill-remaining-space"></span>
         <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
     </mat-toolbar>
-
 </div>
 <form [formGroup]="visitService.form" class="normal-form" (ngSubmit)="onSubmit()">
 
@@ -60,8 +59,8 @@
                         <textarea formControlName="patientLongtermMedicine" matInput placeholder="Patient Longterm Medicine"></textarea>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
-                        <mat-label>Description</mat-label>
-                        <textarea formControlName="visitDescription" matInput placeholder="Short Case Description"></textarea>
+                        <mat-label>Impressions</mat-label>
+                        <textarea formControlName="visitDescription" matInput placeholder="Preliminary impressions"></textarea>
                     </mat-form-field>
                     <div class="add-bottom-padding">
                         <mat-checkbox formControlName="isClosed">Close this visit after submit</mat-checkbox>
@@ -103,26 +102,25 @@
                 <form [formGroup]="visitService.notesForm" (ngSubmit)="addNote()">
                     <ng-template matStepLabel>Add notes to this visit</ng-template>
                     <mat-form-field class="example-full-width">
-                        <mat-label>Note title</mat-label>
-                        <input matInput ref-newnoteFilter placeholder="Note title" formControlName="note_title" required>
+                        <mat-label>Examination title</mat-label>
+                        <input matInput ref-newnoteFilter placeholder="Examination title" formControlName="examination_title" required>
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
-                        <mat-label>Note Description</mat-label>
-                        <textarea matInput placeholder="Doctor's Note " formControlName="note_description" required></textarea>
+                        <mat-label>Examination Description</mat-label>
+                        <textarea matInput placeholder="Examination description" formControlName="examination_description" required></textarea>
                     </mat-form-field>
                     <div class="form-btn-align">
                         <button mat-raised-button color="primary" type="submit" [disabled]="visitService.notesForm.invalid || !newnoteFilter.value">Add</button>
                     </div>
-
                     <div class="mat-elevation-z2">
                         <mat-table [dataSource]="notes" matSort>
-                            <ng-container matColumnDef="note_title" sticky>
+                            <ng-container matColumnDef="examination_title" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-                                <mat-cell *matCellDef="let element ">{{element.note_title}}</mat-cell>
+                                <mat-cell *matCellDef="let element ">{{element.examination_title}}</mat-cell>
                             </ng-container>
-                            <ng-container matColumnDef="note_description">
+                            <ng-container matColumnDef="examination_description">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-                                <mat-cell *matCellDef="let element ">{{element.note_description}}</mat-cell>
+                                <mat-cell *matCellDef="let element ">{{element.examination_description}}</mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="actions" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
@@ -137,14 +135,12 @@
                         </mat-table>
                         <!-- <mat-paginator [pageSizeOptions]="[5,10,25,50,100] " [pageSize]="5 " showFirstLastButtons></mat-paginator> -->
                     </div>
-
                     <div>
                         <button mat-button matStepperPrevious>Back</button>
                         <button mat-button matStepperNext>Next</button>
                     </div>
                 </form>
             </mat-step>
-
 
             <mat-step [stepControl]="visitService.ordersForm">
                 <form [formGroup]="visitService.ordersForm" (ngSubmit)="addOrder()">
@@ -194,7 +190,6 @@
                                     <button mat-icon-button color="warn" (click)="removeTest(row)"><mat-icon>delete_outline</mat-icon></button>
                                 </mat-cell>
                             </ng-container>
-
                             <mat-header-row *matHeaderRowDef="displayorderColumns"></mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayorderColumns;"></mat-row>
                             <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
@@ -207,10 +202,7 @@
                         <button mat-button matStepperNext>Next</button>
                     </div>
                 </form>
-
-
             </mat-step>
-
 
             <mat-step [stepControl]="visitService.prescriptionsForm">
                 <form [formGroup]="visitService.prescriptionsForm" (ngSubmit)="addPrescription()">
@@ -236,7 +228,7 @@
                     </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <mat-label>Strength</mat-label>
-                        <input matInput placeholder="Strength" formControlName="active_ingredients">
+                        <input matInput placeholder="Strength" formControlName="strength">
                     </mat-form-field>
                     <div class="form-btn-align">
                         <button mat-raised-button color="primary" type="submit" [disabled]="visitService.prescriptionsForm.invalid || !newprescriptionFilter.value">Add</button>
@@ -246,6 +238,10 @@
                             <ng-container matColumnDef="generic_name" sticky>
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Generic Name</mat-header-cell>
                                 <mat-cell *matCellDef="let element ">{{element.generic_name}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="strength">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Strength</mat-header-cell>
+                                <mat-cell *matCellDef="let element">{{element.strength}}</mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="dosage_form">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header>Dosage Form</mat-header-cell>
@@ -266,13 +262,13 @@
                             <ng-container matColumnDef="actions" stickyEnd>
                                 <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
                                 <mat-cell *matCellDef="let row" class="action-icon">
-                                    <button mat-icon-button color="primary" class="btn-size"><mat-icon>favorite_border</mat-icon></button>
+                                    <button mat-icon-button color="primary" (click)="favPrescription()" class="btn-size"><mat-icon>favorite_border</mat-icon></button>
                                     <button mat-icon-button color="warn" (click)="removePrescription(row)" class="btn-size"><mat-icon>delete_outline</mat-icon></button>
                                 </mat-cell>
                             </ng-container>
 
-                            <mat-header-row *matHeaderRowDef="displayprescriptionColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayprescriptionColumns;"></mat-row>
+                            <mat-header-row *matHeaderRowDef="displayprescriptionColumns "></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayprescriptionColumns; "></mat-row>
                             <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
                             <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(orders!=null && orders.data.length==0)} "></mat-footer-row> -->
                         </mat-table>
@@ -288,12 +284,12 @@
             <mat-step>
                 <ng-template matStepLabel>Review</ng-template>
 
-                <table class="review-table">
+                <table class="review-table ">
                     <tr>
-                        <td colspan="2">1</td>
+                        <td colspan="2 ">1</td>
                     </tr>
                     <tr>
-                        <td style="width: 50%;">
+                        <td style="width: 50%; ">
 
                             <small>
                                 <tr><strong>Doctor:</strong></tr>
@@ -305,8 +301,8 @@
                                 <tr>Reception: +964 770 123 1234 | Work: +964 750 321 4321</tr></small>
 
                         </td>
-                        <td style="width: 50%;">
-                            <div *ngFor="let patient of visits">
+                        <td style="width: 50%; ">
+                            <div *ngFor="let patient of visits ">
                                 <small>
                                     <tr><strong>Visit ID:</strong></tr>
                                     <tr>{{patient.id}}</tr>
@@ -321,31 +317,32 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="2 ">
                             <strong>Medical Tests & Procedures</strong>
                             <p></p>
-                            <div *ngFor="let line of orders">
+                            <div *ngFor="let line of orders ">
                                 <li> {{line.order_title}} - {{line.order_type}}</li>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="2 ">
                             <strong>Prescriptions</strong>
                             <p></p>
-                            <div *ngFor="let line of prescriptions">
+                            <div *ngFor="let line of prescriptions ">
                                 <li> {{line.generic_name}} - {{line.dosage_form}} | {{line.active_ingredients}}</li>
                             </div>
                         </td>
                     </tr>
                 </table>
-
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="stepper.reset() ">Reset</button>
+                    <button mat-button (click)="onSubmit()">Save</button>
+                    <button mat-button (click)="onSave()">Save</button>
+
                 </div>
             </mat-step>
         </mat-vertical-stepper>
     </div>
-
 </form>

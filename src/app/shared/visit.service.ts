@@ -49,8 +49,8 @@ export class VisitService {
     visitDoctor: new FormControl(''),
   });  
   notesForm: FormGroup = new FormGroup({
-    note_title: new FormControl('', Validators.required),
-    note_description: new FormControl('', Validators.required),
+    examination_title: new FormControl('', Validators.required),
+    examination_description: new FormControl('', Validators.required),
   })  
   ordersForm: FormGroup = new FormGroup({
     order_title: new FormControl('', Validators.required),
@@ -62,6 +62,7 @@ export class VisitService {
     active_ingredients: new FormControl(''),
     route: new FormControl(''),
     dosage_form: new FormControl(''),
+    strength: new FormControl('')
   });
 
   initializeFormGroup(){
@@ -95,8 +96,8 @@ export class VisitService {
 
   initializenotesFormGroup(){
     this.notesForm.setValue({
-      note_title: '',
-      note_description: '',
+      examination_title: '',
+      examination_description: '',
     });
   }
 
@@ -114,6 +115,7 @@ export class VisitService {
       active_ingredients: '',
       route: '',
       dosage_form: '',
+      strength: '',
     });
   }
   
@@ -185,8 +187,8 @@ export class VisitService {
   populateSelectednote(item: any) {
     this.notesForm.patchValue(
       {
-        note_title: item.note_title,
-        note_description: item.note_description,
+        examination_title: item.examination_title,
+        examination_description: item.examination_description,
       }
     )
     }   
@@ -201,6 +203,7 @@ export class VisitService {
       this.prescriptionsForm.patchValue(
         {
           generic_name: item.generic_name,
+          strength: item.strength,
           active_ingredients: item.ingredient,
           route: item.route,
           dosage_form: item.dosage_form,
