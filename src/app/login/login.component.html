@@ -1,0 +1,13 @@
+<div *ngIf="auth.user$ | async as USER; else login" style="width: 100%;">
+
+    <h2>Welcome back, {{USER.displayName}}</h2>
+    <p>This is your details:
+    </p>
+    <hr>
+    <pre>
+        {{USER | json}}
+    </pre>
+</div>
+<ng-template #login>
+    <button class="example-icon" mat-icon-button (click)="auth.googleSignin()">login with Gmail</button>
+</ng-template>

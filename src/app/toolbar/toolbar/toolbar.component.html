@@ -1,13 +1,24 @@
 <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span>Dr. Ibrahim Clinic </span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon">
-      <mat-icon>settings</mat-icon>
-    </button>
-    <button mat-icon-button class="example-icon">
-      <mat-icon>exit_to_app</mat-icon>
-    </button>
+    <div *ngIf="auth.user$ | async as USER; else login" style="width: 100%;">
+        <table style="width: 100%;">
+            <tbody style="width: 100%;">
+                <tr style="width: 100%;">
+                    <td style="width: 5%;">
+                        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+                    <mat-icon>menu</mat-icon>
+                    </button>
+                    </td>
+                    <td style="width: 40%;">{{USER.displayName}}</td>
+                    <td style="width: 40%;">&nbsp;</td>
+                    <td style="width: 15%; text-align: right; padding-right: 5px;">
+                        <button mat-icon-button class="example-icon"><mat-icon>settings</mat-icon></button>
+                        <button class="example-icon" mat-icon-button (click)="auth.signOut()">logout</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-template #login>
+        <button class="example-icon" mat-icon-button (click)="auth.googleSignin()">login with Gmail</button>
+    </ng-template>
 </mat-toolbar>

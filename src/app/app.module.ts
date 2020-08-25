@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
@@ -40,6 +41,7 @@ import { DrugsComponent } from './drugs/drugs.component';
 import { DrugComponent } from './drugs/drug/drug.component';
 import { DrugListComponent } from './drugs/drug-list/drug-list.component';
 import { DrugService } from './shared/drug.service';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -61,6 +63,7 @@ import { DrugService } from './shared/drug.service';
     DrugsComponent,
     DrugComponent,
     DrugListComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ import { DrugService } from './shared/drug.service';
     MatSortModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
+    AngularFireAuthModule,
     
   ],
   providers: [TestService, DepartmentService, TesttypeService, AppointmentService, OrderService, PrescriptionService, VisitService, DrugService ],
