@@ -75,7 +75,7 @@ import { LoginComponent } from './login/login.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     

@@ -47,6 +47,12 @@ form.normal-form {
     flex: 1 1 auto;
 }
 
+.lists-width {
+    padding-left: 1.5%;
+    padding-right: 1.5%;
+    padding-bottom: 1.5%;
+}
+
 
 /* radio group*/
 
@@ -76,6 +82,7 @@ mat-radio-group mat-radio-button {
 
 .example-full-width {
     width: 100%;
+    padding-right: 25px;
 }
 
 .example-stretched-tabs {
@@ -221,4 +228,8 @@ mat-footer-row mat-footer-cell {
     vertical-align: text-top;
     border: 1px solid lightgray;
     padding: 10px 0 10px 15px;
+}
+
+.links {
+    text-decoration: none;
 }

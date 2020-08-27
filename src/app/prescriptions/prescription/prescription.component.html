@@ -6,90 +6,87 @@
     </mat-toolbar>
 </div>
 <form [formGroup]="prescriptionService.form" class="normal-form" (ngSubmit)="onSubmit()">
-    <mat-grid-list cols="1" rowHeight="950px">
-        <mat-grid-tile>
-            <div class="controls-container">
-                <input type="hidden" formControlName="currentDate">
-                <input type="hidden" formControlName="createdDate">
-                <input type="hidden" formControlName="clinicName">
-                <input type="hidden" formControlName="prescribingDoctor">
 
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in from:</mat-label>
-                    <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in as:</mat-label>
-                    <input matInput disabled value="Dr. Ibrahim Amin">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Order for patient:</mat-label>
-                    <input formControlName="patientName" matInput placeholder="Patient Name" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <div class="controls-container">
-                    <div class="add-bottom-padding">
-                        <mat-radio-group color="primary" formControlName="patientGender">
-                            <mat-radio-button value="M">Male</mat-radio-button>
-                            <mat-radio-button value="F">Female</mat-radio-button>
-                            <mat-radio-button value="O">Other</mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-                </div>
-                <mat-form-field>
-                    <input formControlName="patientAge" matInput placeholder="Patient's Age" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
-                    <mat-error *ngIf="prescriptionService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
-                    <mat-error *ngIf="prescriptionService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="prescriptionStatus" matInput placeholder="Prescription Status"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="prescriptionDate" matInput placeholder="Order Description"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-select [(value)]="selectedMeds" formControlName="medicineGenericName" placeholder="Choose Medicine" required>
-                        <mat-option>None</mat-option>
-                        <ng-container *ngFor="let prescription of prescriptions">
-                            <mat-option value="{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}} | {{prescription.route}} ">{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}}</mat-option>
-                        </ng-container>
-                    </mat-select>
-                </mat-form-field>
+    <div class="example-full-width">
+        <input type="hidden" formControlName="currentDate">
+        <input type="hidden" formControlName="createdDate">
+        <input type="hidden" formControlName="clinicName">
+        <input type="hidden" formControlName="prescribingDoctor">
 
-                <div *ngIf="selectedMeds">
-                    <p>{{selectedMeds}}</p>
-                </div>
-                <div *ngIf="!selectedMeds">
-                    <p>No medicine selected.</p>
-                </div>
-
-                <mat-form-field>
-                    <input formControlName="medicineQuantity" matInput placeholder="Quantity to dispense" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="medicineDirectionforuse" matInput placeholder="Direction for Use" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="medicineRemarks" matInput placeholder="Doctors Explanation" required></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <div class="add-bottom-padding">
-                    <mat-checkbox formControlName="isDispensed">Medicine dispensed</mat-checkbox>
-                </div>
-                <div class="button-row">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="prescriptionService.form.invalid">Submit</button>
-                    <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
-                </div>
+        <mat-form-field class="example-full-width">
+            <mat-label>Logged in from:</mat-label>
+            <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Logged in as:</mat-label>
+            <input matInput disabled value="Dr. Ibrahim Amin">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Order for patient:</mat-label>
+            <input formControlName="patientName" matInput placeholder="Patient Name" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <div class="example-full-width">
+            <div class="add-bottom-padding">
+                <mat-radio-group color="primary" formControlName="patientGender">
+                    <mat-radio-button value="M">Male</mat-radio-button>
+                    <mat-radio-button value="F">Female</mat-radio-button>
+                    <mat-radio-button value="O">Other</mat-radio-button>
+                </mat-radio-group>
             </div>
-        </mat-grid-tile>
-    </mat-grid-list>
+        </div>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientAge" matInput placeholder="Patient's Age" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
+            <mat-error *ngIf="prescriptionService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
+            <mat-error *ngIf="prescriptionService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <textarea formControlName="prescriptionStatus" matInput placeholder="Prescription Status"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <textarea formControlName="prescriptionDate" matInput placeholder="Order Description"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-select [(value)]="selectedMeds" formControlName="medicineGenericName" placeholder="Choose Medicine" required>
+                <mat-option>None</mat-option>
+                <ng-container *ngFor="let prescription of prescriptions">
+                    <mat-option value="{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}} | {{prescription.route}} ">{{prescription.medicineGenericName}} | {{prescription.ingredient}} | {{prescription.dosage_form}}</mat-option>
+                </ng-container>
+            </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="selectedMeds">
+            <p>{{selectedMeds}}</p>
+        </div>
+        <div *ngIf="!selectedMeds">
+            <p>No medicine selected.</p>
+        </div>
+
+        <mat-form-field class="example-full-width">
+            <input formControlName="medicineQuantity" matInput placeholder="Quantity to dispense" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="medicineDirectionforuse" matInput placeholder="Direction for Use" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <textarea formControlName="medicineRemarks" matInput placeholder="Doctors Explanation" required></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <div class="add-bottom-padding">
+            <mat-checkbox formControlName="isDispensed">Medicine dispensed</mat-checkbox>
+        </div>
+        <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="prescriptionService.form.invalid">Submit</button>
+            <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
+        </div>
+    </div>
 </form>

@@ -4,20 +4,61 @@
             <tbody style="width: 100%;">
                 <tr style="width: 100%;">
                     <td style="width: 5%;">
-                        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-                    <mat-icon>menu</mat-icon>
-                    </button>
+                        <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu" aria-label="Example icon-button with menu icon">
+                            <mat-icon>menu</mat-icon>
+                        </button>
                     </td>
                     <td style="width: 40%;">{{USER.displayName}}</td>
                     <td style="width: 40%;">&nbsp;</td>
                     <td style="width: 15%; text-align: right; padding-right: 5px;">
-                        <button mat-icon-button class="example-icon"><mat-icon>settings</mat-icon></button>
-                        <button class="example-icon" mat-icon-button (click)="auth.signOut()">logout</button>
+
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <mat-menu #menu="matMenu">
+        <a class="links" routerLink="/appointments" routerLinkActive="active">
+            <button mat-menu-item>
+            <mat-icon>add_alarm</mat-icon>
+            <span>Make an Appointment</span>
+          </button>
+        </a>
+        <a class="links" routerLink="/visits" routerLinkActive="active">
+            <button mat-menu-item>
+            <mat-icon>queue</mat-icon>
+            <span>Doctor Visits</span>
+          </button>
+        </a>
+        <a class="links" routerLink="/orders" routerLinkActive="active">
+            <button mat-menu-item>
+            <mat-icon>text_snippet</mat-icon>
+            <span>Medical Orders</span>
+        </button>
+        </a>
+        <a class="links" routerLink="/prescriptions" routerLinkActive="active">
+            <button mat-menu-item>
+          <mat-icon>post_add</mat-icon>
+          <span>Prescriptions</span>
+        </button>
+        </a>
+        <a class="links" routerLink="/drugs" routerLinkActive="active">
+            <button mat-menu-item>
+          <mat-icon>ballot</mat-icon>
+          <span>Drugs</span>
+        </button>
+        </a>
+        <br>
+        <mat-divider></mat-divider>
+        <button mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+        <button mat-menu-item>
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+    </mat-menu>
     <ng-template #login>
         <button class="example-icon" mat-icon-button (click)="auth.googleSignin()">login with Gmail</button>
     </ng-template>

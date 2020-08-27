@@ -6,77 +6,74 @@
     </mat-toolbar>
 </div>
 <form [formGroup]="orderService.form" class="normal-form" (ngSubmit)="onSubmit()">
-    <mat-grid-list cols="1" rowHeight="850px">
-        <mat-grid-tile>
-            <div class="controls-container">
-                <input type="hidden" formControlName="currentDate">
-                <input type="hidden" formControlName="createdDate">
-                <input type="hidden" formControlName="orderStatus">
-                <input type="hidden" formControlName="orderDate">
-                <input type="hidden" formControlName="clinicName">
-                <input type="hidden" formControlName="orderingDoctor">
-                <div>
-                    <h1>{{visitId}}</h1>
-                </div>
+    <div class="example-full-width">
+        <input type="hidden" formControlName="currentDate">
+        <input type="hidden" formControlName="createdDate">
+        <input type="hidden" formControlName="orderStatus">
+        <input type="hidden" formControlName="orderDate">
+        <input type="hidden" formControlName="clinicName">
+        <input type="hidden" formControlName="orderingDoctor">
+        <div>
+            <h1>{{visitId}}</h1>
+        </div>
 
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in from:</mat-label>
-                    <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in as:</mat-label>
-                    <input matInput disabled value="Dr. Ibrahim Amin">
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="patientName" matInput placeholder="Patient's Full Name" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <div class="controls-container">
-                    <div class="add-bottom-padding">
-                        <mat-radio-group color="primary" formControlName="patientGender">
-                            <mat-radio-button value="M">Male</mat-radio-button>
-                            <mat-radio-button value="F">Female</mat-radio-button>
-                            <mat-radio-button value="O">Other</mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-                </div>
-                <mat-form-field>
-                    <input formControlName="patientAge" matInput placeholder="Patient's Age" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
-                    <mat-error *ngIf="orderService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
-                    <mat-error *ngIf="orderService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-select formControlName="orderTitle" placeholder="Order Title" required>
-                        <mat-option>None</mat-option>
-                        <ng-container *ngFor="let test of tests">
-                            <mat-option value="{{test.test_id}}">{{test.shortcode}}</mat-option>
-                        </ng-container>
-                    </mat-select>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <textarea formControlName="orderDescription" matInput placeholder="Order Description"></textarea>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <textarea formControlName="orderComment" matInput placeholder="Order Comment"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <div class="add-bottom-padding">
-                    <mat-checkbox formControlName="isCompleted">Complete order</mat-checkbox>
-                </div>
-                <div class="button-row">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="orderService.form.invalid">Submit</button>
-                    <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
-                </div>
+        <mat-form-field class="example-full-width">
+            <mat-label>Logged in from:</mat-label>
+            <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Logged in as:</mat-label>
+            <input matInput disabled value="Dr. Ibrahim Amin">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientName" matInput placeholder="Patient's Full Name" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <div class="example-full-width">
+            <div class="add-bottom-padding">
+                <mat-radio-group color="primary" formControlName="patientGender">
+                    <mat-radio-button value="M">Male</mat-radio-button>
+                    <mat-radio-button value="F">Female</mat-radio-button>
+                    <mat-radio-button value="O">Other</mat-radio-button>
+                </mat-radio-group>
             </div>
-        </mat-grid-tile>
-    </mat-grid-list>
+        </div>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientAge" matInput placeholder="Patient's Age" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
+            <mat-error *ngIf="orderService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
+            <mat-error *ngIf="orderService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-select formControlName="orderTitle" placeholder="Order Title" required>
+                <mat-option>None</mat-option>
+                <ng-container *ngFor="let test of tests">
+                    <mat-option value="{{test.test_id}}">{{test.shortcode}}</mat-option>
+                </ng-container>
+            </mat-select>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <textarea formControlName="orderDescription" matInput placeholder="Order Description"></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <textarea formControlName="orderComment" matInput placeholder="Order Comment"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="doctorSig" matInput placeholder="Doctor e-Code" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <div class="add-bottom-padding">
+            <mat-checkbox formControlName="isCompleted">Complete order</mat-checkbox>
+        </div>
+        <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="orderService.form.invalid">Submit</button>
+            <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
+        </div>
+    </div>
+
 </form>
