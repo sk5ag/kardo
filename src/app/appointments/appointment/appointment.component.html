@@ -7,67 +7,67 @@
 </div>
 
 <form [formGroup]="appointmentService.form" class="normal-form" (ngSubmit)="onSubmit()">
-    <mat-grid-list cols="1" rowHeight="650px">
-        <mat-grid-tile>
-            <div class="controls-container">
-                <!-- <input type="hidden" formControlName="$key"> -->
-                <input type="hidden" formControlName="id">
-                <input type="hidden" formControlName="currentDate">
-                <input type="hidden" formControlName="appointmentStatus">
-                <input type="hidden" formControlName="clinicName">
-                <input type="hidden" formControlName="userName">
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in from:</mat-label>
-                    <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>Logged in as:</mat-label>
-                    <input matInput disabled value="Ms. Gelas Faqy Al Din">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-select formControlName="appointmentDoctor" placeholder="Appointment Doctor" required>
-                        <mat-option>None</mat-option>
-                        <ng-container *ngFor="let doctor of doctors">
-                            <mat-option value="{{doctor.name}}">{{doctor.name}}</mat-option>
-                        </ng-container>
-                    </mat-select>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="patientName" matInput placeholder="Patient Name" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <div class="controls-container">
-                    <div class="add-bottom-padding">
-                        <mat-radio-group color="primary" formControlName="patientGender">
-                            <mat-radio-button value="M">Male</mat-radio-button>
-                            <mat-radio-button value="F">Female</mat-radio-button>
-                            <mat-radio-button value="O">Other</mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-                </div>
-                <mat-form-field>
-                    <input formControlName="patientAge" matInput placeholder="Patient Age" required>
-                    <mat-error>This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="patientMobile" matInput placeholder="Patient Mobile">
-                    <mat-error *ngIf="appointmentService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
-                    <mat-error *ngIf="appointmentService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input formControlName="appointmentDate" matInput [matDatepicker]="picker" placeholder="Appointment Date">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
+
+    <div class="example-full-width">
+        <input type="hidden" formControlName="id">
+        <input type="hidden" formControlName="currentDate">
+        <input type="hidden" formControlName="appointmentStatus">
+        <input type="hidden" formControlName="clinicName">
+        <input type="hidden" formControlName="userName">
+        <mat-form-field class="example-full-width">
+            <mat-label>Logged in from:</mat-label>
+            <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Logged in as:</mat-label>
+            <input matInput disabled value="Ms. Gelas Faqy Al Din">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-select formControlName="appointmentDoctor" placeholder="Appointment Doctor" required>
+                <mat-option>None</mat-option>
+                <ng-container *ngFor="let doctor of doctors">
+                    <mat-option value="{{doctor.name}}">{{doctor.name}}</mat-option>
+                </ng-container>
+            </mat-select>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientName" matInput placeholder="Patient Name" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <div class="example-full-width">
+            <div class="add-bottom-padding">
                 <div class="add-bottom-padding">
-                    <mat-checkbox formControlName="isWaiting">Patient is waiting</mat-checkbox>
+                    <mat-label>Gender</mat-label>
                 </div>
-                <div class="button-row">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="appointmentService.form.invalid">Submit</button>
-                    <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
-                </div>
+                <mat-radio-group color="primary" formControlName="patientGender">
+                    <mat-radio-button value="M">Male</mat-radio-button>
+                    <mat-radio-button value="F">Female</mat-radio-button>
+                    <mat-radio-button value="O">Other</mat-radio-button>
+                </mat-radio-group>
             </div>
-        </mat-grid-tile>
-    </mat-grid-list>
+        </div>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientAge" matInput placeholder="Patient Age" required>
+            <mat-error>This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="patientMobile" matInput placeholder="Patient Mobile">
+            <mat-error *ngIf="appointmentService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
+            <mat-error *ngIf="appointmentService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input formControlName="appointmentDate" matInput [matDatepicker]="picker" placeholder="Appointment Date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="add-bottom-padding">
+            <mat-checkbox formControlName="isWaiting">Patient is waiting</mat-checkbox>
+        </div>
+        <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="appointmentService.form.invalid">Submit</button>
+            <button mat-raised-button color="warn" (click)="onClear()" type="submit">Clear</button>
+        </div>
+    </div>
+
 </form>
