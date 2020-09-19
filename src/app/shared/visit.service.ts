@@ -21,7 +21,7 @@ export class VisitService {
     this.visitsCollection = this.db.collection(this.collectionPath)
    } 
 
-  visitList: AngularFireList<any>;
+  visitList: AngularFireList<any>; 
 
   form: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -152,6 +152,7 @@ export class VisitService {
   }
 
   populateForm(row) {
+    console.log('whats the row patient name? ',row.patientName);
     this.form.patchValue(
       {
         id: row.id,        

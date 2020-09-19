@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-prescriptions',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrescriptionsComponent implements OnInit {
 
-  constructor() { }
+  pharma: boolean;
+
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
-  }
+
+  this.auth.user$.subscribe(user => {
+    this.pharma = user.isPharma;
+
+  });
+}
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-orders',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor() { }
+  medOrder: boolean;
+
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
-  }
+
+  this.auth.user$.subscribe(user => {
+    this.medOrder = user.isMedOrder;
+
+  });
+}
 
 }

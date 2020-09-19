@@ -20,7 +20,7 @@ export class VisitComponent implements OnInit {
   myFormattedDate = this.pipe.transform(this.now, 'short');
 
   today: number = Date.now();
-  visitId = Math.random().toString(20).substr(2, 6);
+  visitId: string;
   filteredOrders: Observable<any[]>;
   filteredNotes: Observable<any[]>;
   filteredPrescription: Observable<any[]>;
@@ -28,7 +28,6 @@ export class VisitComponent implements OnInit {
   orderControl = new FormControl();
   noteControl = new FormControl();
   prescriptionControl = new FormControl();
-
 
   myPrescriptions: any[] = [
     // {
@@ -173,10 +172,11 @@ export class VisitComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Visit ID: ', this.visitId)
+    console.log('Visit ID: ', this.visitId);
     this.visitService.getVisits();
     // console.log('Constructor #6');
   }
+
 
   onClear() {
     this.visitService.form.reset();
@@ -212,8 +212,10 @@ export class VisitComponent implements OnInit {
     this.prescriptionItems = prescriptionItems;
   });
 
-      console.log('VISITS', this.visits);
+      console.log('VISITS: ', this.visits);
+      
       let copiedObject = JSON.parse(JSON.stringify(this.visits));
+      console.log('ID: ',copiedObject[0].id);
       let final = {
           id: copiedObject[0].id,
           patientName: copiedObject[0].patientName, 
@@ -270,16 +272,16 @@ export class VisitComponent implements OnInit {
   }
 
   addVisit() {
-    // console.log('addVisit PRESSED - the values now: ', this.visits);
+    console.log('addVisit PRESSED - the values now: ', this.visits);
 
     if (this.visitService.form.invalid || !this.visitService.form.get('patientName').value) {
       console.log('THIS FORM IS EMPTY...', this.visitService.form.get('patientName').value)
     }
     else {
-      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.form.get('patientName').value)
+      console.log('THIS FORM IS NOT EMPTY...',this.visitService.form.get('patientName').value)
       this.visits = this.visits.concat(this.visitService.form.value);
-      this.visits[0].id = this.visitId;
-      // console.log('addVisit PRESSED - the values after update: ', this.visits);
+      this.visits[0].id = Math.random().toString(20).substr(2, 6);
+      console.log('addVisit PRESSED - the values after update: ', this.visits);
       this.visitService.form.reset();
       this.visitService.initializeFormGroup()
     }

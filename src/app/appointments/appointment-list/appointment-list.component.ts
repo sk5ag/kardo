@@ -6,6 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AppointmentComponent } from '../appointment/appointment.component';
+import { VisitService } from 'src/app/shared/visit.service';
+import { VisitComponent } from 'src/app/visits/visit/visit.component';
 
 @Component({
   selector: 'app-appointment-list',
@@ -16,6 +18,7 @@ export class AppointmentListComponent implements OnInit {
 
   constructor(
     private appointmentService: AppointmentService,
+    private visitService: VisitService,
     private dialog: MatDialog
     ) { }
 
@@ -62,6 +65,19 @@ export class AppointmentListComponent implements OnInit {
     dialogConfig.width = "75%";
     dialogConfig.height = "90%";
     this.dialog.open(AppointmentComponent, dialogConfig)
+  }
+
+  onConvert(row){
+    delete row.id;
+    this.visitService.initializeFormGroup();
+    this.visitService.populateForm(row);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "75%";
+    dialogConfig.height = "90%";
+    this.dialog.open(VisitComponent, dialogConfig)
   }
 
   onEdit(row){

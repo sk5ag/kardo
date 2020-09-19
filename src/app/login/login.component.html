@@ -8,6 +8,14 @@
         {{USER | json}}
     </pre>
 </div>
+<div *ngIf="role == true; else noAccess">
+    Your have doctor access...
+</div>
+<ng-template #noAccess>
+    <h2 style="font-style: italic;">
+        <p style="color: red;"> You do not have sufficiant permissions.</p>
+    </h2>
+</ng-template>
 <ng-template #login>
     <button class="example-icon" mat-icon-button (click)="auth.googleSignin()">login with Gmail</button>
 </ng-template>

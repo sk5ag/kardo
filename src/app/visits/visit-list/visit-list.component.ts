@@ -42,8 +42,7 @@ export class VisitListComponent implements OnInit {
         this.listData.paginator = this.paginator;
       }
     );
-  }
-  
+  }  
 
   onSearchClear() {
     this.searchKey = "";

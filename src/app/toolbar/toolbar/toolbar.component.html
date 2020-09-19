@@ -25,19 +25,19 @@
           </button>
         </a>
         <a class="links" routerLink="/visits" routerLinkActive="active">
-            <button mat-menu-item>
+            <button mat-menu-item *ngIf="doctor == true;"> 
             <mat-icon>queue</mat-icon>
             <span>Doctor Visits</span>
           </button>
         </a>
         <a class="links" routerLink="/orders" routerLinkActive="active">
-            <button mat-menu-item>
+            <button mat-menu-item *ngIf="medOrder == true;">
             <mat-icon>text_snippet</mat-icon>
             <span>Medical Orders</span>
         </button>
         </a>
         <a class="links" routerLink="/prescriptions" routerLinkActive="active">
-            <button mat-menu-item>
+            <button mat-menu-item *ngIf="pharma == true;">
           <mat-icon>post_add</mat-icon>
           <span>Prescriptions</span>
         </button>
@@ -54,7 +54,7 @@
             <mat-icon>settings</mat-icon>
             <span>Settings</span>
           </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="onSignOut()">
             <mat-icon>logout</mat-icon>
             <span>Logout</span>
           </button>

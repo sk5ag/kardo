@@ -40,11 +40,12 @@ export class AuthService {
    }
 
    async signOut(){
+     console.log('Signout button is method called')
      await this.afAuth.signOut();
      return this.router.navigate(['/login']);
    }
 
-   private updateUserData({uid, email, displayName, photoURL}: User){
+   private updateUserData({uid, email, displayName, photoURL, verified, isDoctor, isPharma, isMedOrder}: User){
      // sets user data to firestore on login
      const userRef: AngularFirestoreDocument<User> = this.afs.doc('users/'+uid);
 
@@ -52,7 +53,11 @@ export class AuthService {
        uid,
        email,
        displayName,
-       photoURL
+       photoURL,
+       verified,
+       isDoctor,
+       isPharma,
+       isMedOrder
      };
 
      return userRef.set(data, { merge: true})

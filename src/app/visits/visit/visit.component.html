@@ -1,6 +1,6 @@
 <div class="container">
     <mat-toolbar>
-        <span>{{visitService.form.controls['id'].value?"Update Visit":"New Visit"}} - {{visitId}}</span>
+        <span>{{visitService.form.controls['id'].value?"Update Visit":"New Visit"}}</span>
         <span class="fill-remaining-space"></span>
         <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
     </mat-toolbar>
@@ -338,9 +338,8 @@
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="stepper.reset() ">Reset</button>
-                    <button mat-button (click)="onSubmit()">Save</button>
-                    <button mat-button (click)="onSave()">Save</button>
-
+                    <button mat-button *ngIf="visitService.form.controls['id'].value" (click)="onSubmit()">Update</button>
+                    <button mat-button *ngIf="!visitService.form.controls['id'].value" (click)="onSave()">Save</button>
                 </div>
             </mat-step>
         </mat-vertical-stepper>

@@ -12,6 +12,12 @@
     </span>
     </mat-toolbar>
 </div>
-<div>
+
+<div *ngIf="medOrder == true; else noAccess">
     <app-order-list></app-order-list>
 </div>
+<ng-template #noAccess>
+    <h3 style="font-style: italic; text-align: center;">
+        <p style="color: red;"> You do not have sufficiant permissions.</p>
+    </h3>
+</ng-template>
