@@ -135,8 +135,8 @@ export class VisitService {
       });
   }
 
-  updateVisit(visit) {
-    this.db.collection('visits').doc(visit.id).update(visit).then(function () {
+  async updateVisit(visit) {
+    await this.db.collection('visits').doc(visit.id).update(visit).then(function () {
       // console.log("Document successfully updated!");
     }).catch(function (error) {
       console.error("Error removing document: ", error);

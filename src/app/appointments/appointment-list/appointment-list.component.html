@@ -24,7 +24,11 @@
             </ng-container>
             <ng-container matColumnDef="isWaiting">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Waiting?</mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.isWaiting}}</mat-cell>
+                <mat-cell *matCellDef="let element">
+                    <button (click)="onWaitingFalse(element)" mat-icon-button *ngIf="element.isWaiting == true">YES</button>
+                    <button (click)="onWaitingTrue(element)" mat-icon-button *ngIf="element.isWaiting == false">NO</button>
+
+                </mat-cell>
             </ng-container>
             <ng-container matColumnDef="appointmentDoctor">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</mat-header-cell>
@@ -33,7 +37,8 @@
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef class="action-header">Actions</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="action-icon">
-                    <button mat-icon-button (click)="onConvert(row)"><mat-icon>check_circle_outline</mat-icon></button>
+                    <button (click)="onChangeFalse(row)" mat-icon-button *ngIf="row.appointmentStatus == true"><mat-icon>turned_in</mat-icon></button>
+                    <button (click)="onChangeTrue(row)" mat-icon-button *ngIf="row.appointmentStatus == false"><mat-icon>turned_in_not</mat-icon></button>
                     <button mat-icon-button (click)="onEdit(row)"><mat-icon>launch</mat-icon></button>
                     <button mat-icon-button color="warn" (click)="onDelete(row)"><mat-icon>delete_outline</mat-icon></button>
                 </mat-cell>

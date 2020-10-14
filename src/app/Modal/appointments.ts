@@ -2,7 +2,7 @@ export interface Appointment {
     currentDate: 'timestamp',
     clinicName: string,
     userName: string,
-    appointmentStatus: string,
+    appointmentStatus: boolean,
     appointmentDate: Date,
     appointmentDoctor: '',
     patientName: string,

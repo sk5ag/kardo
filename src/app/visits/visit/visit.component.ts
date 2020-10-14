@@ -7,6 +7,7 @@ import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Drug } from 'src/app/Modal/drug';
 import { DatePipe } from '@angular/common';
+import { visitAll } from '@angular/compiler';
 
 @Component({
   selector: 'app-visit',
@@ -172,10 +173,8 @@ export class VisitComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Visit ID: ', this.visitId);
     this.visitService.getVisits();
-    // console.log('Constructor #6');
-  }
+    }
 
 
   onClear() {
@@ -229,14 +228,13 @@ export class VisitComponent implements OnInit {
           createdOn: this.myFormattedDate,
           visitNotes: this.noteItems,
           visitOrders: this.orderItems,
-          visitPrescription: this.prescriptionItems
-
+          visitPrescription: this.prescriptionItems,
           };
       console.log('FINAL', final);
       this.visitService.insertVisit(final)
     }
 
-  onSubmit() {
+  onUpdate() {
 
     if (this.visitService.form.valid) {
       if (!this.visitService.form.get('id').value) {

@@ -5,7 +5,7 @@
         <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
     </mat-toolbar>
 </div>
-<form [formGroup]="visitService.form" class="normal-form" (ngSubmit)="onSubmit()">
+<form [formGroup]="visitService.form" class="normal-form" (ngSubmit)="onUpdate()">
 
     <div class="example-full-width">
         <!-- 
@@ -16,6 +16,10 @@
             <mat-step [stepControl]="visitService.form">
                 <form [formGroup]="visitService.form" (ngSubmit)="addVisit()">
                     <ng-template matStepLabel>Fill out patient information</ng-template>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Visit ID</mat-label>
+                        <input matInput formControlName="id">
+                    </mat-form-field>
                     <mat-form-field class="example-full-width">
                         <mat-label>Name</mat-label>
                         <input matInput placeholder="Last name, First name " formControlName="patientName" required>
@@ -338,7 +342,7 @@
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="stepper.reset() ">Reset</button>
-                    <button mat-button *ngIf="visitService.form.controls['id'].value" (click)="onSubmit()">Update</button>
+                    <button mat-button *ngIf="visitService.form.controls['id'].value" (click)="onUpdate()">Update</button>
                     <button mat-button *ngIf="!visitService.form.controls['id'].value" (click)="onSave()">Save</button>
                 </div>
             </mat-step>

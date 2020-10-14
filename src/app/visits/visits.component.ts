@@ -19,6 +19,5 @@ export class VisitsComponent implements OnInit {
     this.doctor = user.isDoctor;
   });
 }
-
   
 }

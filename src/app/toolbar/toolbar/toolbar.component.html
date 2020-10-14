@@ -19,7 +19,7 @@
     </div>
     <mat-menu #menu="matMenu">
         <a class="links" routerLink="/appointments" routerLinkActive="active">
-            <button mat-menu-item>
+            <button mat-menu-item *ngIf="assistant == true;">
             <mat-icon>add_alarm</mat-icon>
             <span>Make an Appointment</span>
           </button>
@@ -43,7 +43,7 @@
         </button>
         </a>
         <a class="links" routerLink="/drugs" routerLinkActive="active">
-            <button mat-menu-item>
+            <button mat-menu-item *ngIf="drugAdmin == true;">
           <mat-icon>ballot</mat-icon>
           <span>Drugs</span>
         </button>

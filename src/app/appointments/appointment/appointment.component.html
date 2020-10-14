@@ -12,25 +12,25 @@
         <input type="hidden" formControlName="id">
         <input type="hidden" formControlName="currentDate">
         <input type="hidden" formControlName="appointmentStatus">
-        <input type="hidden" formControlName="clinicName">
-        <input type="hidden" formControlName="userName">
+        <input type="hidden" formControlName="clinicName" value={{myClinic}}>
         <mat-form-field class="example-full-width">
             <mat-label>Logged in from:</mat-label>
-            <input matInput disabled value="Dr. Ibrahim Amin (Clinic)">
+            <input matInput disabled value="{{myClinic}}">
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Logged in as:</mat-label>
-            <input matInput disabled value="Ms. Gelas Faqy Al Din">
+            <input matInput disabled value="{{myName}}">
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-select formControlName="appointmentDoctor" placeholder="Appointment Doctor" required>
                 <mat-option>None</mat-option>
-                <ng-container *ngFor="let doctor of doctors">
-                    <mat-option value="{{doctor.name}}">{{doctor.name}}</mat-option>
+                <ng-container *ngFor="let doctor of docArray">
+                    <mat-option value="{{doctor.displayName}}">{{doctor.displayName}}</mat-option>
                 </ng-container>
             </mat-select>
             <mat-error>This field is required</mat-error>
         </mat-form-field>
+
         <mat-form-field class="example-full-width">
             <input formControlName="patientName" matInput placeholder="Patient Name" required>
             <mat-error>This field is required</mat-error>
@@ -57,7 +57,7 @@
             <mat-error *ngIf="appointmentService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
         </mat-form-field>
         <mat-form-field class="example-full-width">
-            <input formControlName="appointmentDate" matInput [matDatepicker]="picker" placeholder="Appointment Date">
+            <input formControlName="appointmentDate" matInput [matDatepicker]="picker" placeholder="Appointment Date (MM/DD/2020)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>

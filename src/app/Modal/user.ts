@@ -8,4 +8,7 @@ export interface User {
     isDoctor?: boolean;
     isPharma?: boolean;
     isMedOrder?: boolean;
+    isAssistant?:boolean;
+    isdrugAdmin?:boolean;
+    clinic?:string;
 }

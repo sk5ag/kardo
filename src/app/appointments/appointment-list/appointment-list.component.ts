@@ -67,6 +67,10 @@ export class AppointmentListComponent implements OnInit {
     this.dialog.open(AppointmentComponent, dialogConfig)
   }
 
+
+  // this isn't a good idea.. therefor i will do the convert using a cloud function
+  //once completed, remove this function.
+  
   onConvert(row){
     delete row.id;
     this.visitService.initializeFormGroup();
@@ -82,6 +86,8 @@ export class AppointmentListComponent implements OnInit {
 
   onEdit(row){
 
+    console.log('ROW: ' , row)
+
     this.appointmentService.populateForm(row);
 
     const dialogConfig = new MatDialogConfig();
@@ -96,7 +102,32 @@ onDelete(row){
   if(confirm('Are you sure to delete this record?')){
     this.appointmentService.deleteAppointment(row.id)  
 }
+}
 
+onChangeTrue(row){
+
+  if(confirm('Confirm you want to changing this doctor visit to appointment?')){
+    this.appointmentService.changeStatusTrue(row);
+  }
+}
+onChangeFalse(row){
+
+  if(confirm('Confirm you want to changing this appointment to doctor visit?')){
+    this.appointmentService.changeStatusFalse(row);
+  }
+}
+
+onWaitingTrue(element){
+  if(confirm('Confirm you want to change the waiting status to [Waiting]?')){
+    this.appointmentService.changeWaitTrue(element);
+  }
+}
+
+onWaitingFalse(element){
+
+  if(confirm('Confirm you want to change the waiting status to [Not Waiting]?')){
+    this.appointmentService.changeWaitFalse(element);
+  }
 }
 
 onClose(){

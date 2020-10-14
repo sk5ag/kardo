@@ -12,6 +12,16 @@
     </span>
     </mat-toolbar>
 </div>
-<div>
+
+<div *ngIf="assistant == true; else noAccess">
     <app-appointment-list></app-appointment-list>
 </div>
+
+
+<ng-template #noAccess>
+    <h3 style="font-style: italic; text-align: center;">
+        <p style="color: red;"> You do not have sufficiant permissions.</p>
+    </h3>
+</ng-template>
+
+<div style="text-align:center; color: rgb(177, 174, 174)">©2020 by Sapient Technology.</div>

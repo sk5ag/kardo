@@ -11,6 +11,8 @@ export class ToolbarComponent implements OnInit {
   pharma: boolean;
   doctor: boolean;
   medOrder: boolean;
+  drugAdmin: boolean;
+  assistant: boolean;
 
 
   constructor(public auth: AuthService) { }
@@ -23,7 +25,8 @@ export class ToolbarComponent implements OnInit {
       this.pharma = user.isPharma;
       this.doctor = user.isDoctor;
       this.medOrder = user.isMedOrder;
-
+      this.drugAdmin = user.isdrugAdmin;
+      this.assistant = user.isAssistant;
     });
   }
 

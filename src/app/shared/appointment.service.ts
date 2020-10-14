@@ -15,8 +15,9 @@ export class AppointmentService {
   appointments: Observable<Appointment>;
   collectionPath: string = "/appointments";
 
-  constructor(private db: AngularFirestore) {
-    this.appointmentsCollection = this.db.collection(this.collectionPath)
+  constructor(
+    private db: AngularFirestore) {
+      this.appointmentsCollection = this.db.collection(this.collectionPath)
    }
 
    appointmentList: AngularFireList<any>;
@@ -26,7 +27,7 @@ export class AppointmentService {
     currentDate: new FormControl(''),
     clinicName: new FormControl(''),
     userName: new FormControl(''),
-    appointmentStatus: new FormControl(''),
+    appointmentStatus: new FormControl(false),
     appointmentDate: new FormControl(''),
     appointmentDoctor: new FormControl('', Validators.required),
     patientName: new FormControl('', Validators.required),
@@ -42,7 +43,7 @@ export class AppointmentService {
       currentDate: '',
       clinicName: '',
       userName: '',
-      appointmentStatus: '',
+      appointmentStatus: false,
       appointmentDate: '',
       appointmentDoctor: '',
       patientName: '',
@@ -55,6 +56,48 @@ export class AppointmentService {
 
   getAppointments(){
     return this.db.collection('appointments').snapshotChanges()
+  }
+
+  changeClinic(appointment, myclinicName){
+    //change the values of clinic here
+    console.log('original clinic name: ', appointment.clinic);
+    appointment.clinicName=myclinicName;
+    console.log('new clinic name: ', appointment.clinicName);
+  }
+
+  changeUsername(appointment, myuserName){
+    //change the values of username here
+    //change the values of clinic here
+    console.log('original clinic name: ', appointment.userName);
+    appointment.userName=myuserName;
+    console.log('new clinic name: ', appointment.userName);
+  }
+
+  changeStatusTrue(row){
+
+    row.appointmentStatus = true;
+    this.updateAppointment(row);
+  }
+
+  changeStatusFalse(row){
+
+    row.appointmentStatus = false;
+    this.updateAppointment(row);
+  }
+
+  changeWaitTrue(row){
+
+    row.isWaiting = true;
+
+    this.updateAppointment(row);
+
+  }
+
+  changeWaitFalse(row){
+
+    row.isWaiting = false;
+
+    this.updateAppointment(row);
 
   }
 
@@ -63,7 +106,7 @@ export class AppointmentService {
     await this.db.collection('appointments').add(appointment)
       .then(function (docRef){
         docRef.update({
-          id: docRef.id
+          id: docRef.id,
         })
       });
   }
@@ -86,7 +129,6 @@ export class AppointmentService {
 
 
   populateForm(row){
-
     this.form.patchValue(
        {
        id: row.id,
@@ -95,7 +137,8 @@ export class AppointmentService {
        patientAge: row.patientAge,
        patientGender: row.patientGender,
        patientMobile: row.patientMobile,
-       isWaiting: row.isWaiting
+       isWaiting: row.isWaiting,
+       userName: row.userName,
      }
     );
   }
