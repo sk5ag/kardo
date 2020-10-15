@@ -44,7 +44,7 @@ export class VisitService {
     clinicName: new FormControl(''),
     doctorName: new FormControl(''),
     doctorSig: new FormControl('', Validators.required),
-    visitStatus: new FormControl('', Validators.required),
+    visitStatus: new FormControl(''),
     visitDate: new FormControl(''),
     visitDoctor: new FormControl(''),
   });  
@@ -124,7 +124,7 @@ export class VisitService {
   }
 
   async insertVisit(visit) {
-    // console.log('Inserting the new visit')
+    console.log('Inserting the new visit')
 
     await this.db.collection('visits').add(visit)
       .then(function (docRef) {
@@ -135,9 +135,9 @@ export class VisitService {
       });
   }
 
-  async updateVisit(visit) {
-    await this.db.collection('visits').doc(visit.id).update(visit).then(function () {
-      // console.log("Document successfully updated!");
+  updateVisit(visit) {
+    this.db.collection('visits').doc(visit.id).update(visit).then(function () {
+      console.log("Document successfully updated!");
     }).catch(function (error) {
       console.error("Error removing document: ", error);
     });
@@ -152,7 +152,7 @@ export class VisitService {
   }
 
   populateForm(row) {
-    console.log('whats the row patient name? ',row.patientName);
+    console.log('populateForm - Values in Row ',row);
     this.form.patchValue(
       {
         id: row.id,        
@@ -160,7 +160,7 @@ export class VisitService {
         patientAge: row.patientAge,
         patientGender: row.patientGender,
         patientMobile: row.patientMobile,
-        visitStatus: row.visitStatus,
+        // visitStatus: row.visitStatus,
         visitDate: row.visitDate,
         visitDoctor: row.visitDoctor,
 
@@ -175,6 +175,16 @@ export class VisitService {
     );
   }
 
+
+  populatevisitForm(row) {
+    console.log('populatevisitForm - Values in Row ',row.visitStatus);
+    this.form.patchValue(
+      {
+        visitStatus: row.visitStatus,
+      }
+    );
+  }
+
   populateSelectedorder(item: any) {
     this.ordersForm.patchValue(
       {
@@ -185,11 +195,11 @@ export class VisitService {
     )
   }
 
-  populateSelectednote(item: any) {
+  populateSelectednote(row) {
     this.notesForm.patchValue(
       {
-        examination_title: item.examination_title,
-        examination_description: item.examination_description,
+        examination_title: row.examination_title,
+        examination_description: row.examination_description,
       }
     )
     }   

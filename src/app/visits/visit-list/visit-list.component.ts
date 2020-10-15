@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { VisitComponent } from '../visit/visit.component';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-visit-list',
@@ -18,6 +19,8 @@ export class VisitListComponent implements OnInit {
     private visitService: VisitService,
     private dialog: MatDialog
   ) { }
+
+  notesList:any = [];
 
   listData: MatTableDataSource<Visit>;
   displayColumns: string[] = ['patientName', 'patientGender', 'patientAge', 'isClosed', 'actions'];
@@ -64,7 +67,11 @@ export class VisitListComponent implements OnInit {
   }
 
   onEdit(row) {
+
+    console.log('onEdit Called - here is the data in Row object: ', row.visitNotes)
     this.visitService.populateForm(row);
+    this.visitService.populatevisitForm(row);
+
     const visitdialogConfig = new MatDialogConfig();
     visitdialogConfig.disableClose = true;
     visitdialogConfig.autoFocus = true;

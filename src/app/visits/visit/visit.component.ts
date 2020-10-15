@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { VisitService } from '../../shared/visit.service';
 import { DrugService } from '../../shared/drug.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -7,7 +7,6 @@ import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { Drug } from 'src/app/Modal/drug';
 import { DatePipe } from '@angular/common';
-import { visitAll } from '@angular/compiler';
 
 @Component({
   selector: 'app-visit',
@@ -58,16 +57,7 @@ export class VisitComponent implements OnInit {
 
   displayorderColumns: string[] = ['order_title', 'order_type', 'order_category', 'actions'];
 
-  myNotes: any[] = [
-    {
-      "examination_title": "Note 01",
-      "examination_description": "This is a generic note",
-    },
-    {
-      "examination_title": "Note 02",
-      "examination_description": "This is a generic note",
-    },
-  ];
+  @Input() myNotes: any[] = [];
 
   displaynoteColumns: string[] = ['examination_title', 'examination_description', 'actions'];
 
@@ -173,8 +163,11 @@ export class VisitComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    console.log('Values passed: ', this.visitId);
     this.visitService.getVisits();
-    }
+    // console.log('Constructor #6');
+  }
 
 
   onClear() {
@@ -187,6 +180,7 @@ export class VisitComponent implements OnInit {
   }
 
   onSave() {
+    console.log('onSAVE - Visit ID at the start of onSave: ', this.visitId)
       let mapNotes = new Map()
         .set("notesMap", this.notes);
 
@@ -228,13 +222,64 @@ export class VisitComponent implements OnInit {
           createdOn: this.myFormattedDate,
           visitNotes: this.noteItems,
           visitOrders: this.orderItems,
-          visitPrescription: this.prescriptionItems,
+          visitPrescription: this.prescriptionItems
+
           };
       console.log('FINAL', final);
       this.visitService.insertVisit(final)
     }
 
-  onUpdate() {
+    onUpdate() {
+      console.log('onSAVE - Visit ID at the start of onSave: ', this.visitId)
+        let mapNotes = new Map()
+          .set("notesMap", this.notes);
+  
+        mapNotes.forEach(noteItems => {
+          console.log('Values inside mapNotes', noteItems)
+          this.noteItems = noteItems;
+        });
+  
+        let mapOrders = new Map()
+        .set("orderssMap", this.orders);
+  
+      mapOrders.forEach(orderItems => {
+        console.log('Values inside mapNotes', orderItems)
+        this.orderItems = orderItems;
+      });
+  
+      let mapPrescriptions = new Map()
+      .set("orderssMap", this.prescriptions);
+  
+      mapPrescriptions.forEach(prescriptionItems => {
+      console.log('Values inside mapNotes', prescriptionItems)
+      this.prescriptionItems = prescriptionItems;
+    });
+  
+        console.log('VISITS: ', this.visits);
+        
+        let copiedObject = JSON.parse(JSON.stringify(this.visits));
+        //console.log('ID: ',copiedObject[0].id);
+        let final = {
+            //id: copiedObject[0].id,
+            patientName: copiedObject[0].patientName, 
+            patientAge: copiedObject[0].patientAge,
+            patientMobile: copiedObject[0].patientMobile,
+            patientGender: copiedObject[0].patientGender,
+            isClosed: copiedObject[0].isClosed,
+            patientBloodGroup: copiedObject[0].patientBloodGroup,
+            patientLongtermIllness: copiedObject[0].patientLongtermIllness,
+            patientLongtermMedicine: copiedObject[0].patientLongtermMedicine,
+            createdOn: this.myFormattedDate,
+            visitNotes: this.noteItems,
+            visitOrders: this.orderItems,
+            visitPrescription: this.prescriptionItems
+  
+            };
+        console.log('FINAL', final);
+        this.visitService.updateVisit(final)
+      }
+
+  onSubmit() {
 
     if (this.visitService.form.valid) {
       if (!this.visitService.form.get('id').value) {
