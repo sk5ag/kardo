@@ -42,6 +42,8 @@ import { DrugComponent } from './drugs/drug/drug.component';
 import { DrugListComponent } from './drugs/drug-list/drug-list.component';
 import { DrugService } from './shared/drug.service';
 import { LoginComponent } from './login/login.component';
+import { EditVisitComponent } from './visits/edit-visit/edit-visit.component';
+import { VisitEditService } from './shared/visit-edit.service';
 
 
 @NgModule({
@@ -52,6 +54,7 @@ import { LoginComponent } from './login/login.component';
     AppointmentComponent,
     VisitsComponent,
     VisitComponent,
+    EditVisitComponent,
     OrdersComponent,
     OrderComponent,
     PrescriptionsComponent,
@@ -64,6 +67,7 @@ import { LoginComponent } from './login/login.component';
     DrugComponent,
     DrugListComponent,
     LoginComponent,
+    EditVisitComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,13 +84,24 @@ import { LoginComponent } from './login/login.component';
     AngularFireAuthModule,
     
   ],
-  providers: [TestService, DepartmentService, TesttypeService, AppointmentService, OrderService, PrescriptionService, VisitService, DrugService ],
+  providers: [
+    TestService, 
+    DepartmentService, 
+    TesttypeService, 
+    AppointmentService, 
+    OrderService, 
+    PrescriptionService, 
+    VisitService, 
+    DrugService, 
+    VisitEditService ,
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     AppointmentComponent, 
     OrderComponent,
     PrescriptionComponent,
     VisitComponent,
+    EditVisitComponent,
     DrugsComponent
   ],
 })

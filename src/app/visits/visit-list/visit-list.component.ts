@@ -6,7 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { VisitComponent } from '../visit/visit.component';
-import { element } from 'protractor';
+import { VisitEditService } from '../../shared/visit-edit.service';
+import { EditVisitComponent } from '../edit-visit/edit-visit.component';
 
 @Component({
   selector: 'app-visit-list',
@@ -17,7 +18,8 @@ export class VisitListComponent implements OnInit {
 
   constructor(
     private visitService: VisitService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private visitedit: VisitEditService
   ) { }
 
   notesList:any = [];
@@ -68,16 +70,16 @@ export class VisitListComponent implements OnInit {
 
   onEdit(row) {
 
-    console.log('onEdit Called - here is the data in Row object: ', row.visitNotes)
-    this.visitService.populateForm(row);
-    this.visitService.populatevisitForm(row);
-
+    console.log('onEdit Called - here is the data in Row object: ', row)
+    // this.visitService.populateForm(row);
+    // this.visitService.populatevisitForm(row);
+    this.visitedit.sendMessage(row);
     const visitdialogConfig = new MatDialogConfig();
     visitdialogConfig.disableClose = true;
     visitdialogConfig.autoFocus = true;
     visitdialogConfig.width = "75%";
     visitdialogConfig.height = "90%";
-    this.dialog.open(VisitComponent, visitdialogConfig)
+    this.dialog.open(EditVisitComponent, visitdialogConfig)
     
   }
 
