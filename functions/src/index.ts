@@ -31,6 +31,7 @@ exports.appointmentUpdate = functions.firestore.document('/{collection}/{id}')
     if (collection === 'appointments') {
 
       if (values.appointmentStatus === true) {
+        console.log("CHANGING STATUS FROM APPOINTMENT TO VISIT");
         return visits.add({
 
           id: '',

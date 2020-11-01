@@ -169,7 +169,6 @@ export class VisitComponent implements OnInit {
     // console.log('Constructor #6');
   }
 
-
   onClear() {
     this.visitService.form.reset();
     this.visitService.initializeFormGroup();
@@ -356,10 +355,18 @@ export class VisitComponent implements OnInit {
       // console.log('THIS FORM IS NOT EMPTY...',this.visitService.ordersForm.get('order_title').value)
       this.orders = this.orders.concat(this.visitService.ordersForm.value);
       // console.log('addOrder PRESSED - the values after update: ', this.orders);
-      this.visitService.ordersForm.reset();
-      this.visitService.initializeordersFormGroup()
+      // this.visitService.ordersForm.reset();
+      // this.visitService.initializeordersFormGroup();
     }
+    console.log('VALUE INSIDE OrderForm:', this.visitService.ordersForm.value);
+    this.visitService.ordersForm.reset();
+    this.visitService.initializeordersFormGroup();
+    console.log('VALUE INSIDE OrderForm after reset and clear:', this.visitService.ordersForm.value);
+
+    console.log('VALUE INSIDE orderControl:', this.orderControl.value);
     this.orderControl.setValue('');
+    this.orderControl.reset();
+    console.log('VALUE INSIDE orderControl after reset and clear:', this.orderControl.value);
   }
 
   addPrescription() {
