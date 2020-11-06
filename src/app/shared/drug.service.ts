@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Drug } from '../Modal/drug';
-import { AngularFireList } from '@angular/fire/database';
+import { AngularFireList } from '@angular/fire/database'; 
 
 @Injectable({
   providedIn: 'root'

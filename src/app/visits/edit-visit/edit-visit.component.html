@@ -1,6 +1,164 @@
-<p>edit-visit works!</p>
-<button (click)="showMessage()">Show Message</button>
-<hr>
-<div *ngFor="let msg of messages">
-    {{msg.patientName}}
-</div>
+<div class="container">
+    <mat-toolbar>
+        <span>Edit visit details</span>
+        <span class="fill-remaining-space"></span>
+        <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+
+    </mat-toolbar>
+    <hr>
+    <div *ngFor="let visit of visitArray">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>{{visit.patientName}}</mat-card-title>
+                <mat-card-subtitle>{{visit.patientAge}} | {{visit.patientGender}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+                <p>
+                    Long term illness: {{visit.patientLongtermIllness}}
+                </p>
+                <p>
+                    Visit description: {{visit.visitDescription}}
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button (click)="onSwitch()" mat-button *ngIf="prescriptionOn == false">Prescribe Medicine</button>
+                <button (click)="onSwitch()" mat-button *ngIf="prescriptionOn == true">Order Lab Test</button>
+            </mat-card-actions>
+        </mat-card>
+
+        <br>
+        <mat-card class="example-card" *ngIf="prescriptionOn == true">
+            <mat-card-header>
+                <mat-card-subtitle><strong>Prescription list:</strong></mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+                <div class="search-div">
+                    <mat-form-field class="search-form-field" floatLabel="never">
+                        <input matInput [(ngModel)]="prescription_searchKey" placeholder="Search" autocomplete="off" (keyup)="applyPrescriptionFilter()">
+                    </mat-form-field>
+                </div>
+
+                <div class="mat-elevation-z8" *ngIf="prescription_searchKey">
+                    <mat-table [dataSource]="listPrescriptionData" matSort>
+                        <ng-container matColumnDef="generic_name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Generic Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.generic_name}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="strength">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Strength</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.strength}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="ingredient">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Ingredient</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.ingredient}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="dosage_form">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Dosage Form</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.dosage_form}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="route">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Route</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.route}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="action-icon">
+                                <button mat-button (click)="onAdd(row)">ADD</button>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                Loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayPrescriptionColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayPrescriptionColumns;"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listPrescriptionData!=null}"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listPrescriptionData!=null && listPrescriptionData.data.length==0)}"></mat-footer-row>
+
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[5,10,25,50,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+                </div>
+                <br>
+                <div *ngFor="let item of visitPrescription">
+                    <li *ngFor="let element of item; let j = index"> <button mat-icon-button color="warn" (click)="removePrescription(j)"><mat-icon>delete_outlined</mat-icon></button> {{element.generic_name}} | {{element.strength}} | {{element.dosage_form}} | {{element.route}} | {{element.isDispensed}}
+
+                    </li>
+
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="onUpdate()">Update & Close</button>
+            </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="example-card" *ngIf="orderOn == true">
+            <mat-card-header>
+                <mat-card-subtitle><strong>Medical order list:</strong></mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+                <div class="search-div">
+                    <mat-form-field class="search-form-field" floatLabel="never">
+                        <input matInput [(ngModel)]="order_searchKey" placeholder="Search" autocomplete="off" (keyup)="applyOrderFilter()">
+                    </mat-form-field>
+                </div>
+
+                <div class="mat-elevation-z8" *ngIf="order_searchKey">
+                    <mat-table [dataSource]="listOrderData" matSort>
+                        <ng-container matColumnDef="medorder_title">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Order Title</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.medorder_title}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="medorder_category">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.medorder_category}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="medorder_description">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                            <mat-cell *matCellDef="let element">{{element.medorder_description}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                            <mat-cell *matCellDef="let row" class="action-icon">
+                                <button mat-button (click)="onAddOrder(row)">ORDER</button>
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="loading">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                Loading data...
+                            </mat-footer-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="noData">
+                            <mat-footer-cell *matFooterCellDef colspan="6">
+                                No data.
+                            </mat-footer-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayOrderColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayOrderColumns;"></mat-row>
+                        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listOrderData!=null}"></mat-footer-row>
+                        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listOrderData!=null && listOrderData.data.length==0)}"></mat-footer-row>
+
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[5,10,25,50,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+                </div>
+                <br>
+                <div *ngFor="let item of visitOrder">
+                    <li *ngFor="let element of item; let i =index"> <button mat-icon-button color="warn" (click)="removeOrder(i)"><mat-icon>delete_outlined</mat-icon></button> {{element.medorder_title}} | {{element.medorder_category}} | {{element.medorder_description}}
+                    </li>
+
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="onUpdate()">Update & Close</button>
+            </mat-card-actions>
+        </mat-card>
+
+    </div>

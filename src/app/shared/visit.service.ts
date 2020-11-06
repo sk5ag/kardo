@@ -33,6 +33,8 @@ export class VisitService {
     patientLongtermIllness: new FormControl(''),
     patientLongtermMedicine: new FormControl(''),
     visitDescription: new FormControl(''),
+    prescription: new FormControl([]),
+    order: new FormControl([]),
     isClosed: new FormControl(false)
   });
 
@@ -64,7 +66,7 @@ export class VisitService {
     dosage_form: new FormControl(''),
     strength: new FormControl('')
   });
-
+ 
   initializeFormGroup(){
     this.form.setValue({
       id: null,
@@ -76,6 +78,8 @@ export class VisitService {
       patientLongtermIllness: '',
       patientLongtermMedicine: '',
       visitDescription: '',
+      prescription: [],
+      order: [],
       isClosed: false
     });
   }
@@ -136,6 +140,15 @@ export class VisitService {
   }
 
   updateVisit(visit) {
+    console.log('RECEIEVD BY UPDATE METHOD: ', visit[0].id);
+    this.db.collection('visits').doc(visit[0].id).update(visit[0]).then(function () {
+      console.log("Document successfully updated!");
+    }).catch(function (error) {
+      console.error("Error removing document: ", error);
+    });
+  }
+  modifyVisit(visit) {
+    console.log('RECEIEVD BY UPDATE METHOD: ', visit.id);
     this.db.collection('visits').doc(visit.id).update(visit).then(function () {
       console.log("Document successfully updated!");
     }).catch(function (error) {

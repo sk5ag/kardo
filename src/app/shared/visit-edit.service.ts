@@ -9,9 +9,9 @@ export class VisitEditService {
 
   private subject = new BehaviorSubject('');
 
-  sendMessage(message: string):void {
-    console.log(message)
-    this.subject.next(message);
+  sendMessage(visitArray: string):void {
+    console.log(visitArray)
+    this.subject.next(visitArray);
   }
 
   clearMessages():void {

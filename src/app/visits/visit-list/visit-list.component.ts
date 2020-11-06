@@ -28,7 +28,7 @@ export class VisitListComponent implements OnInit {
   displayColumns: string[] = ['patientName', 'patientGender', 'patientAge', 'isClosed', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  searchKey: string;
+  searchKey: string;  
 
   ngOnInit(): void {
     this.visitService.getVisits()
@@ -68,18 +68,33 @@ export class VisitListComponent implements OnInit {
     this.dialog.open(VisitComponent, visitdialogConfig) 
   }
 
+  onModify(row) {
+
+    console.log('onEdit Called - here is the data in Row object: ', row.visitNotes)
+    this.visitService.populateForm(row);
+    this.visitService.populatevisitForm(row);
+
+    const visitdialogConfig = new MatDialogConfig();
+    visitdialogConfig.disableClose = true;
+    visitdialogConfig.autoFocus = true;
+    visitdialogConfig.width = "75%";
+    visitdialogConfig.height = "90%";
+    this.dialog.open(VisitComponent, visitdialogConfig)
+    
+  }
+
   onEdit(row) {
 
     console.log('onEdit Called - here is the data in Row object: ', row)
     // this.visitService.populateForm(row);
     // this.visitService.populatevisitForm(row);
     this.visitedit.sendMessage(row);
-    const visitdialogConfig = new MatDialogConfig();
-    visitdialogConfig.disableClose = true;
-    visitdialogConfig.autoFocus = true;
-    visitdialogConfig.width = "75%";
-    visitdialogConfig.height = "90%";
-    this.dialog.open(EditVisitComponent, visitdialogConfig)
+    const visitPrescriptiondialogConfig = new MatDialogConfig();
+    visitPrescriptiondialogConfig.disableClose = true;
+    visitPrescriptiondialogConfig.autoFocus = true;
+    visitPrescriptiondialogConfig.width = "75%";
+    visitPrescriptiondialogConfig.height = "90%";
+    this.dialog.open(EditVisitComponent, visitPrescriptiondialogConfig)
     
   }
 

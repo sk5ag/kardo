@@ -257,9 +257,9 @@ export class VisitComponent implements OnInit {
         console.log('VISITS: ', this.visits);
         
         let copiedObject = JSON.parse(JSON.stringify(this.visits));
-        //console.log('ID: ',copiedObject[0].id);
+        console.log('ID: ',copiedObject[0].id);
         let final = {
-            //id: copiedObject[0].id,
+            id: copiedObject[0].id,
             patientName: copiedObject[0].patientName, 
             patientAge: copiedObject[0].patientAge,
             patientMobile: copiedObject[0].patientMobile,
@@ -279,13 +279,16 @@ export class VisitComponent implements OnInit {
       }
 
   onSubmit() {
-
+    console.log('ID of the document you are trying to modify: ', this.visitService.form.get('id').value);
     if (this.visitService.form.valid) {
+      console.log('FORM VALID');
       if (!this.visitService.form.get('id').value) {
+        console.log('FORM had not ID');
         this.visitService.insertVisit(this.visitService.form.value);
       }
       else
-        this.visitService.updateVisit(this.visitService.form.value);
+        console.log('FORM has ID: ');
+        this.visitService.modifyVisit(this.visitService.form.value);
       this.visitService.form.reset();
       this.visitService.initializeFormGroup();
       this.visitService.initializevisitFormGroup();

@@ -12,336 +12,56 @@
         <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
                 {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
               </button> -->
-        <mat-vertical-stepper #stepper>
-            <mat-step [stepControl]="visitService.form">
-                <form [formGroup]="visitService.form" (ngSubmit)="addVisit()">
-                    <ng-template matStepLabel>Fill out patient information</ng-template>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Name</mat-label>
-                        <input matInput placeholder="Last name, First name " formControlName="patientName" required>
-                    </mat-form-field>
-                    <div class="example-full-width">
-                        <div class="add-bottom-padding">
-                            <div class="add-bottom-padding">
-                                <mat-label>Gender</mat-label>
-                            </div>
-                            <mat-radio-group color="primary" formControlName="patientGender">
-                                <mat-radio-button value="M">Male</mat-radio-button>
-                                <mat-radio-button value="F">Female</mat-radio-button>
-                                <mat-radio-button value="O">Other</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                    </div>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Age</mat-label>
-                        <input matInput placeholder="Patient's Age " formControlName="patientAge" required>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Mobile</mat-label>
-                        <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
-                        <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
-                        <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-select formControlName="patientBloodGroup" placeholder="Blood Group" required>
-                            <mat-option>None</mat-option>
-                            <ng-container *ngFor="let bloodgroup of bloodgroups">
-                                <mat-option value="{{bloodgroup.bg_id}}">{{bloodgroup.value}}</mat-option>
-                            </ng-container>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Patient Illness</mat-label>
-                        <textarea formControlName="patientLongtermIllness" matInput placeholder="Patient Longterm Illness"></textarea>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Medicines</mat-label>
-                        <textarea formControlName="patientLongtermMedicine" matInput placeholder="Patient Longterm Medicine"></textarea>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Impressions</mat-label>
-                        <textarea formControlName="visitDescription" matInput placeholder="Preliminary impressions"></textarea>
-                    </mat-form-field>
-                    <div class="add-bottom-padding">
-                        <mat-checkbox formControlName="isClosed">Close this visit after submit</mat-checkbox>
-                    </div>
-                    <div>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
-            <mat-step [stepControl]="visitService.visitForm">
-                <form [formGroup]="visitService.visitForm">
-                    <ng-template matStepLabel>Fill out visit information</ng-template>
-                    <div class="font-size-style">
-                        <p>
-                            <strong>Visit Date: </strong> Sunday, July 26, 2020
-                        </p>
-                        <p>
-                            <strong>Doctor: </strong> Dr. Ibrahim Amin
-                        </p>
-                        <p>
-                            <strong>Doctor and Clinic: </strong> Dr. Ibrahim Amin | THE CLINIC NAME
-                        </p>
-                    </div>
-                    <mat-form-field class="example-full-width">
-                        <mat-select formControlName="visitStatus" placeholder="Visit Status" required>
-                            <mat-option>None</mat-option>
-                            <ng-container *ngFor="let status of visitstatus">
-                                <mat-option value="{{status.vs_id}}">{{status.value}}</mat-option>
-                            </ng-container>
-                        </mat-select>
-                    </mat-form-field>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
-            <mat-step [stepControl]="visitService.notesForm">
-                <form [formGroup]="visitService.notesForm" (ngSubmit)="addNote()">
-                    <ng-template matStepLabel>Add notes to this visit</ng-template>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Examination title</mat-label>
-                        <input matInput ref-newnoteFilter placeholder="Examination title" formControlName="examination_title" required>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Examination Description</mat-label>
-                        <textarea matInput placeholder="Examination description" formControlName="examination_description" required></textarea>
-                    </mat-form-field>
-                    <div class="form-btn-align">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.notesForm.invalid || !newnoteFilter.value">Add</button>
-                    </div>
-                    <div class="mat-elevation-z2">
-                        <mat-table [dataSource]="notes" matSort>
-                            <ng-container matColumnDef="examination_title" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-                                <mat-cell *matCellDef="let element ">{{element.examination_title}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="examination_description">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-                                <mat-cell *matCellDef="let element ">{{element.examination_description}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="actions" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                                <mat-cell *matCellDef="let row" class="action-icon">
-                                    <button mat-icon-button color="warn" (click)="removeNote(row)"><mat-icon>delete_outline</mat-icon></button>
-                                </mat-cell>
-                            </ng-container>
-                            <mat-header-row *matHeaderRowDef="displaynoteColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displaynoteColumns;"></mat-row>
-                            <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
-                            <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(orders!=null && orders.data.length==0)} "></mat-footer-row> -->
-                        </mat-table>
-                        <!-- <mat-paginator [pageSizeOptions]="[5,10,25,50,100] " [pageSize]="5 " showFirstLastButtons></mat-paginator> -->
-                    </div>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
-
-            <mat-step [stepControl]="visitService.ordersForm">
-                <form [formGroup]="visitService.ordersForm" (ngSubmit)="addOrder()">
-                    <ng-template matStepLabel>Add orders to this visit</ng-template>
-                    <mat-form-field class="example-full-width">
-                        <input type="text" placeholder="Pick a test or procedure" matInput [formControl]="orderControl" [matAutocomplete]="autoOrder">
-                        <mat-autocomplete #autoOrder="matAutocomplete">
-                            <mat-option *ngFor="let order of filteredOrders | async" [value]="order.order_title" (onSelectionChange)="populateOrder(order)" required>
-                                <span>{{order.order_title}}</span> |
-                                <small>Order type: {{order.order_type}}</small> |
-                                <small>Order category: {{order.order_category}}</small>
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Order title</mat-label>
-                        <input matInput ref-neworderFilter placeholder="Order title" formControlName="order_title" required>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Order type</mat-label>
-                        <input matInput placeholder="Order type" formControlName="order_type">
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Order category</mat-label>
-                        <input matInput placeholder="Order category" formControlName="order_category">
-                    </mat-form-field>
-                    <div class="form-btn-align">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.ordersForm.invalid || !neworderFilter.value">Add</button>
-                    </div>
-                    <div class="mat-elevation-z2">
-                        <mat-table [dataSource]="orders" matSort>
-                            <ng-container matColumnDef="order_title" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
-                                <mat-cell *matCellDef="let element ">{{element.order_title}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="order_type">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
-                                <mat-cell *matCellDef="let element ">{{element.order_type}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="order_category">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
-                                <mat-cell *matCellDef="let element">{{element.order_category}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="actions" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                                <mat-cell *matCellDef="let row" class="action-icon">
-                                    <button mat-icon-button color="warn" (click)="removeTest(row)"><mat-icon>delete_outline</mat-icon></button>
-                                </mat-cell>
-                            </ng-container>
-                            <mat-header-row *matHeaderRowDef="displayorderColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayorderColumns;"></mat-row>
-                            <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
-                            <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(orders!=null && orders.data.length==0)} "></mat-footer-row> -->
-                        </mat-table>
-                        <!-- <mat-paginator [pageSizeOptions]="[5,10,25,50,100] " [pageSize]="5 " showFirstLastButtons></mat-paginator> -->
-                    </div>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
-
-            <mat-step [stepControl]="visitService.prescriptionsForm">
-                <form [formGroup]="visitService.prescriptionsForm" (ngSubmit)="addPrescription()">
-                    <ng-template matStepLabel>Add prescriptions to this visit</ng-template>
-                    <mat-form-field class="example-full-width">
-                        <input type="text" placeholder="Pick a medicine" matInput [formControl]="prescriptionControl" [matAutocomplete]="autoPrescription">
-                        <mat-autocomplete #autoPrescription="matAutocomplete">
-                            <mat-option *ngFor="let prescription of filteredPrescription | async" [value]="prescription.generic_name" (onSelectionChange)="populatePrescription(prescription)" required>
-                                <span>{{prescription.generic_name}}</span> |
-                                <small>{{prescription.route}}</small> |
-                                <small>{{prescription.dosage_form}}</small> |
-                                <small>{{prescription.strength}}</small>
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Generic Name</mat-label>
-                        <input matInput ref-newprescriptionFilter placeholder="Generic Name" formControlName="generic_name">
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Dosage Form</mat-label>
-                        <input matInput placeholder="Dosage Form" formControlName="dosage_form">
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <mat-label>Strength</mat-label>
-                        <input matInput placeholder="Strength" formControlName="strength">
-                    </mat-form-field>
-                    <div class="form-btn-align">
-                        <button mat-raised-button color="primary" type="submit" [disabled]="visitService.prescriptionsForm.invalid || !newprescriptionFilter.value">Add</button>
-                    </div>
-                    <div class="mat-elevation-z2">
-                        <mat-table [dataSource]="prescriptions" matSort>
-                            <ng-container matColumnDef="generic_name" sticky>
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Generic Name</mat-header-cell>
-                                <mat-cell *matCellDef="let element ">{{element.generic_name}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="strength">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Strength</mat-header-cell>
-                                <mat-cell *matCellDef="let element">{{element.strength}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="dosage_form">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Dosage Form</mat-header-cell>
-                                <mat-cell *matCellDef="let element">{{element.dosage_form}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="route">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Route</mat-header-cell>
-                                <mat-cell *matCellDef="let element">{{element.route}}</mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="active_ingredients">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header>Active Ingredients</mat-header-cell>
-                                <mat-cell *matCellDef="let element">{{ element.active_ingredients }}
-                                    <!-- <span *ngFor="let item of element.active_ingredients">
-                                        <span>{{ item.strength }}</span>
-                                    </span> -->
-                                </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="actions" stickyEnd>
-                                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                                <mat-cell *matCellDef="let row" class="action-icon">
-                                    <button mat-icon-button color="primary" (click)="favPrescription()" class="btn-size"><mat-icon>favorite_border</mat-icon></button>
-                                    <button mat-icon-button color="warn" (click)="removePrescription(row)" class="btn-size"><mat-icon>delete_outline</mat-icon></button>
-                                </mat-cell>
-                            </ng-container>
-
-                            <mat-header-row *matHeaderRowDef="displayprescriptionColumns "></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayprescriptionColumns; "></mat-row>
-                            <!-- <mat-footer-row *matFooterRowDef="[ 'loading'] " [ngClass]="{ 'hide':orders!=null} "></mat-footer-row> -->
-                            <!-- <mat-footer-row *matFooterRowDef="[ 'noData'] " [ngClass]="{ 'hide':!(orders!=null && orders.data.length==0)} "></mat-footer-row> -->
-                        </mat-table>
-                        <!-- <mat-paginator [pageSizeOptions]="[5,10,25,50,100] " [pageSize]="5 " showFirstLastButtons></mat-paginator> -->
-                    </div>
-                    <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
-                    </div>
-                </form>
-            </mat-step>
-
-            <mat-step>
-                <ng-template matStepLabel>Review</ng-template>
-
-                <table class="review-table ">
-                    <tr>
-                        <td colspan="2 ">1</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 50%; ">
-
-                            <small>
-                                <tr><strong>Doctor:</strong></tr>
-                                <tr>Ibrahim Amin | MD</tr>
-                                <tr><strong>Clinic:</strong></tr>
-                                <tr>Ibrahim Amin Clinic</tr>
-                                <tr>125 Salim Street, Sulaimani, Kurdistan Region</tr>
-                                <tr><strong>Contact:</strong></tr>
-                                <tr>Reception: +964 770 123 1234 | Work: +964 750 321 4321</tr></small>
-
-                        </td>
-                        <td style="width: 50%; ">
-                            <div *ngFor="let patient of visits ">
-                                <small>
-                                    <tr><strong>Visit ID:</strong></tr>
-                                    <tr>{{patient.id}}</tr>
-                                    <tr><strong>Name:</strong></tr>
-                                    <tr>{{patient.patientName}} ({{patient.patientAge}} | {{patient.patientGender}})</tr>
-                                    <tr><strong>Address:</strong></tr>
-                                    <tr>Malkany, Slemani</tr>
-                                    <tr><strong>Contact:</strong></tr>
-                                    <tr>{{patient.patientMobile}}</tr>
-                                </small>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2 ">
-                            <strong>Medical Tests & Procedures</strong>
-                            <p></p>
-                            <div *ngFor="let line of orders ">
-                                <li> {{line.order_title}} - {{line.order_type}}</li>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2 ">
-                            <strong>Prescriptions</strong>
-                            <p></p>
-                            <div *ngFor="let line of prescriptions ">
-                                <li> {{line.generic_name}} - {{line.dosage_form}} | {{line.active_ingredients}}</li>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="stepper.reset() ">Reset</button>
-                    <button mat-button *ngIf="visitService.form.controls['id'].value" (click)="onUpdate()">Update</button>
-                    <button mat-button *ngIf="!visitService.form.controls['id'].value" (click)="onSave()">Save</button>
+        <ng-template matStepLabel>Fill out patient information</ng-template>
+        <mat-form-field class="example-full-width">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Last name, First name " formControlName="patientName" required>
+        </mat-form-field>
+        <div class="example-full-width">
+            <div class="add-bottom-padding">
+                <div class="add-bottom-padding">
+                    <mat-label>Gender</mat-label>
                 </div>
-            </mat-step>
-        </mat-vertical-stepper>
+                <mat-radio-group color="primary" formControlName="patientGender">
+                    <mat-radio-button value="M">Male</mat-radio-button>
+                    <mat-radio-button value="F">Female</mat-radio-button>
+                    <mat-radio-button value="O">Other</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <mat-form-field class="example-full-width">
+            <mat-label>Age</mat-label>
+            <input matInput placeholder="Patient's Age " formControlName="patientAge" required>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Mobile</mat-label>
+            <input formControlName="patientMobile" matInput placeholder="Patient's Mobile">
+            <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.minlength">Must be at least 11 digits</mat-error>
+            <mat-error *ngIf="visitService.form.controls['patientMobile'].errors?.pattern">Correct format: ex. 0712 345 6789</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-select formControlName="patientBloodGroup" placeholder="Blood Group" required>
+                <mat-option>None</mat-option>
+                <ng-container *ngFor="let bloodgroup of bloodgroups">
+                    <mat-option value="{{bloodgroup.bg_id}}">{{bloodgroup.value}}</mat-option>
+                </ng-container>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Patient Illness</mat-label>
+            <textarea formControlName="patientLongtermIllness" matInput placeholder="Patient Longterm Illness"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Medicines</mat-label>
+            <textarea formControlName="patientLongtermMedicine" matInput placeholder="Patient Longterm Medicine"></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Impressions</mat-label>
+            <textarea formControlName="visitDescription" matInput placeholder="Preliminary impressions"></textarea>
+        </mat-form-field>
+        <div class="add-bottom-padding">
+            <mat-checkbox formControlName="isClosed">Close this visit after submit</mat-checkbox>
+        </div>
     </div>
+    <button mat-raised-button color="primary" type="submit" [disabled]="visitService.form.invalid">Submit</button>
 </form>

@@ -22,4 +22,7 @@ export class UserService {
    getUsers() {
     return this.db.collection('users').snapshotChanges()
   }
+  updateUser() {
+    //add the code for updating user settings here
+  }
 }

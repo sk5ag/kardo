@@ -75,3 +75,37 @@ exports.visitCreate = functions.firestore.document('/{collection}/{id}')
   }
   return null;
 })
+
+
+//when a visit updated
+exports.visitUpdate = functions.firestore.document('/{collection}/{id}')
+  .onUpdate((snap, context) => {
+
+    const collection = context.params.collection;
+    const values = snap.after.data();
+
+    //const activities = admin.firestore().collection('activities');
+    const visits = admin.firestore().collection('visits');
+
+    if (collection === 'visits') {
+
+      if (values.appointmentStatus === true) {
+        console.log("CHANGING STATUS FROM APPOINTMENT TO VISIT");
+        return visits.add({
+
+          id: '',
+          patientName: values.patientName,
+          patientAge: values.patientAge,
+          patientGender: values.patientGender,
+          patientMobile: '',
+          patientBloodGroup: '',
+          patientLongtermIllness: '',
+          patientLongtermMedicine: '',
+          visitDescription: '',
+          isClosed: false,
+
+        });
+      }
+    }
+    return null;
+  })
