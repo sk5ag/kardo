@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+
+  match /databases/{tests}/documents {
+    function isAuthenticated(){
+    	return request.auth.uid !=null;
+    }
+    
+    function isAssitant() {
+    	return isAuthenticated() && get( /databases/$(tests)/documents/users/$(request.auth.uid) ).data.isAssistant == true;
+   
+    }
+		function isDoctor() {
+    	return isAuthenticated() &&	get( /databases/$(tests)/documents/users/$(request.auth.uid) ).data.isDoctor == true;
+   
+    }
+    function isMedOrder(){
+    	return isAuthenticated() &&
+      	get( /databases/$(tests)/documents/users/$(request.auth.uid) ).data.isMedOrder == true;
+  
+    }
+		function isPharma(){
+    	return isAuthenticated() &&
+      	get( /databases/$(tests)/documents/users/$(request.auth.uid) ).data.isPharma == true;
+    }
+    function isdrugAdmin(){
+    	return isAuthenticated() &&
+      	get( /databases/$(tests)/documents/users/$(request.auth.uid) ).data.isdrugAdmin == true;
+    }
+    function isorderAdmin(){
+    	return isAuthenticated() &&
+      	get( /databases/$(tests)/documents/users/$(request.auth.uid) ).data.isorderAdmin == true;
+    }    
+		function isKnownUser(){
+    	return isAuthenticated() &&
+      	exists( /databases/$(tests)/documents/users/$(request.auth.uid) );
+    }
+
+     match /users/{userId} {
+     	allow read: if isKnownUser();
+      allow write: if false;
+     }
+     match /appointments/{appointmentId} {
+    	allow read: if isKnownUser();
+      allow write: if isAssitant();
+     }
+     match /drugs/{drugId} {
+     	allow read: if isKnownUser();
+      allow write: if isdrugAdmin();
+     }
+     match /medorders/{medorderId} {
+     	allow read: if isKnownUser();
+      allow write: if isorderAdmin();
+     }
+     match /prescriptions/{prescriptionId} {
+     	allow read: if isKnownUser();
+      allow write: if isPharma();
+     }
+     match /orders/{orderId} {
+     	allow read: if isKnownUser();
+      allow write: if isMedOrder();
+     }
+     match /visits/{visitId} {
+     	allow read: if isKnownUser();
+      allow write: if isDoctor();
+     }
+    }
+}
