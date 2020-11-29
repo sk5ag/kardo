@@ -8,6 +8,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { VisitComponent } from '../visit/visit.component';
 import { VisitEditService } from '../../shared/visit-edit.service';
 import { EditVisitComponent } from '../edit-visit/edit-visit.component';
+import { AuthService } from 'src/app/shared/auth.service';
 
 @Component({
   selector: 'app-visit-list',
@@ -15,12 +16,19 @@ import { EditVisitComponent } from '../edit-visit/edit-visit.component';
   styleUrls: ['./visit-list.component.css']
 })
 export class VisitListComponent implements OnInit {
+  
+  docEmail: string;
+  docClinic: string;
+  docId: string;
 
   constructor(
     private visitService: VisitService,
     private dialog: MatDialog,
-    private visitedit: VisitEditService
-  ) { }
+    private visitedit: VisitEditService,
+    public auth: AuthService
+  ) { 
+  
+  }
 
   notesList:any = [];
 
@@ -31,22 +39,32 @@ export class VisitListComponent implements OnInit {
   searchKey: string;  
 
   ngOnInit(): void {
-    this.visitService.getVisits()
-    .subscribe(
-      list => {
-        let array = list.map(
-          item => {
-            return {
-              id: item.payload.doc.id,
-              ...item.payload.doc.data() as Visit
+    this.auth.user$.subscribe(user => {
+      this.docEmail = user.email;
+      this.docClinic =  user.clinic;
+      this.docId = user.uid;
+      console.log('Doctor Email: ', this.docEmail);
+      console.log('Doctor Clinic: ', this.docClinic);
+
+      this.visitService.getVisits(this.docEmail)
+      .subscribe(
+        list => {
+          let array = list.map(
+            item => {
+              return {
+                id: item.payload.doc.id,
+                ...item.payload.doc.data() as Visit
+              }
             }
-          }
-        );
-        this.listData = new MatTableDataSource(array);
-        this.listData.sort = this.sort;
-        this.listData.paginator = this.paginator;
-      }
-    );
+          );
+          this.listData = new MatTableDataSource(array);
+          this.listData.sort = this.sort;
+          this.listData.paginator = this.paginator;
+        }
+      );
+
+    });
+
   }  
 
   onSearchClear() {

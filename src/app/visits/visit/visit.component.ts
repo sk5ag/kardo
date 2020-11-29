@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AuthService } from '../../shared/auth.service';
 import { VisitService } from '../../shared/visit.service';
 import { DrugService } from '../../shared/drug.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -21,6 +22,9 @@ export class VisitComponent implements OnInit {
 
   today: number = Date.now();
   visitId: string;
+  docEmail: string;
+  docClinic: string;
+  docId: string;
   filteredOrders: Observable<any[]>;
   filteredNotes: Observable<any[]>;
   filteredPrescription: Observable<any[]>;
@@ -93,7 +97,10 @@ export class VisitComponent implements OnInit {
     public visitService: VisitService,
     public drugService: DrugService,
     public visitdialogRef: MatDialogRef<VisitComponent>,
+    public auth: AuthService,
   ) {
+
+    console.log('CONSTRUCTORE RUN');
 
     // console.log('Constructor #1');
     this.drugService.getDrugs()
@@ -163,10 +170,22 @@ export class VisitComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    console.log('ONINIT RUN');
+
+    this.auth.user$.subscribe(user => {
+      this.docEmail = user.email;
+      this.docClinic =  user.clinic;
+      this.docId = user.uid;
+      console.log('Doctor Email: ', this.docEmail);
+      console.log('Doctor Clinic: ', this.docClinic);
+
+      console.log('Values passed: ', this.visitId);
+      this.visitService.getVisits(this.docEmail);
+    });
     
-    console.log('Values passed: ', this.visitId);
-    this.visitService.getVisits();
-    // console.log('Constructor #6');
+
+
   }
 
   onClear() {
@@ -178,131 +197,53 @@ export class VisitComponent implements OnInit {
     this.visitService.initializeprescriptionsFormGroup();
   }
 
-  onSave() {
-    console.log('onSAVE - Visit ID at the start of onSave: ', this.visitId)
-      let mapNotes = new Map()
-        .set("notesMap", this.notes);
-
-      mapNotes.forEach(noteItems => {
-        console.log('Values inside mapNotes', noteItems)
-        this.noteItems = noteItems;
-      });
-
-      let mapOrders = new Map()
-      .set("orderssMap", this.orders);
-
-    mapOrders.forEach(orderItems => {
-      console.log('Values inside mapNotes', orderItems)
-      this.orderItems = orderItems;
-    });
-
-    let mapPrescriptions = new Map()
-    .set("orderssMap", this.prescriptions);
-
-    mapPrescriptions.forEach(prescriptionItems => {
-    console.log('Values inside mapNotes', prescriptionItems)
-    this.prescriptionItems = prescriptionItems;
-  });
-
-      console.log('VISITS: ', this.visits);
-      
-      let copiedObject = JSON.parse(JSON.stringify(this.visits));
-      console.log('ID: ',copiedObject[0].id);
-      let final = {
-          id: copiedObject[0].id,
-          patientName: copiedObject[0].patientName, 
-          patientAge: copiedObject[0].patientAge,
-          patientMobile: copiedObject[0].patientMobile,
-          patientGender: copiedObject[0].patientGender,
-          isClosed: copiedObject[0].isClosed,
-          patientBloodGroup: copiedObject[0].patientBloodGroup,
-          patientLongtermIllness: copiedObject[0].patientLongtermIllness,
-          patientLongtermMedicine: copiedObject[0].patientLongtermMedicine,
-          createdOn: this.myFormattedDate,
-          visitNotes: this.noteItems,
-          visitOrders: this.orderItems,
-          visitPrescription: this.prescriptionItems
-
-          };
-      console.log('FINAL', final);
-      this.visitService.insertVisit(final)
-    }
-
-    onUpdate() {
-      console.log('onSAVE - Visit ID at the start of onSave: ', this.visitId)
-        let mapNotes = new Map()
-          .set("notesMap", this.notes);
-  
-        mapNotes.forEach(noteItems => {
-          console.log('Values inside mapNotes', noteItems)
-          this.noteItems = noteItems;
-        });
-  
-        let mapOrders = new Map()
-        .set("orderssMap", this.orders);
-  
-      mapOrders.forEach(orderItems => {
-        console.log('Values inside mapNotes', orderItems)
-        this.orderItems = orderItems;
-      });
-  
-      let mapPrescriptions = new Map()
-      .set("orderssMap", this.prescriptions);
-  
-      mapPrescriptions.forEach(prescriptionItems => {
-      console.log('Values inside mapNotes', prescriptionItems)
-      this.prescriptionItems = prescriptionItems;
-    });
-  
-        console.log('VISITS: ', this.visits);
-        
-        let copiedObject = JSON.parse(JSON.stringify(this.visits));
-        console.log('ID: ',copiedObject[0].id);
-        let final = {
-            id: copiedObject[0].id,
-            patientName: copiedObject[0].patientName, 
-            patientAge: copiedObject[0].patientAge,
-            patientMobile: copiedObject[0].patientMobile,
-            patientGender: copiedObject[0].patientGender,
-            isClosed: copiedObject[0].isClosed,
-            patientBloodGroup: copiedObject[0].patientBloodGroup,
-            patientLongtermIllness: copiedObject[0].patientLongtermIllness,
-            patientLongtermMedicine: copiedObject[0].patientLongtermMedicine,
-            createdOn: this.myFormattedDate,
-            visitNotes: this.noteItems,
-            visitOrders: this.orderItems,
-            visitPrescription: this.prescriptionItems
-  
-            };
-        console.log('FINAL', final);
-        this.visitService.updateVisit(final)
-      }
-
   onSubmit() {
-    console.log('ID of the document you are trying to modify: ', this.visitService.form.get('id').value);
+    console.log('ONSUBMIT RUN');
+
+    console.log('ID of the document received by onSubmit: ', this.visitService.form.get('id').value);
     if (this.visitService.form.valid) {
       console.log('FORM VALID');
       if (!this.visitService.form.get('id').value) {
-        console.log('FORM had not ID');
-        this.visitService.insertVisit(this.visitService.form.value);
+        console.log('FORM had no ID');
+
+        this.visitService.insertVisit(this.visitService.form.value, this.docId, this.docEmail, this.docClinic);
+        console.log('Back to onSubmit From Insert Method');
+
+        this.visitService.form.reset();
+        this.visitService.initializeFormGroup();
+        this.visitService.initializevisitFormGroup();
+        this.visitService.initializenotesFormGroup();
+        this.visitService.initializeordersFormGroup();
+        this.visitService.initializeprescriptionsFormGroup();
+        this.onClose();
+        console.log('Last steps 1');
+        
       }
-      else
+      else {
         console.log('FORM has ID: ');
         this.visitService.modifyVisit(this.visitService.form.value);
-      this.visitService.form.reset();
-      this.visitService.initializeFormGroup();
-      this.visitService.initializevisitFormGroup();
-      this.visitService.initializenotesFormGroup();
-      this.visitService.initializeordersFormGroup();
-      this.visitService.initializeprescriptionsFormGroup();
-      this.onClose()
+
+        this.visitService.form.reset();
+        this.visitService.initializeFormGroup();
+        this.visitService.initializevisitFormGroup();
+        this.visitService.initializenotesFormGroup();
+        this.visitService.initializeordersFormGroup();
+        this.visitService.initializeprescriptionsFormGroup();
+        this.onClose();
+        console.log('Last steps 2');
+      }
     }
     else {
-      console.log('The form is not valid ...')
+      console.log('END OF ONSUBMIT RUN');
+
+      console.log('FORM NOT VALID...')
     }
+
   }
 
   onClose() {
+    console.log('ONCLOSE RUN');
+
     // console.log('close function called');
     this.visitService.form.reset();
     // console.log('form reset called and run')
@@ -317,6 +258,9 @@ export class VisitComponent implements OnInit {
   }
 
   addVisit() {
+
+    console.log('ADDVISIT RUN');
+
     console.log('addVisit PRESSED - the values now: ', this.visits);
 
     if (this.visitService.form.invalid || !this.visitService.form.get('patientName').value) {
@@ -333,15 +277,10 @@ export class VisitComponent implements OnInit {
   }
 
   addNote() {
-    // console.log('addNote PRESSED - the values now: ', this.notes);
-
     if (this.visitService.notesForm.invalid || !this.visitService.notesForm.get('examination_title').value) {
-      // console.log('THIS FORM IS EMPTY...', this.visitService.notesForm.get('note_title').value)
     }
     else {
-      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.notesForm.get('note_title').value)
       this.notes = this.notes.concat(this.visitService.notesForm.value);
-      // console.log('addNote PRESSED - the values after update: ', this.notes);
       this.visitService.notesForm.reset();
       this.visitService.initializenotesFormGroup()
     }
@@ -349,17 +288,11 @@ export class VisitComponent implements OnInit {
   }
 
   addOrder() {
-    // console.log('addOrder PRESSED - the values now: ', this.orders);
 
     if (this.visitService.ordersForm.invalid || !this.visitService.ordersForm.get('order_title').value) {
-      // console.log('THIS FORM IS EMPTY...', this.visitService.ordersForm.get('order_title').value)
     }
     else {
-      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.ordersForm.get('order_title').value)
       this.orders = this.orders.concat(this.visitService.ordersForm.value);
-      // console.log('addOrder PRESSED - the values after update: ', this.orders);
-      // this.visitService.ordersForm.reset();
-      // this.visitService.initializeordersFormGroup();
     }
     console.log('VALUE INSIDE OrderForm:', this.visitService.ordersForm.value);
     this.visitService.ordersForm.reset();
@@ -373,13 +306,10 @@ export class VisitComponent implements OnInit {
   }
 
   addPrescription() {
-    // console.log('addPrescription PRESSED - the values now: ', this.prescriptions);
-
     if (this.visitService.prescriptionsForm.invalid || !this.visitService.prescriptionsForm.get('generic_name').value) {
       console.log('THIS FORM IS EMPTY...', this.visitService.prescriptionsForm.get('generic_name').value)
     }
     else {
-      // console.log('THIS FORM IS NOT EMPTY...',this.visitService.prescriptionsForm.get('generic_name').value)
       this.prescriptions = this.prescriptions.concat(this.visitService.prescriptionsForm.value);
       console.log('addPrescription PRESSED - the values after update: ', this.prescriptions);
       this.visitService.prescriptionsForm.reset();
@@ -389,30 +319,22 @@ export class VisitComponent implements OnInit {
   }
 
   populateNote(item) {
-    // console.log('POPULATE NOTE - function called', item);
     this.visitService.populateSelectednote(item);
   }
 
   populateOrder(item) {
-    // console.log('POPULATE ORDER - function called', item);
     this.visitService.populateSelectedorder(item)
   }
 
   populatePrescription(item) {
-    // console.log('');
-    // console.log('1 - POPULATE PRESCRIPTION', item);
     this.visitService.populateSelectedprescription(item);
 
-    // console.log('');
-    // console.log('5 - back to component, check if item array is empty: ', item);
-    // console.log('------------------------------------');
 
     item = [];
 
     // console.log('6 - LOCALLY EMPTIED THE item ARRAY - whats in it for now?', item);
     this.prescriptionControl.setValue('');
-    // console.log('7 - prescription control has been reset');
-    // console.log('=======================================');
+
   }
 
   removeNote(row) {

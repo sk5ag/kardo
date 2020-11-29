@@ -21,7 +21,9 @@ export class EditVisitComponent implements OnDestroy {
 
   visitArray: any[] = [];
   visitPrescription: any[] = [];
+  prescriptionCount = 0;
   visitOrder: any [] = [];
+  orderCount = 0;
   orderOn: boolean = false;
   prescriptionOn: boolean = true;
   testData = [
@@ -85,7 +87,8 @@ export class EditVisitComponent implements OnDestroy {
 
     this.visitArray.forEach(element => {
       this.visitPrescription.push(element.prescription);
-      //console.log('Items in prescription array are :', this.visitPrescription);
+      console.log('Items in prescription array counts to :', element.prescription.length);
+      this.prescriptionCount = element.prescription.length;
       });
 
 
@@ -106,25 +109,23 @@ export class EditVisitComponent implements OnDestroy {
           this.listOrderData.paginator = this.paginator;
         }
       );
-      //console.log('ngOnInit executed');
   
       this.visitArray.forEach(element => {
         this.visitOrder.push(element.order);
-        //console.log('Items in prescription array are :', this.visitPrescription);
+        console.log('Items in order array counts to :', element.order.length);
+        this.orderCount = element.order.length;
         });
   
   }
 
   addPrescription() {
-    this.visitPrescription[0].push({generic_name: "Iron", strength: "25 mg/L", dosage_form: "Tablet", route: "Oral", isDispensed: true})
-    //console.log('Update :', this.visitPrescription);
-
+    this.visitPrescription[0].push({generic_name: "Iron", strength: "25 mg/L", dosage_form: "Tablet", route: "Oral", isDispensed: true});
+    this.prescriptionCount +1;
   }
 
   addOrder() {
     this.visitOrder[0].push({medorder_title: "Test 1", medorder_category: "Test 2", medorder_description: "Test 3"})
-    //console.log('Update :', this.visitPrescription);
-
+    
   }
   applyPrescriptionFilter() {
     this.listPrescriptionData.filter = this.prescription_searchKey.trim().toLowerCase();
@@ -146,6 +147,8 @@ export class EditVisitComponent implements OnDestroy {
       this.visitPrescription[0].push(row);
     };
     this.prescription_searchKey = '';
+    this.prescriptionCount = this.prescriptionCount + 1;
+    console.log('Prescription Count', this.prescriptionCount);
 
   }
 
@@ -154,6 +157,8 @@ export class EditVisitComponent implements OnDestroy {
     console.log('remove order called for: ', j);
     this.visitPrescription[0].splice(j, 1);
     console.log('items in visitOrder:', this.visitPrescription);
+    this.prescriptionCount = this.prescriptionCount - 1;
+    console.log('Prescription Count', this.prescriptionCount);
   }
 
   onAddOrder(row) {
@@ -168,6 +173,8 @@ export class EditVisitComponent implements OnDestroy {
       this.visitOrder[0].push(row);
     }
     this.order_searchKey = '';
+    this.orderCount = this.orderCount + 1;
+    console.log('Order Count', this.orderCount);
   }
   
   removeOrder(i){
@@ -175,12 +182,14 @@ export class EditVisitComponent implements OnDestroy {
     console.log('remove order called for: ', i);
     this.visitOrder[0].splice(i, 1);
     console.log('items in visitOrder:', this.visitOrder);
+    this.orderCount = this.orderCount - 1;
+    console.log('Order Count', this.orderCount);
   }
 
-  onUpdate(){
-    this.visitService.updateVisit(this.visitArray);
-    this.onClose();
-  }
+   onUpdate(){
+     this.visitService.updateVisit(this.visitArray);
+     //this.onClose();
+   }
 
 
   onClose() {

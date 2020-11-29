@@ -14,11 +14,13 @@ export class VisitService {
   visitsCollection: AngularFirestoreCollection<Visit>;
   visits: Observable<Visit>;
   collectionPath: string = "/visits";
+  docEmail: string;
 
   constructor(
-    private db: AngularFirestore
+    private db: AngularFirestore,
   ) {
     this.visitsCollection = this.db.collection(this.collectionPath)
+
    } 
 
   visitList: AngularFireList<any>; 
@@ -123,23 +125,36 @@ export class VisitService {
     });
   }
   
-  getVisits() {
-    return this.db.collection('visits').snapshotChanges()
+  getVisits(email) {
+    console.log('GET VISIT RUN');
+
+    console.log('Value of docEmail: ', email);
+    return this.db.collection('visits', visits => 
+      visits.where('doctorEmail','==', email)
+      .limit(10))
+        .snapshotChanges()
   }
 
-  async insertVisit(visit) {
+  async insertVisit(visit, docId, docEmail, docClinic) {
+    console.log('INSERT VISIT RUN');
+
     console.log('Inserting the new visit')
 
     await this.db.collection('visits').add(visit)
       .then(function (docRef) {
         docRef.update({
           id: docRef.id,
+          uid: docId,
+          doctorEmail: docEmail,
+          doctorClinic: docClinic, 
           visitId: Math.random().toString(20).substr(2, 6)
         })
       });
   }
 
   updateVisit(visit) {
+    console.log('UPDATE VISIT RUN');
+
     console.log('RECEIEVD BY UPDATE METHOD: ', visit[0].id);
     this.db.collection('visits').doc(visit[0].id).update(visit[0]).then(function () {
       console.log("Document successfully updated!");
@@ -148,7 +163,9 @@ export class VisitService {
     });
   }
   modifyVisit(visit) {
-    console.log('RECEIEVD BY UPDATE METHOD: ', visit.id);
+    console.log('MODIFYVISIT RUN');
+
+    console.log('RECEIEVD BY MODIFY METHOD 101: ', visit.id);
     this.db.collection('visits').doc(visit.id).update(visit).then(function () {
       console.log("Document successfully updated!");
     }).catch(function (error) {

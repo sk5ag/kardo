@@ -23,6 +23,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 const MaterialComponent = [
@@ -49,7 +50,8 @@ const MaterialComponent = [
   MatSortModule,
   MatDialogModule,
   MatExpansionModule,
-  MatMenuModule
+  MatMenuModule,
+  MatBadgeModule
 ];
 
 @NgModule({

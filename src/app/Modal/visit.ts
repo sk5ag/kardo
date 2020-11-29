@@ -13,6 +13,8 @@ export interface Visit {
     patientMobile: string,
     prescription: Array<Drug>,
     order: Array<MedOrder>,
+    docEmail?: string,
+    docClinic?: string,
     
     visitStatus: string,
     visitDate: Date,
