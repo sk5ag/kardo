@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
+import { from, Observable, Subscription } from 'rxjs';
 import { VisitEditService } from '../../shared/visit-edit.service';
 import { DrugService } from '../../shared/drug.service';
 import { MedordersService } from '../../shared/medorders.service';
@@ -66,7 +66,6 @@ export class EditVisitComponent implements OnDestroy {
   }
 
   ngOnInit(){
-
     this.drugService.getDrugs()
     .subscribe(
       list => {
@@ -115,7 +114,6 @@ export class EditVisitComponent implements OnDestroy {
         console.log('Items in order array counts to :', element.order.length);
         this.orderCount = element.order.length;
         });
-  
   }
 
   addPrescription() {
@@ -149,7 +147,6 @@ export class EditVisitComponent implements OnDestroy {
     this.prescription_searchKey = '';
     this.prescriptionCount = this.prescriptionCount + 1;
     console.log('Prescription Count', this.prescriptionCount);
-
   }
 
   removePrescription(j){
@@ -188,7 +185,7 @@ export class EditVisitComponent implements OnDestroy {
 
    onUpdate(){
      this.visitService.updateVisit(this.visitArray);
-     //this.onClose();
+     this.onClose();
    }
 
 

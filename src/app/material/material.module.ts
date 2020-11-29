@@ -14,7 +14,6 @@ import { MatChipsModule} from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule} from '@angular/material/table';
 import { MatTabsModule} from '@angular/material/tabs';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -24,7 +23,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
-
 
 const MaterialComponent = [
   MatIconModule,
@@ -42,7 +40,6 @@ const MaterialComponent = [
   MatAutocompleteModule,
   MatTableModule,
   MatTabsModule,
-  MatSnackBarModule,
   MatGridListModule,
   MatSelectModule,
   MatCheckboxModule,
@@ -51,7 +48,7 @@ const MaterialComponent = [
   MatDialogModule,
   MatExpansionModule,
   MatMenuModule,
-  MatBadgeModule
+  MatBadgeModule,
 ];
 
 @NgModule({
