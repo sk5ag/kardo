@@ -85,18 +85,19 @@ exports.visitUpdate = functions.firestore.document('/{collection}/{id}')
     const values = snap.after.data();
 
     //const activities = admin.firestore().collection('activities');
-    const visits = admin.firestore().collection('visits');
+    const orders = admin.firestore().collection('orders');
 
     if (collection === 'visits') {
 
-      if (values.appointmentStatus === true) {
-        console.log("CHANGING STATUS FROM APPOINTMENT TO VISIT");
-        return visits.add({
+        console.log("ADD VisitOrder TO ORDERS COLLECTION");
+        return orders.add({
 
           id: '',
           patientName: values.patientName,
           patientAge: values.patientAge,
           patientGender: values.patientGender,
+          order: values.order,
+          prescription: values.prescription,
           patientMobile: '',
           patientBloodGroup: '',
           patientLongtermIllness: '',
@@ -104,8 +105,7 @@ exports.visitUpdate = functions.firestore.document('/{collection}/{id}')
           visitDescription: '',
           isClosed: false,
 
-        });
-      }
+        });      
     }
     return null;
   })
