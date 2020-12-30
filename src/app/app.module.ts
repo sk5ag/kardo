@@ -45,6 +45,7 @@ import { LoginComponent } from './login/login.component';
 import { EditVisitComponent } from './visits/edit-visit/edit-visit.component';
 import { VisitEditService } from './shared/visit-edit.service';
 import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component';
+import { OrderEditService } from './shared/order-edit.service';
 
 
 @NgModule({
@@ -95,7 +96,8 @@ import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component'
     PrescriptionService, 
     VisitService, 
     DrugService, 
-    VisitEditService ,
+    VisitEditService,
+    OrderEditService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -104,6 +106,7 @@ import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component'
     PrescriptionComponent,
     VisitComponent,
     EditVisitComponent,
+    EditOrdersComponent,
     DrugsComponent
   ],
 })

@@ -87,7 +87,6 @@ export class VisitListComponent implements OnInit {
   }
 
   onModify(row) {
-
     console.log('onEdit Called - here is the data in Row object: ', row.visitNotes)
     this.visitService.populateForm(row);
     this.visitService.populatevisitForm(row);
@@ -102,7 +101,6 @@ export class VisitListComponent implements OnInit {
   }
 
   onEdit(row) {
-
     console.log('onEdit Called - here is the data in Row object: ', row)
     // this.visitService.populateForm(row);
     // this.visitService.populatevisitForm(row);
