@@ -44,6 +44,7 @@ import { DrugService } from './shared/drug.service';
 import { LoginComponent } from './login/login.component';
 import { EditVisitComponent } from './visits/edit-visit/edit-visit.component';
 import { VisitEditService } from './shared/visit-edit.service';
+import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import { VisitEditService } from './shared/visit-edit.service';
     DrugListComponent,
     LoginComponent,
     EditVisitComponent,
+    EditOrdersComponent,
   ],
   imports: [
     BrowserModule,

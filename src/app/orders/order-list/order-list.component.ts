@@ -6,6 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { OrderComponent } from '../order/order.component';
+import { OrderEditService } from 'src/app/shared/order-edit.service';
+import { EditOrdersComponent } from '../edit-orders/edit-orders.component';
 
 @Component({
   selector: 'app-order-list',
@@ -16,7 +18,8 @@ export class OrderListComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private orderedit: OrderEditService,
   ) { }
 
   listData: MatTableDataSource<Order>;
@@ -62,23 +65,27 @@ export class OrderListComponent implements OnInit {
     orderdialogConfig.height = "90%";
     this.dialog.open(OrderComponent, orderdialogConfig)
   }
-
+  
   onEdit(row) {
 
-    this.orderService.populateForm(row);
+    console.log('onEdit Called - here is the data in Row object: ', row)
+    // this.visitService.populateForm(row);
+    // this.visitService.populatevisitForm(row);
+    this.orderedit.sendMessage(row);
+    // this.orderService.populateForm(row);
     const orderdialogConfig = new MatDialogConfig();
     orderdialogConfig.disableClose = true;
     orderdialogConfig.autoFocus = true;
     orderdialogConfig.width = "75%";
     orderdialogConfig.height = "90%";
-    this.dialog.open(OrderComponent, orderdialogConfig)
+    this.dialog.open(EditOrdersComponent, orderdialogConfig)
   }
 
   onDelete(row) {
     if (confirm('Are you sure to delete this record?')) {
       this.orderService.deleteOrder(row.id)
     }
-  }
+  } 
 
   onClose() {
     this.dialog.closeAll();

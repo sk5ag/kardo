@@ -26,11 +26,11 @@ export class EditVisitComponent implements OnDestroy {
   orderCount = 0;
   orderOn: boolean = false;
   prescriptionOn: boolean = true;
-  testData = [
-    {generic_name: "Paracetamol", strength: "125 mg/l", dosage_form:"Tablet", route: "Oral", isDispensed: true},
-    {generic_name: "Simvol", strength: "05 mg/l", dosage_form:"Tablet", route: "Oral", isDispensed: false},
+  // testData = [
+  //   {generic_name: "Paracetamol", strength: "125 mg/l", dosage_form:"Tablet", route: "Oral", isDispensed: true},
+  //   {generic_name: "Simvol", strength: "05 mg/l", dosage_form:"Tablet", route: "Oral", isDispensed: false},
     
-  ];
+  // ];
 
   subscription: Subscription;
   listPrescriptionData: MatTableDataSource<VisitPrescription>;
@@ -49,7 +49,7 @@ export class EditVisitComponent implements OnDestroy {
     private drugService: DrugService,
     private medorderService: MedordersService,
     public visitPrescriptiondialogRef: MatDialogRef<EditVisitComponent>,
-  ) {
+  ) { 
 
     this.visitArray = [],
       // subscribe to home component messages
@@ -159,7 +159,8 @@ export class EditVisitComponent implements OnDestroy {
   }
 
   onAddOrder(row) {
-    //console.log('Items in the test object', this.visitPrescription);
+    console.log('Items in the ORDER object', row);
+    
     if (!this.visitOrder[0]) {
       //console.log('Its Empty');
       this.visitOrder = [];
