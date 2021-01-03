@@ -6,6 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { PrescriptionComponent } from '../prescription/prescription.component';
+import { PrescriptionEditService } from 'src/app/shared/prescription-edit.service';
+import { EditPrescriptionsComponent } from '../edit-prescriptions/edit-prescriptions.component';
 
 
 @Component({
@@ -17,10 +19,11 @@ export class PrescriptionListComponent implements OnInit {
 
   constructor(
     private prescriptionService: PrescriptionService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private prescriptionedit: PrescriptionEditService
   ) { }
 
-  listData: MatTableDataSource<Prescriptions>;
+  listPrescriptionData: MatTableDataSource<Prescriptions>;
   displayColumns: string[] = ['patientName', 'patientGender', 'patientAge', 'isDispensed', 'actions'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -31,7 +34,7 @@ export class PrescriptionListComponent implements OnInit {
     this.prescriptionService.getPrescriptions()
       .subscribe(
         list => {
-          let array = list.map(
+          let arrayPrescription = list.map(
             item => {
               return {
                 id: item.payload.doc.id,
@@ -39,9 +42,10 @@ export class PrescriptionListComponent implements OnInit {
               }
             }
           );
-          this.listData = new MatTableDataSource(array);
-          this.listData.sort = this.sort;
-          this.listData.paginator = this.paginator;
+          console.log('=== Is there an error? : ', arrayPrescription),
+          this.listPrescriptionData = new MatTableDataSource(arrayPrescription);
+          this.listPrescriptionData.sort = this.sort;
+          this.listPrescriptionData.paginator = this.paginator;
         }
       );
   }
@@ -50,9 +54,9 @@ export class PrescriptionListComponent implements OnInit {
     this.searchKey = "";
     this.applyFilter();
   }
-
+ 
   applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
+    this.listPrescriptionData.filter = this.searchKey.trim().toLowerCase();
   }
 
   onCreate() {
@@ -66,14 +70,16 @@ export class PrescriptionListComponent implements OnInit {
   }
 
   onEdit(row) {
+    console.log('onEdit Called - here is the data in Row object: ', row)
 
-    this.prescriptionService.populateForm(row);
+    this.prescriptionedit.sendMessage(row);
+    // this.prescriptionService.populateForm(row);
     const prescriptiondialogConfig = new MatDialogConfig();
     prescriptiondialogConfig.disableClose = true;
     prescriptiondialogConfig.autoFocus = true;
     prescriptiondialogConfig.width = "75%";
     prescriptiondialogConfig.height = "90%";
-    this.dialog.open(PrescriptionComponent, prescriptiondialogConfig)
+    this.dialog.open(EditPrescriptionsComponent, prescriptiondialogConfig)
   }
 
   

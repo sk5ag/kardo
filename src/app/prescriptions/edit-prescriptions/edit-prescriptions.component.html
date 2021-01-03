@@ -1,0 +1,75 @@
+<div class="container">
+    <mat-toolbar>
+        <span>Show prescription list</span>
+        <span class="fill-remaining-space"></span>
+        <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabindex="-1"><mat-icon>clear</mat-icon></button>
+
+    </mat-toolbar>
+    <hr>
+    <div *ngFor="let visit of prescriptionArray">
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>{{visit.patientName}}</mat-card-title>
+                <mat-card-subtitle>{{visit.patientAge}} | {{visit.patientGender}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+
+                <p>
+                    Visit ID: {{visit.visitId}}
+                </p>
+                <p>
+                    Mobile No.: {{visit.patientMobile}}
+                </p>
+            </mat-card-content>
+
+        </mat-card>
+
+        <br>
+        <mat-card>
+            <mat-card-content>
+                <mat-table [dataSource]="prescriptionTable[0]" matSort>
+                    <ng-container matColumnDef="generic_name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Generic Name</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.generic_name}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="dosage_form">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Dosage Form</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.dosage_form}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="strength">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Strength</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.strength}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="route">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Route</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.route}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                        <mat-cell *matCellDef="let row" class="action-icon">
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="loading">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                            Loading data...
+                        </mat-footer-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="noData">
+                        <mat-footer-cell *matFooterCellDef colspan="6">
+                            No data.
+                        </mat-footer-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayPrescriptionColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayPrescriptionColumns;"></mat-row>
+                    <mat-footer-row *matFooterRowDef="[ 'loading']" [ngClass]="{ 'hide':prescriptionTable!=null}"></mat-footer-row>
+                    <mat-footer-row *matFooterRowDef="[ 'noData']" [ngClass]="{ 'hide':!(prescriptionTable[0]!=null && prescriptionTable[0].data==[])}"></mat-footer-row>
+
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[5,10,25,50,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+
+            </mat-card-content>
+            <mat-card-actions>
+                <!-- <button mat-raised-button color="primary" (click)="onUpdate()">Update & Close</button> -->
+            </mat-card-actions>
+        </mat-card>
+    </div>

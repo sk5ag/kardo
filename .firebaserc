@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "test-cad50"
+  },
+  "targets": {
+    "test-cad50": {
+      "hosting": {
+        "base-project": [
+          "test-cad50"
+        ]
+      }
+    }
   }
 }

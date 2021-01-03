@@ -10,7 +10,7 @@
     </div>
 
     <div class="mat-elevation-z8">
-        <mat-table [dataSource]="listData" matSort>
+        <mat-table [dataSource]="listPrescriptionData" matSort>
             <ng-container matColumnDef="patientName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</mat-header-cell>
                 <mat-cell *matCellDef="let element">{{element.patientName}}</mat-cell>
@@ -46,8 +46,8 @@
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
-            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
-            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listPrescriptionData!=null}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listPrescriptionData!=null && listPrescriptionData.data.length==0)}"></mat-footer-row>
 
         </mat-table>
         <mat-paginator [pageSizeOptions]="[5,10,25,50,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>

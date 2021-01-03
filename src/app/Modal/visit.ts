@@ -1,5 +1,6 @@
 import { Drug } from './drug';
 import { MedOrder } from './medorder';
+import { MedPrescription } from './medprescription';
 
 export interface Visit {
     currentDate: 'timestamp',
@@ -13,6 +14,7 @@ export interface Visit {
     patientMobile: string,
     prescription: Array<Drug>,
     order: Array<MedOrder>,
+    prescriptions: Array<MedPrescription>,
     docEmail?: string,
     docClinic?: string,
     
