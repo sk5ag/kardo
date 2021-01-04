@@ -5,54 +5,54 @@ import admin = require('firebase-admin');
 
 const app = express();
 
-app.get('/appointments', async (_request: any, response: any) => {
+app.get('/visits', async (_request: any, response: any) => {
 
-  const snaps = await db.collection('appointments').get();
+  const snaps = await db.collection('visits').get();
 
-  const appointments: any[] = [];
+  const visits: any[] = [];
 
-  snaps.forEach((snap: { data: () => any; }) => appointments.push(snap.data()));
+  snaps.forEach((snap: { data: () => any; }) => visits.push(snap.data()));
 
-  response.status(200).json({ appointments });
+  response.status(200).json({ visits });
 });
 
-export const getAppointments = functions.https.onRequest(app);
+// export const getAppointments = functions.https.onRequest(app);
 
-//when status of appointment changes
-exports.appointmentUpdate = functions.firestore.document('/{collection}/{id}')
-  .onUpdate((snap, context) => {
+// //when status of appointment changes
+// exports.appointmentUpdate = functions.firestore.document('/{collection}/{id}')
+//   .onUpdate((snap, context) => {
 
-    const collection = context.params.collection;
-    const values = snap.after.data();
+//     const collection = context.params.collection;
+//     const values = snap.after.data();
 
-    //const activities = admin.firestore().collection('activities');
-    const visits = admin.firestore().collection('visits');
+//     //const activities = admin.firestore().collection('activities');
+//     const visits = admin.firestore().collection('visits');
 
-    if (collection === 'appointments') {
+//     if (collection === 'appointments') {
 
-      if (values.appointmentStatus === true) {
-        console.log("CHANGING STATUS FROM APPOINTMENT TO VISIT");
-        return visits.add({
+//       if (values.appointmentStatus === true) {
+//         console.log("CHANGING STATUS FROM APPOINTMENT TO VISIT");
+//         return visits.add({
 
-          id: '',
-          patientName: values.patientName,
-          patientAge: values.patientAge,
-          patientGender: values.patientGender,
-          patientMobile: '',
-          patientBloodGroup: '',
-          patientLongtermIllness: '',
-          patientLongtermMedicine: '',
-          visitDescription: '',
-          isClosed: false,
+//           id: '',
+//           patientName: values.patientName,
+//           patientAge: values.patientAge,
+//           patientGender: values.patientGender,
+//           patientMobile: '',
+//           patientBloodGroup: '',
+//           patientLongtermIllness: '',
+//           patientLongtermMedicine: '',
+//           visitDescription: '',
+//           isClosed: false,
 
-        });
-      }
-    }
-    return null;
-  })
+//         });
+//       }
+//     }
+//     return null;
+//   })
 
 
-//when status of appointment changes
+//when a new visit added
 exports.visitCreate = functions.firestore.document('/{collection}/{id}')
   .onCreate((snap, context) => {
 
@@ -65,16 +65,38 @@ exports.visitCreate = functions.firestore.document('/{collection}/{id}')
 
     if (collection === 'visits') {
 
-      if (values.id != visitId) {
+      if (values) {
         return visits.doc(visitId).update({
-
           id: visitId,
-
+          visitCreatedTime: snap.createTime,
+          visitUpdatedTime: "",
         });
       }
     }
     return null;
   })
+
+// //when visit is updated
+// exports.visitUpdate = functions.firestore.document('/{collection}/{id}')
+//   .onUpdate((snap, context) => {
+
+//     const collection = context.params.collection;
+//     const a_values = snap.after.data().time;
+//     const b_values = snap.before.data().time;
+//     const docRef = snap.before.ref.id;
+
+//     console.log('The document reference is :: ', docRef);
+
+//     //const activities = admin.firestore().collection('activities');
+//     const visits = admin.firestore().collection('visits');
+
+//     if (collection === 'visits') {
+
+
+
+//        }
+//       return null;
+//     })
 
 
 //when an order has been added to a visit
@@ -112,7 +134,9 @@ exports.updateOrders = functions.firestore.document('/{collection}/{id}')
             patientBloodGroup: values.patientBloodGroup,
             patientLongtermIllness: values.patientLongtermIllness,
             patientLongtermMedicine: values.patientLongtermMedicine,
-            isClosed: false
+            isClosed: false,
+            orderUpdatedTime: snap.after.updateTime,
+            orderCreatedTime: snap.after.createTime
           })
         } else {
           console.log('document does not exist, going to create it now');
@@ -126,7 +150,9 @@ exports.updateOrders = functions.firestore.document('/{collection}/{id}')
             patientBloodGroup: values.patientBloodGroup,
             patientLongtermIllness: values.patientLongtermIllness,
             patientLongtermMedicine: values.patientLongtermMedicine,
-            isClosed: false
+            isClosed: false,
+            orderUpdatedTime: snap.after.updateTime,
+            orderCreatedTime: snap.after.createTime          
           })
         }
       };
@@ -170,7 +196,10 @@ exports.updatePrescriptions = functions.firestore.document('/{collection}/{id}')
           patientBloodGroup: pvalues.patientBloodGroup,
           patientLongtermIllness: pvalues.patientLongtermIllness,
           patientLongtermMedicine: pvalues.patientLongtermMedicine,
-          isClosed: false
+          isClosed: false,
+          prescriptionUpdatedTime: snap.after.updateTime,
+          prescriptionCreatedTime: snap.after.createTime
+
         });
       } else {
         console.log('document does not exist, going to create it now');
@@ -184,7 +213,10 @@ exports.updatePrescriptions = functions.firestore.document('/{collection}/{id}')
           patientBloodGroup: pvalues.patientBloodGroup,
           patientLongtermIllness: pvalues.patientLongtermIllness,
           patientLongtermMedicine: pvalues.patientLongtermMedicine,
-          isClosed: false
+          isClosed: false,
+          prescriptionCreatedTime: snap.after.createTime,
+          prescriptionUpdateTime: snap.after.updateTime
+
         })
       }
     };

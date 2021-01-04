@@ -156,7 +156,9 @@ export class VisitService {
     console.log('UPDATE VISIT RUN');
 
     console.log('RECEIEVD BY UPDATE METHOD: ', visit[0].id);
-    this.db.collection('visits').doc(visit[0].id).update(visit[0]).then(function () {
+    this.db.collection('visits').doc(visit[0].id).update(visit[0])
+    .then(function () {
+      
       console.log("Document successfully updated!");
     }).catch(function (error) {
       console.error("Error removing document: ", error);

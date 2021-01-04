@@ -22,6 +22,13 @@
                 </p>
             </mat-card-content>
 
+            <mat-card-content>
+                <p>
+                    <small><strong>Created on: </strong>{{visit.orderCreatedTime.toDate() | date:'yyyy/MM/dd h:mm:ss a'}}   </small>
+                    <small><strong>Last updated: </strong>{{visit.orderUpdatedTime.toDate() | date:'yyyy/MM/dd h:mm:ss a'}}</small>
+                </p>
+            </mat-card-content>
+
         </mat-card>
 
         <br>

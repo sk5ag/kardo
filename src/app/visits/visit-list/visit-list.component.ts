@@ -9,6 +9,7 @@ import { VisitComponent } from '../visit/visit.component';
 import { VisitEditService } from '../../shared/visit-edit.service';
 import { EditVisitComponent } from '../edit-visit/edit-visit.component';
 import { AuthService } from 'src/app/shared/auth.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-visit-list',
@@ -31,6 +32,7 @@ export class VisitListComponent implements OnInit {
   }
 
   notesList:any = [];
+  bufferArray:Array<any> = [];
 
   listData: MatTableDataSource<Visit>;
   displayColumns: string[] = ['patientName', 'patientGender', 'patientAge', 'isClosed', 'actions'];
@@ -57,12 +59,13 @@ export class VisitListComponent implements OnInit {
               }
             }
           );
+      
           this.listData = new MatTableDataSource(array);
           this.listData.sort = this.sort;
-          this.listData.paginator = this.paginator;
+          this.listData.paginator = this.paginator; 
+        
         }
       );
-
     });
 
   }  
