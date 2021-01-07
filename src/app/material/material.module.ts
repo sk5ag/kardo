@@ -23,6 +23,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 const MaterialComponent = [
   MatIconModule,
@@ -49,6 +51,7 @@ const MaterialComponent = [
   MatExpansionModule,
   MatMenuModule,
   MatBadgeModule,
+  MatSlideToggleModule
 ];
 
 @NgModule({

@@ -134,15 +134,18 @@ export class EditVisitComponent implements OnDestroy {
   }
 
   onAdd(row) {
-    //console.log('Items in the test object', this.visitPrescription);
+    console.log('Items in the ROW object', row);
+    var data = Object.assign(row,{isDispensed: false});
+    console.log('Items in the ROW object after added fields', data);
+
     if (!this.visitPrescription[0]) {
       //console.log('Its Empty');
       this.visitPrescription = [];
-      this.visitPrescription.push([row]);
+      this.visitPrescription.push([data]);
       //console.log('visitPrescription: ', this.visitPrescription);
-      this.visitArray[0] = Object.assign(this.visitArray[0], {prescription: [row]})
+      this.visitArray[0] = Object.assign(this.visitArray[0], {prescription: [data]})
     }else {
-      this.visitPrescription[0].push(row);
+      this.visitPrescription[0].push(data);
     };
     this.prescription_searchKey = '';
     this.prescriptionCount = this.prescriptionCount + 1;
@@ -156,7 +159,7 @@ export class EditVisitComponent implements OnDestroy {
     console.log('items in visitOrder:', this.visitPrescription);
     this.prescriptionCount = this.prescriptionCount - 1;
     console.log('Prescription Count', this.prescriptionCount);
-  }
+  } 
 
   onAddOrder(row) {
     console.log('Items in the ORDER object', row);
