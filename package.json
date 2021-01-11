@@ -4,6 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
+        "init-medorder-db": "ts-node -P ./order-data.tsconfig.json ./init-medorder-db.ts",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
