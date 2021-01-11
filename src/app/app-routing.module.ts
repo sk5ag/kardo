@@ -7,9 +7,10 @@ import { PrescriptionsComponent } from './prescriptions/prescriptions.component'
 import { VisitsComponent } from './visits/visits.component';
 import { AuthGuard } from './shared/auth.guard';
 import { LoginComponent } from './login/login.component';
-
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  {path: 'home', component: HomeComponent},
   {path: 'appointments', component: AppointmentsComponent, canActivate: [AuthGuard]},
   {path: 'drugs', component: DrugsComponent, canActivate: [AuthGuard]},
   {path: 'orders', component: OrdersComponent, canActivate: [AuthGuard]},

@@ -4,8 +4,9 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { Subscription } from 'rxjs';
 import { MedOrder } from 'src/app/Modal/medorder';
+import { OrderService } from 'src/app/shared/order.service';
 import { OrderEditService } from '../../shared/order-edit.service';
-
+ 
 @Component({
   selector: 'app-edit-orders',
   templateUrl: './edit-orders.component.html',
@@ -22,6 +23,7 @@ export class EditOrdersComponent implements OnDestroy {
   constructor(
     private OrderMsgService: OrderEditService,
     public orderDialogRef: MatDialogRef<OrderEditService>,
+    public orderService: OrderService,
 
   ) {
     this.orderArray = [],
@@ -49,6 +51,39 @@ export class EditOrdersComponent implements OnDestroy {
   onClose() {
     // Close opened dialogbox
     this.orderDialogRef.close();
+  }
+
+  onUpdateList(item){
+
+
+    console.log('isDispensed is set to ::: ', item.isComplete);
+    console.log('Changing status of this item ::: ', item.id);
+
+    if(confirm('Are you sure you want to change this prescription status?\n\n')){
+      if (item.isComplete == false){
+        this.orderArray[0].order.forEach(element => {
+          console.log('ELEMENT ID :::', element.id );  
+          if (element.id == item.id){
+            element.isComplete = true;
+          }    
+        });
+        console.log('array updated ::: ', this.orderArray[0]);
+      }else{
+        this.orderArray[0].order.forEach(element => {
+          console.log('ELEMENT ID :::', element.id );  
+          if (element.id == item.id){
+            element.isComplete = false;
+          }    
+        });
+        console.log('array updated ::: ', this.orderArray[0]);
+  
+      };
+      this.orderService.updateOrder(this.orderArray[0]);
+
+    }else{
+      console.log('Nothing changed..')
+    }
+
   }
 
   ngOnDestroy(){

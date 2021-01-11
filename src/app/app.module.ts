@@ -4,6 +4,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+// Import your AvatarModule
+import { AvatarModule } from 'ngx-avatar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,7 +22,7 @@ import { MatSortModule } from '@angular/material/sort';
 
 import { TestService } from './shared/test.service';
 import { DepartmentService } from './shared/department.service';
-import { TesttypeService} from './shared/testtype.service';
+import { TesttypeService } from './shared/testtype.service';
 import { AppointmentsComponent } from './appointments/appointments.component';
 import { AppointmentComponent } from './appointments/appointment/appointment.component';
 import { AppointmentService } from './shared/appointment.service';
@@ -48,6 +50,7 @@ import { EditOrdersComponent } from './orders/edit-orders/edit-orders.component'
 import { OrderEditService } from './shared/order-edit.service';
 import { EditPrescriptionsComponent } from './prescriptions/edit-prescriptions/edit-prescriptions.component';
 import { PrescriptionEditService } from './shared/prescription-edit.service';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -74,12 +77,15 @@ import { PrescriptionEditService } from './shared/prescription-edit.service';
     EditVisitComponent,
     EditOrdersComponent,
     EditPrescriptionsComponent,
-    EditPrescriptionsComponent
+    EditPrescriptionsComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    // Specify AvatarModule as an import
+    AvatarModule,
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
@@ -89,24 +95,24 @@ import { PrescriptionEditService } from './shared/prescription-edit.service';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
-    
+
   ],
   providers: [
-    TestService, 
-    DepartmentService, 
-    TesttypeService, 
-    AppointmentService, 
-    OrderService, 
-    PrescriptionService, 
-    VisitService, 
-    DrugService, 
+    TestService,
+    DepartmentService,
+    TesttypeService,
+    AppointmentService,
+    OrderService,
+    PrescriptionService,
+    VisitService,
+    DrugService,
     VisitEditService,
     OrderEditService,
     PrescriptionEditService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    AppointmentComponent, 
+    AppointmentComponent,
     OrderComponent,
     PrescriptionComponent,
     VisitComponent,

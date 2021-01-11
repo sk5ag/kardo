@@ -59,7 +59,7 @@ export class EditPrescriptionsComponent implements OnDestroy {
     console.log('isDispensed is set to ::: ', item.isDispensed);
     console.log('Changing status of this item ::: ', item.id);
 
-    if(confirm('Are you sure?')){
+    if(confirm('Are you sure you want to change this prescription status?\n\n')){
       if (item.isDispensed == false){
         this.prescriptionArray[0].prescriptions.forEach(element => {
           console.log('ELEMENT ID :::', element.id );  

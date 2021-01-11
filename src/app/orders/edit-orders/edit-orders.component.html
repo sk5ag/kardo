@@ -47,9 +47,12 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
                         <mat-cell *matCellDef="let element">{{element.medorder_description}}</mat-cell>
                     </ng-container>
+
                     <ng-container matColumnDef="actions">
                         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                         <mat-cell *matCellDef="let row" class="action-icon">
+                            <button (click)="onUpdateList(row)" mat-icon-button *ngIf="row.isComplete == true" color="primary"><mat-icon>assignment_turned_in</mat-icon></button>
+                            <button (click)="onUpdateList(row)" mat-icon-button *ngIf="row.isComplete == false" color="warn"><mat-icon>assignment_late</mat-icon></button>
                         </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="loading">
@@ -72,7 +75,7 @@
 
             </mat-card-content>
             <mat-card-actions>
-                <!-- <button mat-raised-button color="primary" (click)="onUpdate()">Update & Close</button> -->
+                <button mat-raised-button color="primary" (click)="onClose()">Close</button>
             </mat-card-actions>
         </mat-card>
     </div>
