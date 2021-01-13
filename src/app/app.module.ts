@@ -51,6 +51,9 @@ import { OrderEditService } from './shared/order-edit.service';
 import { EditPrescriptionsComponent } from './prescriptions/edit-prescriptions/edit-prescriptions.component';
 import { PrescriptionEditService } from './shared/prescription-edit.service';
 import { HomeComponent } from './home/home.component';
+import { FavouritesComponent } from './favourites/favourites.component';
+import { DrugsFavouritesComponent } from './favourites/drugs-favourites/drugs-favourites.component';
+import { MedordersFavouritesComponent } from './favourites/medorders-favourites/medorders-favourites.component';
 
 
 @NgModule({
@@ -79,6 +82,9 @@ import { HomeComponent } from './home/home.component';
     EditPrescriptionsComponent,
     EditPrescriptionsComponent,
     HomeComponent,
+    FavouritesComponent,
+    DrugsFavouritesComponent,
+    MedordersFavouritesComponent,
   ],
   imports: [
     BrowserModule,

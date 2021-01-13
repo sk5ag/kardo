@@ -12,7 +12,7 @@ export class MedordersService {
   medordersCollection: AngularFirestoreCollection<MedOrder>;
   medorders: Observable<MedOrder>;
   collectionPath: string='/medorders';
-
+ 
   constructor(
     private db: AngularFirestore
   ) { 

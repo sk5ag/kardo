@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Drug } from '../Modal/drug';
-import { AngularFireList } from '@angular/fire/database'; 
+// import { AngularFireList } from '@angular/fire/database'; 
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class DrugService {
     this.drugsCollection = this.db.collection(this.collectionPath)
    }
 
-   drugList: AngularFireList<any>;
+   // drugList: AngularFireList<any>;
 
    drugForm: FormGroup = new FormGroup({
      id: new FormControl('null'),
@@ -41,7 +41,7 @@ export class DrugService {
       ingredient: '',
       dosage_form: '',
       route: '',
-      description: '',
+      description: '', 
       warnings: ''
     });
   }

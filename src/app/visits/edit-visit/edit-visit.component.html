@@ -157,7 +157,7 @@
                         <mat-footer-row *matFooterRowDef="[ 'noData']" [ngClass]="{ 'hide':!(listOrderData!=null && listOrderData.data.length==0)}"></mat-footer-row>
 
                     </mat-table>
-                    <mat-paginator [pageSizeOptions]="[5,10,25,50,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+                    <mat-paginator [pageSizeOptions]="[5,10,25,50,100]" [pageSize]="10" showFirstLastButtons></mat-paginator>
                 </div>
                 <br>
                 <div *ngFor="let item of visitOrder">

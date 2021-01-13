@@ -8,6 +8,7 @@ import { VisitsComponent } from './visits/visits.component';
 import { AuthGuard } from './shared/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { FavouritesComponent } from './favourites/favourites.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -16,6 +17,8 @@ const routes: Routes = [
   {path: 'orders', component: OrdersComponent, canActivate: [AuthGuard]},
   {path: 'prescriptions', component: PrescriptionsComponent, canActivate: [AuthGuard]},
   {path: 'visits', component: VisitsComponent, canActivate: [AuthGuard]},
+  {path: 'myfavourites', component: FavouritesComponent},
+
   {path: 'login', component: LoginComponent}
 
 ];

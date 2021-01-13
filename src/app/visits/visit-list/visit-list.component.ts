@@ -9,7 +9,6 @@ import { VisitComponent } from '../visit/visit.component';
 import { VisitEditService } from '../../shared/visit-edit.service';
 import { EditVisitComponent } from '../edit-visit/edit-visit.component';
 import { AuthService } from 'src/app/shared/auth.service';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-visit-list',
