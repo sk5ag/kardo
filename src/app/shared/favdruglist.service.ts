@@ -22,15 +22,12 @@ export class FavdruglistService {
   constructor(
     private db: AngularFirestore,
     private afAuth: AuthService,
-    private afs: AngularFirestore,
   ) {
     this.favdrugsCollection = this.db.collection(this.collectionPath);
 
     this.afAuth.user$.subscribe(usr => {
       this.docID = usr.uid;
       console.log('USER ID :::: ', this.docID);
-
-
     }
 
     )

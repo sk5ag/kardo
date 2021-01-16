@@ -122,7 +122,7 @@
                 </div>
 
                 <div class="mat-elevation-z8" *ngIf="order_searchKey">
-                    <mat-table [dataSource]="listOrderData " matSort>
+                    <mat-table [dataSource]="FavMedOrderbuffer" matSort>
                         <ng-container matColumnDef="medorder_title">
                             <mat-header-cell *matHeaderCellDef mat-sort-header>Order Title</mat-header-cell>
                             <mat-cell *matCellDef="let element">{{element.medorder_title}}</mat-cell>
