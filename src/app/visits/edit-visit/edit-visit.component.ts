@@ -13,7 +13,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { VisitPrescription } from 'src/app/Modal/visitPrescription';
 import { MedOrder } from 'src/app/Modal/medorder';
 import { Drug } from 'src/app/Modal/drug';
+import { FavMedOrderList } from 'src/app/Modal/favmedorder';
+
 import { VisitService } from '../../shared/visit.service';
+
 
 @Component({
   selector: 'app-edit-visit',
@@ -29,22 +32,14 @@ export class EditVisitComponent implements OnDestroy {
   orderCount = 0;
   orderOn: boolean = false;
   prescriptionOn: boolean = true;
-  // testData = [
-  //   {generic_name: "Paracetamol", strength: "125 mg/l", dosage_form:"Tablet", route: "Oral", isDispensed: true},
-  //   {generic_name: "Simvol", strength: "05 mg/l", dosage_form:"Tablet", route: "Oral", isDispensed: false},
-
-  // ];
-
   subscription: Subscription;
   listPrescriptionData: MatTableDataSource<VisitPrescription>;
-  listOrderData: MatTableDataSource<MedOrder>;
+  listOrderData: MatTableDataSource<FavMedOrderList>;
   FavMedOrderList: any = [];
   FavMedOrderbuffer: any = [];
-
   displayPrescriptionColumns: string[] = ['generic_name', 'strength', 'dosage_form', 'route', 'actions'];
   displayOrderColumns: string[] = ['medorder_title', 'medorder_category', 'medorder_description', 'actions'];
   displayFavMedOrderColumns: string[] = ['medorder_title', 'medorder_category', 'medorder_description', 'actions'];
-
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   prescription_searchKey: string;
@@ -68,7 +63,7 @@ export class EditVisitComponent implements OnDestroy {
       this.subscription = this.messageService.getMessage().subscribe(message => {
         if (message) {
           this.visitArray.push(message);
-          console.log('HERE IS THE MESSAGE: ', this.visitArray[0].id)
+          // console.log('HERE IS THE MESSAGE: ', this.visitArray[0].id)
         } else {
           // clear messages when empty message received
           //console.log('Empty message received!!');
@@ -84,22 +79,20 @@ export class EditVisitComponent implements OnDestroy {
       this.docID = usr.uid;
       console.log('USER ID :::: ', this.docID);
 
-      this.FavmedorderService.getDocID(this.docID)
+      this.FavmedorderService.getOrdersByDocID(this.docID)
       .subscribe(
         list => {
-          let favorderArray = list.data()
-          
+          let favorderArray = list.data();
           this.FavMedOrderbuffer = favorderArray.favmedorder;
-          console.log('FavMedOrderBuffer', this.FavMedOrderbuffer.favmedorder);
-          console.log('favorderarray:::', favorderArray.favmedorder)
+          console.log('1 - inside the bracket, FavMedOrder::::', this.FavMedOrderbuffer);
+          this.listOrderData = new MatTableDataSource(this.FavMedOrderbuffer);
+          // this.listOrderData.sort = this.sort;
+          // this.listOrderData.data.paginator = this.paginator;
+          console.log('2 - item inside the listOrderData::::', this.listOrderData.data);
         }
+
       );
     });   
-
-
-
-    console.log('are you looking for:', this.FavMedOrderbuffer);
-
 
     this.drugService.getDrugs()
       .subscribe(
@@ -135,9 +128,9 @@ export class EditVisitComponent implements OnDestroy {
               }
             }
           );
-          this.listOrderData = new MatTableDataSource(orderArray);
-          this.listOrderData.sort = this.sort;
-          this.listOrderData.paginator = this.paginator;
+          // this.listOrderData = new MatTableDataSource(orderArray);
+          // this.listOrderData.sort = this.sort;
+          // this.listOrderData.paginator = this.paginator;
         }
       );
 
@@ -161,6 +154,11 @@ export class EditVisitComponent implements OnDestroy {
   }
 
   applyOrderFilter() {
+    console.log('4 - list order data contains:::: ', this.listOrderData);
+    
+    // var myArray: any = this.listOrderData.filteredData as any[];
+    // myArray.filter = this.order_searchKey.trim().toLowerCase();
+    
     this.listOrderData.filter = this.order_searchKey.trim().toLowerCase();
   }
 

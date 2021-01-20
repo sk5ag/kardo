@@ -30,9 +30,24 @@ export class MedordersFavouritesComponent implements OnInit {
 
   ordersearchKey: string;
   bucket: any = [];
-
+  myFavMedOrders_count: number;
   
   ngOnInit(): void {
+
+    console.log('STARTED');
+    
+    const docRef = this.favMedOrdersService.getOnlyMyFav();
+    console.log(docRef)
+
+    docRef.snapshotChanges().forEach((changes) => {
+      changes.map((a)=> {
+        console.log('THE DOC YOU ARE LOOKING FOR:::', a.payload.doc.data)
+      })
+    });
+
+
+    console.log('ENDED');
+
     this.medorderService.getMedorders()
       .subscribe(
         list => {
@@ -44,11 +59,14 @@ export class MedordersFavouritesComponent implements OnInit {
               }
             }
           );
+          //this.myFavMedOrders_count = array.length;
+          console.log('No. of orders in the database:::: ', this.myFavMedOrders_count);
           this.listMedOrders = new MatTableDataSource(array);
           this.listMedOrders.sort = this.sort;
           this.listMedOrders.paginator = this.paginator;
         }
       )
+
   
       this.favMedOrdersService.getFavMedOrders()
       .subscribe(
@@ -61,11 +79,11 @@ export class MedordersFavouritesComponent implements OnInit {
               }
             }
           );
-          this.medordersArray = new MatTableDataSource(myfav)
+
+          this.medordersArray = new MatTableDataSource(myfav);
         }
       )
-  
-  
+
     }
 
 
@@ -98,7 +116,7 @@ export class MedordersFavouritesComponent implements OnInit {
 
       this.bucket.push(item);
       
-      console.log('Writing to the database now!');
+      console.log('Writing to the database now!', this.bucket);
       this.favMedOrdersService.insertFavMedOrder(this.bucket);
     }
   }
