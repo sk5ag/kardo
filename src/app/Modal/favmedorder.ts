@@ -1,7 +1,7 @@
 import { MedOrder } from './medorder';
 
 export interface FavMedOrderList {
-    favmedorder: Array<[MedOrder]>,
+    favmedorder?: Array<[MedOrder]>,
     // docID: string,
     // itemID: string,
     // medorder_title: string,

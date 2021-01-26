@@ -1,5 +1,14 @@
 <div class="lists-width">
+
     <div class="search-div">
+        <br>
+        <div class="search-div"> Select a category to search:
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [(ngModel)]="pickedOrdercategory">
+                <mat-radio-button color="primary" class="example-radio-button" *ngFor="let medorder of medorderCategory" [value]="medorder" (change)="radiochangedHandler($event)">
+                    {{medorder}}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
         <button mat-raised-button disabled>
         <mat-icon>add</mat-icon>Create
     </button>
@@ -7,6 +16,7 @@
             <input matInput [(ngModel)]="ordersearchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
             <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="ordersearchKey" (click)="onSearchClear()"><mat-icon>close</mat-icon></button>
         </mat-form-field>
+        <button mat-button color="primary" (click)="saveCart()"><mat-icon>save</mat-icon></button>
     </div>
 
     <div class="mat-elevation-z8">
@@ -31,7 +41,7 @@
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="action-icon">
-                    <button mat-icon-button (click)="add2FavMedOrders(row)"><mat-icon>star_border</mat-icon></button>
+                    <button mat-icon-button (click)="add2MyFavorite(row)"><mat-icon>favorite_border</mat-icon></button>
                     <button mat-icon-button><mat-icon>launch</mat-icon></button>
                     <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>
                 </mat-cell>
@@ -39,7 +49,7 @@
 
             <ng-container matColumnDef="loading">
                 <mat-footer-cell *matFooterCellDef colspan="6">
-                    Loading data...
+                    Loading data or waiting for category selection ...
                 </mat-footer-cell>
             </ng-container>
             <ng-container matColumnDef="noData">
@@ -51,7 +61,6 @@
             <mat-row *matRowDef="let row; columns: MeddisplayColumns;"></mat-row>
             <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listMedOrders!=null}"></mat-footer-row>
             <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listMedOrders!=null && listMedOrders.data.length==0)}"></mat-footer-row>
-
         </mat-table>
         <mat-paginator [pageSizeOptions]="[5,10,25,50,100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
     </div>

@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-medorders-favourites',
@@ -16,109 +17,147 @@ import { MatDialog } from '@angular/material/dialog';
 export class MedordersFavouritesComponent implements OnInit {
 
   constructor(
-    private medorderService: MedordersService,
+    // private medorderService: MedordersService,
     private dialog: MatDialog,
     private favMedOrdersService: FavmedorderService,
-  ) { } 
+  ) { }
 
   listMedOrders: MatTableDataSource<MedOrder>;
   medordersArray: MatTableDataSource<FavMedOrderList>;
-  MeddisplayColumns: string[] = ['medorder_title', 'medorder_category','medorder_description', 'testID','actions'];
+  MeddisplayColumns: string[] = ['medorder_title', 'medorder_category', 'medorder_description', 'testID', 'actions'];
+  medorderCategory: string[] = ['Procedure', 'Radiology', 'Laboratory'];
+  pickedOrdercategory: string;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ordersearchKey: string;
-  bucket: any = [];
+  cart?: any = [];
   myFavMedOrders_count: number;
-  
+  medordersList?: MedOrder[];
+  favourites?: FavMedOrderList[];
+  favourites2?: any = [];
+  searchArray: any = [];
+  usr$: string;
+
   ngOnInit(): void {
 
-    console.log('STARTED');
-    
-    const docRef = this.favMedOrdersService.getOnlyMyFav();
-    console.log(docRef)
+    //Call the methodes here, add more as you go along
+    this.getUsr();
+    this.loadCart();
+    //this.retrieveAllMedorders();
 
-    docRef.snapshotChanges().forEach((changes) => {
-      changes.map((a)=> {
-        console.log('THE DOC YOU ARE LOOKING FOR:::', a.payload.doc.data)
-      })
+  }
+  getUsr() {
+    this.favMedOrdersService.getUserId().subscribe(usr => {
+      console.log('the user id is ::: ', usr.uid);
+      this.usr$ = usr.uid
+    })
+  }
+  radiochangedHandler(event: any) {
+    this.pickedOrdercategory = event.value;
+    console.log('picked order category', this.pickedOrdercategory);
+    this.retrieveSelectedMedOrder(event.value);
+  }
+  retrieveSelectedMedOrder(category) {
+    console.log('Selected Order to Retrieve', category);
+    this.favMedOrdersService.getSelectedMedorders(category).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(data => {
+      this.medordersList = data;
+      console.log('Assign data to the MatTable Data source', this.medordersList);
+      this.listMedOrders = new MatTableDataSource(this.medordersList);
+      this.listMedOrders.sort = this.sort;
+      this.listMedOrders.paginator = this.paginator
+    });
+  }
+  retrieveAllMedorders(): void {
+    this.favMedOrdersService.getAllMedorders().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(data => {
+      this.medordersList = data;
+      console.log('Assign data to the MatTable Data source', this.medordersList);
+      this.listMedOrders = new MatTableDataSource(this.medordersList);
+      this.listMedOrders.sort = this.sort;
+      this.listMedOrders.paginator = this.paginator
+    });
+  }
+  retrieveDocFav(user) {
+    console.log('the user received by this crap:::: ', user)
+    this.favMedOrdersService.getFavByDoctor(user).snapshotChanges().subscribe(data => {
+      this.favourites2 = data.payload.data().favmedorder;
+      // this.favourites2.forEach(element => {
+      //   this.medordersArray..concat(element);
+      // });
+      console.log('Med Order Array Contains:::::: ', this.favourites2)
     });
 
-
-    console.log('ENDED');
-
-    this.medorderService.getMedorders()
-      .subscribe(
-        list => {
-          let array = list.map(
-            item => {
-              return {
-                id: item.payload.doc.id,
-                ...item.payload.doc.data() as MedOrder
-              }
-            }
-          );
-          //this.myFavMedOrders_count = array.length;
-          console.log('No. of orders in the database:::: ', this.myFavMedOrders_count);
-          this.listMedOrders = new MatTableDataSource(array);
-          this.listMedOrders.sort = this.sort;
-          this.listMedOrders.paginator = this.paginator;
-        }
-      )
-
-  
-      this.favMedOrdersService.getFavMedOrders()
-      .subscribe(
-        list => {
-          let myfav = list.map(
-            myitem => {
-              return{
-                id: myitem.payload.doc.id,
-                ...myitem.payload.doc.data() as FavMedOrderList
-              }
-            }
-          );
-
-          this.medordersArray = new MatTableDataSource(myfav);
-        }
-      )
-
-    }
-
-
-
-  onSearchClear(){
-    this.ordersearchKey="";
-    this.applyFilter();
   }
-
-  applyFilter(){
-    this.listMedOrders.filter = this.ordersearchKey.trim().toLowerCase();
+  add2MyFavorite(item) {
+    this.add2Cart(item);
   }
-  onClose(){
-    this.dialog.closeAll();
-  }
-
-  add2FavMedOrders(item){
-    console.log('addnig this item to favmedorders :::', item);
-    console.log('Whats inside medordersArray? :::', item);
-
-   
-    console.log('Bucket contains ::::', this.bucket);
-
-    
-    if(confirm("Would you like to add more med orders to the bucket?")){
-
-      this.bucket.push(item);
-      console.log('Select more orders', this.bucket);
+  add2Cart(item: any) {
+    let result = this.compareTocart(item);
+    if(result.length > 0){
+      console.log('Do not add since exists!')
     }else{
-
-      this.bucket.push(item);
-      
-      console.log('Writing to the database now!', this.bucket);
-      this.favMedOrdersService.insertFavMedOrder(this.bucket);
+      console.log('Adding since it doesnt exist!!!');
+      this.cart.push(item);
     }
+    console.log('Cart has these items', this.cart)
   }
-
+  compareTocart(item: any) {
+    return this.cart.filter(f => 
+      f.id === item.id &&
+      f.testID === item.testID);
+  }
+  saveCart() {
+    if (this.cart.length == 0) {
+      console.log('Cart is empty . . . ')
+    } else {
+      this.favMedOrdersService.updateFav(this.usr$, this.cart);
+      this.cart = [];
+    }
+    this.loadCart();
+  }
+  loadCart() {
+    this.favMedOrdersService.getUserId().subscribe(usr => {
+      console.log('the user id is ::: ', usr.uid);
+      this.usr$ = usr.uid;
+      console.log('Loading FAV for the following doctor:  ', this.usr$)
+      this.favMedOrdersService.getFavByDoctor(this.usr$).snapshotChanges().subscribe(data => {
+        this.cart = data.payload.data().favmedorder;
+        console.log('Cart Loaded  . . ', this.cart)
+      });
+    })
+    }
+retrieveAllFav(): void {
+      this.favMedOrdersService.getAllFav().snapshotChanges().pipe(
+        map(changes =>
+          changes.map(c =>
+            ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+          )
+        )
+      ).subscribe(data => {
+        this.favourites = data;
+      })
+    }
+onSearchClear() {
+      this.ordersearchKey = "";
+      this.applyFilter();
+    }
+applyFilter() {
+      this.listMedOrders.filter = this.ordersearchKey.trim().toLowerCase();
+    }
+onClose() {
+      this.dialog.closeAll();
+    }
 }
