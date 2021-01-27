@@ -39,6 +39,7 @@ export class MedordersFavouritesComponent implements OnInit {
   favourites2?: any = [];
   searchArray: any = [];
   usr$: string;
+  medfavCount = 0;
 
   ngOnInit(): void {
 
@@ -112,7 +113,8 @@ export class MedordersFavouritesComponent implements OnInit {
       console.log('Adding since it doesnt exist!!!');
       this.cart.push(item);
     }
-    console.log('Cart has these items', this.cart)
+    console.log('Cart has these items', this.cart.length);
+    this.medfavCount = this.medfavCount + 1;
   }
   compareTocart(item: any) {
     return this.cart.filter(f => 
@@ -125,6 +127,7 @@ export class MedordersFavouritesComponent implements OnInit {
     } else {
       this.favMedOrdersService.updateFav(this.usr$, this.cart);
       this.cart = [];
+      this.medfavCount = 0;
     }
     this.loadCart();
   }
@@ -137,7 +140,7 @@ export class MedordersFavouritesComponent implements OnInit {
         this.cart = data.payload.data().favmedorder;
         console.log('Cart Loaded  . . ', this.cart)
       });
-    })
+    });
     }
 retrieveAllFav(): void {
       this.favMedOrdersService.getAllFav().snapshotChanges().pipe(

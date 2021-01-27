@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { FavDrugList } from '../Modal/favdrugs';
 import { AuthService } from './auth.service';
 
-
+ 
 @Injectable({
   providedIn: 'root'
 })
