@@ -70,7 +70,7 @@ export class MedordersFavouritesComponent implements OnInit {
       )
     ).subscribe(data => {
       this.medordersList = data;
-      console.log('Assign data to the MatTable Data source', this.medordersList);
+      // console.log('Assign data to the MatTable Data source', this.medordersList);
       this.listMedOrders = new MatTableDataSource(this.medordersList);
       this.listMedOrders.sort = this.sort;
       this.listMedOrders.paginator = this.paginator

@@ -14,46 +14,63 @@ export class FavdruglistService {
   favdrugsCollection: AngularFirestoreCollection<FavDrugList>;
   favdrugs: Observable<FavDrugList>;
   collectionPath: string = '/favdruglist';
-
   user$: Observable<User>;
   docID: string;
-
 
   constructor(
     private db: AngularFirestore,
     private afAuth: AuthService,
   ) {
-    this.favdrugsCollection = this.db.collection(this.collectionPath);
+    this.favdrugsCollection = db.collection('/favdruglist', fdl => fdl.limit(5));
 
-    this.afAuth.user$.subscribe(usr => {
-      this.docID = usr.uid;
-      console.log('USER ID :::: ', this.docID);
-    }
+    // this.afAuth.user$.subscribe(usr => {
+    //   this.docID = usr.uid;
+    //   console.log('USER ID :::: ', this.docID);
+    // }
+    // )
+  
+  }
+  getUserId() {
+    return this.afAuth.user$
+  }
+  getAllDrugs(): AngularFirestoreCollection<FavDrugList> {
+    return this.db.collection('/drugs', drug => drug.where("generic_name", "==", "Levothyroxine Sodium").orderBy('generic_name'))
+  }
+  getSelectedDrugs(route): AngularFirestoreCollection<FavDrugList> {
+    console.log('Route selected is ;;;', route)
+    return this.db.collection('/drugs', drug => drug.where("route", "==", route).orderBy('generic_name'))
+  }
+  getAllFav(): AngularFirestoreCollection<FavDrugList> {
+    return this.favdrugsCollection;
+  }
+  getFavByDoctor(usr) {
+    return this.favdrugsCollection.doc<FavDrugList>(usr);
+  }
+  createFav(fav: FavDrugList): any {
+    return this.favdrugsCollection.add({ ...fav });
+  }
+  updateFav(id: string, favdrug: any): Promise<void> {
 
-    )
+    return this.favdrugsCollection.doc(id).update({ favdrug });
   }
 
+  deleteFav(id: string): Promise<void> {
+    return this.favdrugsCollection.doc(id).delete();
+  }
   getFavDrugs() {
     return this.db.collection('favdruglist').snapshotChanges()
   }
-
-  async insertFavDrug(favdrug) {
-    console.log('This item received from the component :::', favdrug);
-
-    console.log('Current docID is ::::: ', this.docID);
-
-    await this.db.collection('favdruglist').doc(this.docID).set({ favdrug });
-
-    // // To update age and favorite color:
-    // this.db.collection('favdruglist').doc(this.docID).update({
-    //   "itemID": favdrug.generic_name,
-    // })
-    //   .then(function () {
-    //     console.log("Document successfully updated!");
-    //   });
-
-
-    console.log('This item added to favdruglist collection successfully:::', favdrug)
-
-  }
+  // async insertFavDrug(favdrug) {
+  //   console.log('This item received from the component :::', favdrug);
+  //   console.log('Current docID is ::::: ', this.docID);
+  //   await this.db.collection('favdruglist').doc(this.docID).set({ favdrug });
+  //   // // To update age and favorite color:
+  //   // this.db.collection('favdruglist').doc(this.docID).update({
+  //   //   "itemID": favdrug.generic_name,
+  //   // })
+  //   //   .then(function () {
+  //   //     console.log("Document successfully updated!");
+  //   //   });
+  //   console.log('This item added to favdruglist collection successfully:::', favdrug)
+  // }
 }

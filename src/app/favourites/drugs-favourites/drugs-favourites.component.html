@@ -9,7 +9,6 @@
         </mat-form-field>
     </div>
 
-
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="listOfDrugs" matSort>
             <ng-container matColumnDef="generic_name">
@@ -35,7 +34,7 @@
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let row" class="action-icon">
-                    <button mat-icon-button (click)="add2FavDrugs(row)"><mat-icon>star_border</mat-icon></button>
+                    <button mat-icon-button><mat-icon>star_border</mat-icon></button>
                     <button mat-icon-button><mat-icon>launch</mat-icon></button>
                     <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>
                 </mat-cell>

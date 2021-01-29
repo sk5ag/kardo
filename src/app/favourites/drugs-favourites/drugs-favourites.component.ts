@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-drugs-favourites',
@@ -16,7 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class DrugsFavouritesComponent implements OnInit {
 
   constructor(
-    private drugsService: DrugService,
+    //private drugsService: DrugService,
     private favDrugsService: FavdruglistService,
     private dialog: MatDialog,
   ) { }
@@ -27,28 +28,67 @@ export class DrugsFavouritesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  drugsList?: any[];
+  usr$: string;
   drugsearchKey: string;
   drugsArray: any= [];
+  favourites3?: any = [];
+
 
   ngOnInit(): void {
-    this.drugsService.getDrugs()
-      .subscribe(
-        list => {
-          let array = list.map(
-            item => {
-              return {
-                id: item.payload.doc.id,
-                ...item.payload.doc.data() as Drug
-              }
-            }
-          );
-          this.listOfDrugs = new MatTableDataSource(array);
-          this.listOfDrugs.sort = this.sort;
-          this.listOfDrugs.paginator = this.paginator;
-        }
-      )
-  }
 
+    this.getUsr();
+    this.retrieveSelectedDrugs('Oral')
+    // this.drugsService.getDrugs()
+    //   .subscribe(
+    //     list => {
+    //       let array = list.map(
+    //         item => {
+    //           return {
+    //             id: item.payload.doc.id,
+    //             ...item.payload.doc.data() as Drug
+    //           }
+    //         }
+    //       );
+    //       this.listOfDrugs = new MatTableDataSource(array);
+    //       this.listOfDrugs.sort = this.sort;
+    //       this.listOfDrugs.paginator = this.paginator;
+    //     }
+    //   )
+  }
+  getUsr() {
+    this.favDrugsService.getUserId().subscribe(usr => {
+      console.log('the user id is ::: ', usr.uid);
+      this.usr$ = usr.uid
+    })  
+  }
+  retrieveSelectedDrugs(route) {
+    console.log('Selected Order to Retrieve', route);
+    this.favDrugsService.getSelectedDrugs(route).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(data => {
+      this.drugsList = data;
+      console.log('Assign data to the MatTable Data source', this.drugsList);
+      this.listOfDrugs = new MatTableDataSource(this.drugsList);
+      this.listOfDrugs.sort = this.sort;
+      this.listOfDrugs.paginator = this.paginator
+    });
+  }
+  retrieveDocFavDrugs(user) {
+    console.log('the user received by this crap:::: ', user)
+    this.favDrugsService.getFavByDoctor(user).snapshotChanges().subscribe(data => {
+      this.favourites3 = data.payload.data().favdrug;
+      // this.favourites2.forEach(element => {
+      //   this.medordersArray..concat(element);
+      // });
+      console.log('Med Order Array Contains:::::: ', this.favourites3)
+    });
+
+  }
   onSearchClear(){
     this.drugsearchKey="";
     this.applyFilter();
@@ -61,11 +101,11 @@ export class DrugsFavouritesComponent implements OnInit {
     this.dialog.closeAll();
   }
 
-  add2FavDrugs(item){
-    console.log('addnig this item to favdrugs :::', item);
-    this.drugsArray.push(item);
-    console.log('your items have been added to the drugsarray:::', this.drugsArray);
-    this.favDrugsService.insertFavDrug(this.drugsArray)
-  }
+  // add2FavDrugs(item){
+  //   console.log('addnig this item to favdrugs :::', item);
+  //   this.drugsArray.push(item);
+  //   console.log('your items have been added to the drugsarray:::', this.drugsArray);
+  //   this.favDrugsService.insertFavDrug(this.drugsArray)
+  // }
 
 }

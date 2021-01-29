@@ -7,4 +7,4 @@ export interface Drug {
     route:string,
     description?: string,
     warnings?: string
-}
+} 
