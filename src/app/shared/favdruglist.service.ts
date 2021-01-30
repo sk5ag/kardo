@@ -36,9 +36,9 @@ export class FavdruglistService {
   getAllDrugs(): AngularFirestoreCollection<FavDrugList> {
     return this.db.collection('/drugs', drug => drug.where("generic_name", "==", "Levothyroxine Sodium").orderBy('generic_name'))
   }
-  getSelectedDrugs(route): AngularFirestoreCollection<FavDrugList> {
+  getSelectedDrugs(route, dosage_form): AngularFirestoreCollection<FavDrugList> {
     console.log('Route selected is ;;;', route)
-    return this.db.collection('/drugs', drug => drug.where("route", "==", route).orderBy('generic_name'))
+    return this.db.collection('/drugs', drug => drug.where("route", "==", route).where("dosage_form","==", dosage_form).orderBy('generic_name'))
   }
   getAllFav(): AngularFirestoreCollection<FavDrugList> {
     return this.favdrugsCollection;

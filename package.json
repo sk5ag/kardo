@@ -5,6 +5,7 @@
         "ng": "ng",
         "start": "ng serve",
         "init-medorder-db": "ts-node -P ./order-data.tsconfig.json ./init-medorder-db.ts",
+        "init-drugs-db": "ts-node -P ./drug-data.tsconfig.json ./init-drugs-db.ts",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
@@ -26,6 +27,7 @@
         "firebase": "^7.16.1",
         "lodash": "^4.17.19",
         "ngx-avatar": "^4.0.0",
+        "pdfmake": "^0.1.70",
         "rxjs": "~6.5.4",
         "tslib": "^1.10.0",
         "zone.js": "~0.10.2"

@@ -38,7 +38,7 @@ export class DrugsFavouritesComponent implements OnInit {
   ngOnInit(): void {
 
     this.getUsr();
-    this.retrieveSelectedDrugs('Oral')
+    this.retrieveSelectedDrugs('ORAL', 'TABLET')
     // this.drugsService.getDrugs()
     //   .subscribe(
     //     list => {
@@ -62,9 +62,9 @@ export class DrugsFavouritesComponent implements OnInit {
       this.usr$ = usr.uid
     })  
   }
-  retrieveSelectedDrugs(route) {
+  retrieveSelectedDrugs(route, dosage_form) {
     console.log('Selected Order to Retrieve', route);
-    this.favDrugsService.getSelectedDrugs(route).snapshotChanges().pipe(
+    this.favDrugsService.getSelectedDrugs(route, dosage_form).snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })

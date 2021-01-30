@@ -16,6 +16,7 @@ import { Drug } from 'src/app/Modal/drug';
 import { FavMedOrderList } from 'src/app/Modal/favmedorder';
 
 import { VisitService } from '../../shared/visit.service';
+import { PdfService } from 'src/app/shared/pdf.service';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class EditVisitComponent implements OnDestroy {
     private medorderService: MedordersService,
     private FavmedorderService: FavmedorderService,
     private afAuth: AuthService,
+    private pdfService: PdfService,
 
 
     public visitPrescriptiondialogRef: MatDialogRef<EditVisitComponent>,
@@ -73,72 +75,77 @@ export class EditVisitComponent implements OnDestroy {
 
   }
 
+  generatePdf() {
+    console.log('Content to print out: : ', this.visitArray[0]);
+    this.pdfService.generatePdf(this.visitArray);
+  }
+
   ngOnInit() {
 
-    // this.afAuth.user$.subscribe(usr => {
-    //   this.docID = usr.uid;
-    //   console.log('USER ID :::: ', this.docID);
+  //   this.afAuth.user$.subscribe(usr => {
+  //     this.docID = usr.uid;
+  //     console.log('USER ID :::: ', this.docID);
 
-    //   this.FavmedorderService.getOrdersByDocID(this.docID)
-    //   .subscribe(
-    //     list => {
-    //       let favorderArray = list.data();
-    //       this.FavMedOrderbuffer = favorderArray.favmedorder;
-    //       console.log('1 - inside the bracket, FavMedOrder::::', this.FavMedOrderbuffer);
-    //       this.listOrderData = new MatTableDataSource(this.FavMedOrderbuffer);
-    //       // this.listOrderData.sort = this.sort;
-    //       // this.listOrderData.data.paginator = this.paginator;
-    //       console.log('2 - item inside the listOrderData::::', this.listOrderData.data);
-    //     }
+  //     this.FavmedorderService.getOrdersByDocID(this.docID)
+  //     .subscribe(
+  //       list => {
+  //         let favorderArray = list.data();
+  //         this.FavMedOrderbuffer = favorderArray.favmedorder;
+  //         console.log('1 - inside the bracket, FavMedOrder::::', this.FavMedOrderbuffer);
+  //         this.listOrderData = new MatTableDataSource(this.FavMedOrderbuffer);
+  //         // this.listOrderData.sort = this.sort;
+  //         // this.listOrderData.data.paginator = this.paginator;
+  //         console.log('2 - item inside the listOrderData::::', this.listOrderData.data);
+  //       }
 
-    //   );
-    // });   
+  //     );
+  //   });   
 
-    // this.drugService.getDrugs()
-    //   .subscribe(
-    //     list => {
-    //       let prescriptionArray = list.map(
-    //         item => {
-    //           return {
-    //             id: item.payload.doc.id,
-    //             ...item.payload.doc.data() as Drug
-    //           }
-    //         }
-    //       );
-    //       this.listPrescriptionData = new MatTableDataSource(prescriptionArray);
-    //       this.listPrescriptionData.sort = this.sort;
-    //       this.listPrescriptionData.paginator = this.paginator;
-    //     }
-    //   );
+  //   this.drugService.getDrugs()
+  //     .subscribe(
+  //       list => {
+  //         let prescriptionArray = list.map(
+  //           item => {
+  //             return {
+  //               id: item.payload.doc.id,
+  //               ...item.payload.doc.data() as Drug
+  //             }
+  //           }
+  //         );
+  //         this.listPrescriptionData = new MatTableDataSource(prescriptionArray);
+  //         this.listPrescriptionData.sort = this.sort;
+  //         this.listPrescriptionData.paginator = this.paginator;
+  //       }
+  //     );
 
-    // this.visitArray.forEach(element => {
-    //   this.visitPrescription.push(element.prescription);
-    //   console.log('Items in prescription array counts to :', element.prescription.length);
-    //   this.prescriptionCount = element.prescription.length;
-    // });
+  //   this.visitArray.forEach(element => {
+  //     this.visitPrescription.push(element.prescription);
+  //     console.log('Items in prescription array counts to :', element.prescription.length);
+  //     this.prescriptionCount = element.prescription.length;
+  //   });
 
-    // this.medorderService.getMedorders()
-    //   .subscribe(
-    //     list => {
-    //       let orderArray = list.map(
-    //         item => {
-    //           return {
-    //             id: item.payload.doc.id,
-    //             ...item.payload.doc.data() as MedOrder
-    //           }
-    //         }
-    //       );
-    //       // this.listOrderData = new MatTableDataSource(orderArray);
-    //       // this.listOrderData.sort = this.sort;
-    //       // this.listOrderData.paginator = this.paginator;
-    //     }
-    //   );
+  //   this.medorderService.getMedorders()
+  //     .subscribe(
+  //       list => {
+  //         let orderArray = list.map(
+  //           item => {
+  //             return {
+  //               id: item.payload.doc.id,
+  //               ...item.payload.doc.data() as MedOrder
+  //             }
+  //           }
+  //         );
+  //         // this.listOrderData = new MatTableDataSource(orderArray);
+  //         // this.listOrderData.sort = this.sort;
+  //         // this.listOrderData.paginator = this.paginator;
+  //       }
+  //     );
 
-    // this.visitArray.forEach(element => {
-    //   this.visitOrder.push(element.order);
-    //   console.log('Items in order array counts to :', element.order.length);
-    //   this.orderCount = element.order.length;
-    // });
+  //   this.visitArray.forEach(element => {
+  //     this.visitOrder.push(element.order);
+  //     console.log('Items in order array counts to :', element.order.length);
+  //     this.orderCount = element.order.length;
+  //   });
   }
 
   addPrescription() {
